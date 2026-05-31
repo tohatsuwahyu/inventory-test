@@ -1424,17 +1424,12 @@ function setTextSafe(selector, value) {
 
 
   /* -------------------- Items -------------------- */
-// NOTE UI: ada 5 tombol aksi (edit, hapus, DL, Lot QR, preview).
-// Kalau grid cuma 3 kolom, tombol akan pecah jadi 2 baris (terlihat "tidak simetris").
-// Jadi kita pakai 5 kolom agar 1 baris rapi di desktop/tablet.
 const ACT_GRID_STYLE = [
-  "display:grid;",
-  "grid-template-columns:repeat(5,28px);",   // 5 tombol per baris
-  "grid-auto-rows:28px;",
-  "gap:4px;",
-  "justify-content:end;",
+  "display:flex;",
+  "gap:6px;",
+  "justify-content:flex-end;",
   "align-items:center;",
-  "min-width:170px;"                        // cukup untuk 5 tombol + gap
+  "min-width:110px;" // Lebar diperkecil dari 170px
 ].join("");
 
 
@@ -1543,13 +1538,22 @@ const abc = (window.__FREQ_MAP && window.__FREQ_MAP[it.code])
     ? `<span class="badge rounded-pill bg-body-secondary">${escapeHtml(it.location)}</span>` : '';
 
   // Grid tombol aksi (tetap sama)
-  const actions = [
-    `<button class="btn btn-sm btn-primary btn-edit" data-code="${escapeAttr(it.code)}" title="編集"><i class="bi bi-pencil-square"></i></button>`,
-    `<button class="btn btn-sm btn-danger btn-del" data-code="${escapeAttr(it.code)}" title="削除"><i class="bi bi-trash3"></i></button>`,
-    `<button class="btn btn-sm btn-outline-success btn-dl" data-code="${escapeAttr(it.code)}" title="ラベルDL"><i class="bi bi-download"></i></button>`,
-    `<button class="btn btn-sm btn-outline-warning btn-lotqr" data-code="${escapeAttr(it.code)}" title="Lot QR"><i class="bi bi-qr-code"></i></button>`,
-    `<button class="btn btn-sm btn-outline-secondary btn-preview" data-code="${escapeAttr(it.code)}" title="プレビュー"><i class="bi bi-search"></i></button>`
-  ].join('');
+// Grid tombol aksi (Kebab Menu / Dropdown)
+  const actions = `
+    <button class="btn btn-sm btn-primary btn-edit" data-code="${escapeAttr(it.code)}" title="編集"><i class="bi bi-pencil-square"></i></button>
+    <button class="btn btn-sm btn-outline-secondary btn-preview" data-code="${escapeAttr(it.code)}" title="プレビュー"><i class="bi bi-search"></i></button>
+    <div class="dropdown d-inline-block">
+      <button class="btn btn-sm btn-light border-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
+        <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="font-size: 0.85rem; border-radius: 12px; z-index: 1050;">
+        <li><a class="dropdown-item btn-dl" href="#" data-code="${escapeAttr(it.code)}"><i class="bi bi-download me-2 text-success"></i> ラベルDL</a></li>
+        <li><a class="dropdown-item btn-lotqr" href="#" data-code="${escapeAttr(it.code)}"><i class="bi bi-qr-code me-2 text-warning"></i> Lot QR</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item btn-del text-danger" href="#" data-code="${escapeAttr(it.code)}"><i class="bi bi-trash3 me-2"></i> 削除</a></li>
+      </ul>
+    </div>
+  `;
 
  return [
     // Tambahkan alertClass di sini vvvvvvv
@@ -1682,7 +1686,7 @@ function ensureItemsColgroup() {
     "70px",   // 6. Min
     "100px",  // 7. Dept
     "90px",   // 8. Lokasi
-    "140px"   // 9. Aksi (Tombol)
+    "110px"   // 9. Aksi (Tombol)
   ];
 
   const cg = document.createElement("colgroup");
@@ -3032,7 +3036,29 @@ function bindHistoryExportUI() {
         const v = (ioCode.value || "").trim();
         if (v) findItemIntoIO(v);
       });
-    
+    // --- FITUR BARU: Tekan ESC untuk Reset Form IO ---
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const viewIo = document.getElementById('view-io');
+        // Hanya jalan jika layar yang aktif adalah layar Input IO
+        if (viewIo && viewIo.classList.contains('active')) {
+          e.preventDefault();
+          const ioCode = document.getElementById('io-code');
+          if (ioCode) {
+            ioCode.value = '';
+            document.getElementById('io-name').value = '';
+            document.getElementById('io-price').value = '';
+            document.getElementById('io-stock').value = '';
+            document.getElementById('io-qty').value = '';
+            document.getElementById('io-qty').dataset.lotId = '';
+            ioCode.focus(); // Kembalikan kursor ke input kode
+            
+            // Beri tahu user bahwa form telah di-reset
+            if (typeof toast === 'function') toast("フォームをリセットしました (Form direset)", "dark");
+          }
+        }
+      }
+    });
     }
 
     /* --- PERBAIKAN AGAR BISA SCAN BERULANG KALI --- */
