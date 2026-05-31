@@ -28,7 +28,7 @@ body {
     margin: 0;
     background: var(--bg);
     color: #0f172a;
-    font-family: 'Noto Sans JP', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif !important;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -1447,4 +1447,26 @@ header.appbar::after {
     height: 46px !important;
     font-size: 1.35rem !important;
   }
+}
+/* =========================================================
+ * FIX: KAMERA SCANNER MOBILE & TOMBOL OPERATOR
+ * =======================================================*/
+@media (max-width: 768px) {
+    #io-scan-area, #scan-area {
+        aspect-ratio: 1 / 1 !important; /* Memaksa kotak scanner jadi presisi 1:1 */
+        max-width: 100% !important;
+        border-radius: 16px !important;
+        padding: 0 !important; /* Menghilangkan padding agar video full */
+    }
+    
+    #io-scan-area video, #scan-area video {
+        border-radius: 16px !important;
+    }
+
+    /* Membesarkan area klik tombol agar mudah ditekan pakai sarung tangan */
+    #btn-io-scan, #btn-io-stop, #btn-start-scan, #btn-stop-scan {
+        padding: 0.6rem 1.2rem !important;
+        font-size: 1rem !important;
+        border-radius: 10px !important;
+    }
 }
