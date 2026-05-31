@@ -1839,16 +1839,20 @@ async function renderItems(silent = false){
     toast("商品一覧の読み込みに失敗しました。");
   }
 
-  // Delegasi klik (Edit, Del, DL, dll) - Tidak berubah
+// Delegasi klik (Edit, Del, DL, dll) - FIX: Mendukung Kebab Menu Dropdown (tag <a>)
   if (!tbody.__bound) {
     tbody.addEventListener("click", async (ev)=>{
-      const btn  = ev.target.closest("button");
+      // UBAH DISINI: Deteksi tag <button> ATAU <a> yang punya class .dropdown-item
+      const btn  = ev.target.closest("button, .dropdown-item");
       if (!btn) return;
+      
+      // Cegah halaman melompat ke atas jika yang diklik adalah link <a> (dropdown)
+      if (btn.tagName === "A") ev.preventDefault();
+
       const code = btn.getAttribute("data-code");
       if (!code) return;
 
       const item = _ITEMS_CACHE.find(x => String(x.code) === String(code));
-
       if (btn.classList.contains("btn-edit")) { openEditItem(code); return; }
      if (btn.classList.contains("btn-del")) {
         if (!isAdmin()) return toast("Akses ditolak (admin only)");
