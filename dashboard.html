@@ -345,8 +345,8 @@
               <div class="col-md-4"><label class="form-label">名称</label><input id="io-name" class="form-control" readonly/></div>
               <div class="col-md-2"><label class="form-label">価格</label><input id="io-price" class="form-control" readonly/></div>
               <div class="col-md-2"><label class="form-label">在庫</label><input id="io-stock" class="form-control" readonly/></div>
-              <div class="col-md-3"><label class="form-label">数量</label>
-                <input type="tel" inputmode="numeric" pattern="[0-9]*" id="io-qty" class="form-control form-control-lg text-center fw-bold" placeholder="0" style="font-size:1.5rem;">
+            <div class="col-md-3"><label class="form-label">数量</label>
+                <input type="tel" inputmode="numeric" pattern="[0-9]*" id="io-qty" class="form-control form-control-lg text-center fw-bold" placeholder="0" style="font-size:1.5rem;" onclick="this.select()" onfocus="this.select()">
               </div>
               <div class="col-md-3"><label class="form-label">単位</label><select id="io-unit" class="form-select"><option>pcs</option><option>kg</option><option>m</option></select></div>
              <div class="col-md-3"><label class="form-label">種別</label><select id="io-type" class="form-select"><option>IN</option><option>OUT</option></select></div>
