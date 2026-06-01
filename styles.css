@@ -576,7 +576,10 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
   display: flex;
   align-items: center;
   gap: 18px;
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface) 100%);
+  background:
+    radial-gradient(circle at 85% 50%, rgba(139,92,246,.10), transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(99,102,241,.08), transparent 55%),
+    linear-gradient(135deg, var(--surface) 0%, var(--surface) 100%);
   border: 1px solid var(--border);
   padding: 22px 26px;
   border-radius: var(--r-lg);
@@ -587,15 +590,18 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
 .deposito-welcome::after {
   content: '';
   position: absolute;
-  right: -40px;
-  top: -40px;
+  right: -50px; top: 50%;
+  transform: translateY(-50%);
   width: 180px; height: 180px;
-  background: radial-gradient(circle at center, var(--brand-soft) 0%, transparent 70%);
-  opacity: 0.6;
+  background-image:
+    linear-gradient(rgba(99,102,241,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: radial-gradient(circle, black 30%, transparent 70%);
   pointer-events: none;
 }
 .d-avatar {
-  width: 52px; height: 52px;
+  width: 56px; height: 56px;
   border-radius: var(--r-pill);
   background: linear-gradient(135deg, var(--brand), #8B5CF6);
   color: #fff;
@@ -604,19 +610,26 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(79,70,229,.25);
+  box-shadow: 0 6px 16px rgba(79,70,229,.28), 0 0 0 4px rgba(79,70,229,.08);
+  position: relative;
+  z-index: 1;
 }
 .d-welcome-text { position: relative; z-index: 1; }
 .d-welcome-text h4 {
   font-family: var(--font-display) !important;
   font-weight: 700 !important;
-  font-size: 1.125rem !important;
+  font-size: 1.25rem !important;
   color: var(--text-primary) !important;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  margin: 0;
 }
-.d-welcome-text p { color: var(--text-muted); font-size: 0.8125rem; }
+.d-welcome-text p {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  margin: 4px 0 0;
+}
 
 /* -------------------------------------------------------------
  * 9. METRIC CARDS (deposito-card kept for app.js)
@@ -639,15 +652,37 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
   align-items: flex-start;
   gap: 14px;
   box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, border-color .25s;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  animation: cardIn .55s cubic-bezier(.16,1,.3,1) backwards;
+}
+.deposito-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand), #8B5CF6);
+  opacity: 0;
+  transition: opacity .25s;
+  border-radius: var(--r) var(--r) 0 0;
 }
 .deposito-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
   border-color: var(--border-strong);
+}
+.deposito-card:hover::before { opacity: 1; }
+.deposito-card:nth-child(1) { animation-delay: .04s; }
+.deposito-card:nth-child(2) { animation-delay: .08s; }
+.deposito-card:nth-child(3) { animation-delay: .12s; }
+.deposito-card:nth-child(4) { animation-delay: .16s; }
+.deposito-card:nth-child(5) { animation-delay: .20s; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .d-info { display: flex; flex-direction: column; gap: 6px; }
@@ -959,48 +994,191 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
 }
 
 /* -------------------------------------------------------------
- * 15. MOBILE APP GRID (Quick menu)
+ * 15. MOBILE HERO CARD + APP GRID  (Image-1 style)
  * ----------------------------------------------------------- */
+
+/* — Mobile hero banner (greeting + bell) — */
+.mobile-hero-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 60%, #A855F7 100%);
+  border-radius: var(--r-xl);
+  padding: 18px 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 14px 36px rgba(99,102,241,.30);
+  margin-bottom: 18px;
+}
+.mobile-hero-card::before {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.10);
+}
+.mobile-hero-card::after {
+  content: '';
+  position: absolute;
+  right: 30px; bottom: -30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.mhc-left { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; min-width: 0; }
+.mhc-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.30);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+.mhc-text { min-width: 0; }
+.mhc-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mhc-sub {
+  font-size: 0.72rem;
+  opacity: 0.88;
+  margin-top: 2px;
+}
+.mhc-bell {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.30);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+.mhc-bell:active { transform: scale(0.92); }
+.mhc-bell .dot {
+  position: absolute;
+  top: 8px; right: 9px;
+  width: 8px; height: 8px;
+  background: #FCD34D;
+  border-radius: 50%;
+  border: 2px solid #6366F1;
+}
+
+/* — Mobile section title strip — */
+.mob-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px;
+  margin-bottom: 12px;
+}
+.mob-section-title .mob-st-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  letter-spacing: -0.005em;
+}
+.mob-section-title .mob-st-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+
+/* — Modern Mobile Grid (3 cols, round icon cards) — */
 .modern-mobile-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 16px 8px;
+  padding: 4px 0 8px;
 }
+
+@media (min-width: 540px) and (max-width: 991.98px) {
+  .modern-mobile-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
 .m-app-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 18px 10px;
+  background: transparent;
+  border: none;
+  padding: 6px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: var(--transition);
+  box-shadow: none;
+  transition: transform .15s ease;
 }
-.m-app-card:active { transform: scale(0.96); background: var(--surface-2); }
+.m-app-card:active { transform: scale(0.94); background: transparent; }
+
 .m-app-icon {
-  width: 46px; height: 46px;
-  border-radius: var(--r-sm);
+  width: 62px; height: 62px;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
+  font-size: 1.7rem;
   margin-bottom: 10px;
+  box-shadow: 0 6px 14px rgba(15,23,42,.06), inset 0 -2px 0 rgba(0,0,0,.02);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
+.m-app-card:hover .m-app-icon { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(15,23,42,.10); }
+
 .m-app-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--text-primary);
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
 }
 .m-app-title small {
   display: block;
   font-weight: 400;
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   margin-top: 2px;
 }
+
+/* — Pastel ring palette for mobile icons — */
+.m-app-icon.ring-lavender { background: #EEF2FF; color: #4F46E5; }
+.m-app-icon.ring-mint     { background: #D1FAE5; color: #059669; }
+.m-app-icon.ring-peach    { background: #FFEDD5; color: #EA580C; }
+.m-app-icon.ring-rose     { background: #FCE7F3; color: #DB2777; }
+.m-app-icon.ring-teal     { background: #CCFBF1; color: #0D9488; }
+.m-app-icon.ring-violet   { background: #EDE9FE; color: #7C3AED; }
+.m-app-icon.ring-pink     { background: #FFE4E6; color: #E11D48; }
+.m-app-icon.ring-amber    { background: #FEF3C7; color: #D97706; }
+.m-app-icon.ring-sky      { background: #E0F2FE; color: #0284C7; }
+.m-app-icon.ring-red      { background: #FEE2E2; color: #DC2626; }
+
+[data-theme="dark"] .m-app-icon { box-shadow: 0 6px 14px rgba(0,0,0,.30); }
+[data-theme="dark"] .m-app-icon.ring-lavender { background: rgba(79,70,229,.20); color: #A5B4FC; }
+[data-theme="dark"] .m-app-icon.ring-mint     { background: rgba(16,185,129,.20); color: #6EE7B7; }
+[data-theme="dark"] .m-app-icon.ring-peach    { background: rgba(234,88,12,.20); color: #FDBA74; }
+[data-theme="dark"] .m-app-icon.ring-rose     { background: rgba(219,39,119,.20); color: #F9A8D4; }
+[data-theme="dark"] .m-app-icon.ring-teal     { background: rgba(13,148,136,.20); color: #5EEAD4; }
+[data-theme="dark"] .m-app-icon.ring-violet   { background: rgba(124,58,237,.20); color: #C4B5FD; }
+[data-theme="dark"] .m-app-icon.ring-pink     { background: rgba(225,29,72,.20); color: #FDA4AF; }
+[data-theme="dark"] .m-app-icon.ring-amber    { background: rgba(217,119,6,.20); color: #FCD34D; }
+[data-theme="dark"] .m-app-icon.ring-sky      { background: rgba(2,132,199,.20); color: #7DD3FC; }
+[data-theme="dark"] .m-app-icon.ring-red      { background: rgba(220,38,38,.20); color: #FCA5A5; }
 
 /* -------------------------------------------------------------
  * 16. MOBILE BOTTOM NAV
@@ -1244,3 +1422,91 @@ body.zen-mode-active main { padding-bottom: 24px; }
   padding: 7px 10px;
 }
 .dropdown-item:hover { background: var(--surface-2) !important; }
+
+/* -------------------------------------------------------------
+ * 27. QUICK ACTIONS (chip row below welcome banner)
+ * ----------------------------------------------------------- */
+.quick-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.qa-chip {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 9px 16px;
+  font-family: var(--font-body);
+  font-size: 0.81rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.qa-chip i { font-size: 0.95rem; }
+.qa-chip:hover {
+  color: var(--brand);
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79,70,229,.10);
+}
+.qa-chip:active { transform: translateY(0); }
+.qa-chip.qa-primary {
+  background: linear-gradient(135deg, var(--brand), #8B5CF6);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(79,70,229,.24);
+}
+.qa-chip.qa-primary:hover {
+  filter: brightness(1.05);
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--brand-hover), #7C3AED);
+}
+
+/* -------------------------------------------------------------
+ * 28. PAGE-FADE animation for content sections
+ * ----------------------------------------------------------- */
+main section.active {
+  animation: sectionIn .35s ease-out;
+}
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------------------------------------------
+ * 29. AI INSIGHT BANNER polish
+ * ----------------------------------------------------------- */
+#ai-insight-banner {
+  position: relative;
+  overflow: hidden;
+}
+#ai-insight-banner::after {
+  content: '';
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,.18), transparent 70%);
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------
+ * 30. CHART CARD subtle hover lift
+ * ----------------------------------------------------------- */
+.deposito-chart-card {
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, border-color .25s;
+}
+.deposito-chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+  border-color: var(--border-strong) !important;
+}
