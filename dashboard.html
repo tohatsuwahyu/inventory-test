@@ -102,208 +102,63 @@
           <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>メニュー</button>
         </div>
 
-        <section id="view-dashboard" class="active">
-          <div class="welcome d-flex align-items-center justify-content-between mb-3">
-            <div class="card-body">
-              <div id="welcome-banner" class="d-flex align-items-center"></div>
-            </div>
-           <div class="ios-widget ms-auto">
-                <div class="ios-calendar">
-                  <div class="ios-calendar-head" id="widget-month">月</div>
-                  <div class="ios-calendar-body" id="widget-date">00</div>
-                </div>
-                <div class="ios-weather">
-                  <div class="d-flex align-items-center gap-2">
-                    <i id="widget-w-icon" class="bi bi-cloud-sun fs-2 text-primary"></i>
-                    <div class="ios-temp" id="widget-temp">--°</div>
-                  </div>
-                  <div class="ios-weather-desc" id="widget-w-desc">天気取得中...</div>
-                </div>
-              </div>
-          </div>
-<div id="ai-insight-banner" class="alert d-none align-items-center border-0 shadow-sm mb-3" style="border-radius: 12px; background: linear-gradient(to right, #e0e7ff, #eff6ff); border-left: 4px solid #4f46e5 !important;">
-           <i class="bi bi-cpu-fill fs-2 text-primary me-3"></i>
-            <div>
-              <h6 class="fw-bold text-primary mb-1">AI 在庫インサイト</h6>
-              <div id="ai-insight-text" class="small text-dark">分析中...</div>
-            </div>
-          </div>
-
-     <div class="metric-row" id="dash-metrics">
-            <div class="metric-card-solid bg-metric-red js-metric-drill" data-target="view-items">
-              <i class="bi bi-boxes"></i>
-              <div class="metric-label">アイテム数</div>
-              <div class="metric-value" id="metric-items">0</div>
-            </div>
-            <div class="metric-card-solid bg-metric-orange js-metric-drill" data-target="view-items">
-              <i class="bi bi-arrow-down-circle"></i>
-              <div class="metric-label">要補充</div>
-              <div class="metric-value" id="metric-below">0</div>
-            </div>
-            <div class="metric-card-solid bg-metric-green js-metric-drill" data-target="view-users">
-              <i class="bi bi-people"></i>
-              <div class="metric-label">ユーザー</div>
-              <div class="metric-value" id="metric-users">0</div>
-            </div>
-            <div class="metric-card-solid bg-metric-lightblue js-metric-drill">
-              <i class="bi bi-cash-coin"></i>
-              <div class="metric-label">在庫総額</div>
-              <div class="metric-value" id="metric-total-value">¥0</div>
-            </div>
-            <div class="metric-card-solid bg-metric-blue js-metric-drill" data-target="view-history">
-              <i class="bi bi-arrow-left-right"></i>
-              <div class="metric-label">直近30日の取引</div>
-              <div class="metric-value" id="metric-trx">0</div>
-            </div>
-          </div>
-
-          <div class="mobile-only mb-4 mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="fw-bold m-0" style="color: #1e293b;">メニュー (Menu)</h5>
-            </div>
-            <div class="mobile-app-grid">
-              <div class="mobile-grid-item bg-grid-red" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
-                <i class="bi bi-qr-code-scan"></i><span>スキャン<br><small class="fw-normal">Scan QR</small></span>
-              </div>
-              <div class="mobile-grid-item bg-grid-blue" onclick="showSection('view-io', this);">
-                <i class="bi bi-box-arrow-in-down"></i><span>入出庫<br><small class="fw-normal">In/Out</small></span>
-              </div>
-              <div class="mobile-grid-item bg-grid-orange" onclick="showSection('view-items', this);">
-                <i class="bi bi-boxes"></i><span>商品一覧<br><small class="fw-normal">Items</small></span>
-              </div>
-              <div class="mobile-grid-item bg-grid-green" onclick="showSection('view-shelf', this);">
-                <i class="bi bi-clipboard-check"></i><span>棚卸<br><small class="fw-normal">Stocktake</small></span>
-              </div>
-              <div class="mobile-grid-item bg-grid-purple" onclick="showSection('view-history', this);">
-                <i class="bi bi-clock-history"></i><span>履歴<br><small class="fw-normal">History</small></span>
-              </div>
-              <div class="mobile-grid-item bg-grid-dark" onclick="logout();">
-                <i class="bi bi-box-arrow-right"></i><span>ログアウト<br><small class="fw-normal">Logout</small></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-3 mt-4 mb-2 desktop-only">
-            <div class="col-12">
-              <div class="card chart-card p-3 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary fs-6"><i class="bi bi-activity text-primary me-2"></i> 14日間の入出庫トレンド</div>
-                </div>
-                <div class="chart-box" style="height: 250px; position: relative;"><canvas id="chart-daily"></canvas></div>
-              </div>
-            </div>
-          </div>
-          <div class="row g-3 mt-2">
-            <div class="col-lg-6">
-              <div class="card chart-card p-3 h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary"><i class="bi bi-bar-chart-fill me-1"></i> 月次 IN/OUT</div>
-                  <button id="btn-export-mov" class="btn btn-sm btn-light text-primary"><i class="bi bi-download me-1"></i>CSV</button>
-                </div>
-                <div id="chart-monthly-sub" class="text-muted small mb-2"></div>
-                <div class="chart-box" style="height: 240px; position: relative;"><canvas id="chart-monthly"></canvas></div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="card chart-card p-3 h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary"><i class="bi bi-pie-chart-fill me-1"></i> 当月 IN/OUT 比率</div>
-                </div>
-                <div id="chart-pie-sub" class="text-muted small mb-2"></div>
-                <div class="chart-box" style="height: 240px; position: relative;"><canvas id="chart-pie"></canvas></div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="card chart-card p-3 h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary"><i class="bi bi-heart-pulse-fill text-danger me-1"></i> 在庫の健康状態</div>
-                </div>
-                <div id="chart-health-sub" class="text-muted small mb-2">全アイテムの状況</div>
-                <div class="chart-box" style="height: 240px; position: relative;"><canvas id="chart-health"></canvas></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-3 mt-2">
-            <div class="col-lg-6">
-              <div class="card chart-card p-3 h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary"><i class="bi bi-cash-stack text-success me-1"></i> 在庫金額 トップ5</div>
-                </div>
-                <div id="chart-value-sub" class="text-muted small mb-2">資産価値の高い商品</div>
-                <div class="chart-box" style="height: 240px; position: relative;"><canvas id="chart-top-value"></canvas></div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card chart-card p-3 h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-secondary"><i class="bi bi-diagram-3-fill text-info me-1"></i> ABC分析 (出荷頻度)</div>
-                </div>
-                <div id="chart-abc-sub" class="text-muted small mb-2">A:高頻度 / B:中頻度 / C:低頻度</div>
-                <div class="chart-box" style="height: 240px; position: relative;"><canvas id="chart-abc"></canvas></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 mt-3">
-            <div class="card h-100">
-              <div class="card-header bg-white border-bottom pt-3 pb-2">
-                <h6 class="fw-bold mb-0"><i class="bi bi-activity me-2"></i>最新のアクティビティ</h6>
-              </div>
-              <div class="card-body p-0">
-                <div class="list-group list-group-flush" id="dash-timeline">
-                  <div class="p-3 text-center text-muted">読み込み中...</div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section id="view-dashboard" class="active">
           
-         <div class="row g-3 mt-3">
-            <div class="col-lg-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-white rounded-top-4">
-                  <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-danger rounded-pill"><i class="bi bi-radar"></i></span>
-                    <div class="fw-bold text-dark">枯渇予測レーダー <span class="badge bg-danger-subtle text-danger ms-1" id="radar-count">0</span></div>
-                  </div>
-                  <div class="text-muted small">直近30日の消費から予測</div>
-                </div>
-                <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
-                  <table class="table table-sm table-hover mb-0">
-                    <thead style="position: sticky; top: 0; background: #f8fafc; z-index: 1;">
-                      <tr><th>品名</th><th class="text-end">現在庫</th><th class="text-end">枯渇予測</th></tr>
-                    </thead>
-                    <tbody id="tbl-runout-radar">
-                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
-                    </tbody>
-                  </table>
-                </div>
+          <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
+            <div id="welcome-banner" class="w-100"></div>
+          </div>
+
+          <div id="ai-insight-banner" class="figma-alert d-none mb-4">
+            <div class="alert-icon"><i class="bi bi-cpu-fill"></i></div>
+            <div>
+              <h6 class="fw-bold mb-1 text-dark">AI 在庫インサイト</h6>
+              <div id="ai-insight-text" class="small text-muted">分析中...</div>
+            </div>
+          </div>
+
+          <div class="figma-metric-grid mb-4">
+            <div class="figma-metric-card js-metric-drill" data-target="view-items">
+              <div class="icon-box bg-blue-light text-blue"><i class="bi bi-boxes"></i></div>
+              <div class="metric-info">
+                <span class="metric-label">アイテム数</span>
+                <span class="metric-value" id="metric-items">0</span>
+              </div>
+            </div>
+            
+            <div class="figma-metric-card js-metric-drill" data-target="view-items">
+              <div class="icon-box bg-orange-light text-orange"><i class="bi bi-exclamation-triangle"></i></div>
+              <div class="metric-info">
+                <span class="metric-label">要補充 (Low)</span>
+                <span class="metric-value" id="metric-below">0</span>
               </div>
             </div>
 
-           <div class="col-lg-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-white rounded-top-4">
-                  <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-primary rounded-pill"><i class="bi bi-trophy-fill"></i></span>
-                    <div class="fw-bold text-dark">入出庫ランキング (Top 20)</div>
-                    
-                    <input type="month" id="rank-month-select" class="form-control form-control-sm text-primary border-0 bg-primary bg-opacity-10 rounded-pill px-3 fw-bold" style="width: auto; cursor: pointer; outline: none;">
-                  </div>
-                </div>
-                <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
-                  <table class="table table-sm table-hover mb-0">
-                    <thead style="position: sticky; top: 0; background: #f8fafc; z-index: 1;">
-                      <tr><th style="width:60px">順位</th><th>コード / 品名</th><th class="text-end">合計</th></tr>
-                    </thead>
-                    <tbody id="tbl-rank-month">
-                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
-                    </tbody>
-                  </table>
-                </div>
+            <div class="figma-metric-card js-metric-drill" data-target="view-users">
+              <div class="icon-box bg-green-light text-green"><i class="bi bi-people"></i></div>
+              <div class="metric-info">
+                <span class="metric-label">ユーザー</span>
+                <span class="metric-value" id="metric-users">0</span>
+              </div>
+            </div>
+
+            <div class="figma-metric-card js-metric-drill" data-target="view-history">
+              <div class="icon-box bg-purple-light text-purple"><i class="bi bi-clock-history"></i></div>
+              <div class="metric-info">
+                <span class="metric-label">直近30日の取引</span>
+                <span class="metric-value" id="metric-trx">0</span>
               </div>
             </div>
           </div>
+
+          <div class="row g-3 desktop-only">
+             <div class="col-12">
+               <div class="card p-3 border-0 shadow-sm" style="border-radius: 16px;">
+                 <div class="fw-bold text-secondary mb-3"><i class="bi bi-activity text-primary me-2"></i>14日間のトレンド</div>
+                 <div style="height: 250px;"><canvas id="chart-daily"></canvas></div>
+               </div>
+             </div>
+          </div>
+
         </section>
 
         <section id="view-io" class="d-none">
