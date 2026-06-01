@@ -1470,3 +1470,27 @@ header.appbar::after {
         border-radius: 10px !important;
     }
 }
+/* Sticky Action Bar untuk HP (Opname & Keranjang IO) */
+@media (max-width: 768px) {
+    #view-shelf .card > .d-flex.border-top,
+    #io-cart-container {
+        position: sticky;
+        bottom: 70px; /* Di atas mobile nav */
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px !important;
+        margin: 0 -15px -15px -15px;
+        border-top: 1px solid #e2e8f0 !important;
+        z-index: 100;
+        box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+    }
+}
+/* Efek Highlight setelah Scan Berhasil */
+@keyframes highlightFocus {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); border-color: #10b981; }
+    70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); border-color: #10b981; }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); border-color: #e2e8f0; }
+}
+.input-scan-highlight {
+    animation: highlightFocus 1.5s ease-out;
+}
