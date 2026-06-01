@@ -172,3 +172,82 @@ header.appbar {
 .ios-weather { text-align: right; }
 .ios-temp { font-size: 1.4rem; font-weight: bold; line-height: 1; }
 .ios-weather-desc { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+/* =========================================================
+ * FIGMA UI/UX POLISH (CLEAN, SOFT, MODERN)
+ * =======================================================*/
+
+/* 1. Welcome Banner (Tanpa kotak berlebihan, langsung menyatu) */
+.figma-welcome { display: flex; align-items: center; gap: 14px; }
+.figma-welcome .avatar { 
+    width: 50px; height: 50px; border-radius: 50%; 
+    background: #e0e7ff; color: #4f46e5; 
+    display: flex; align-items: center; justify-content: center; 
+    font-size: 1.4rem; font-weight: 700; 
+}
+
+/* 2. AI Insight Alert (Lebih bersih) */
+.figma-alert {
+    display: flex; align-items: center; gap: 12px;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 16px; padding: 16px;
+}
+.figma-alert .alert-icon { font-size: 1.6rem; color: #4f46e5; }
+
+/* 3. Figma Metric Grid (Kotak rapi dengan soft background) */
+.figma-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.figma-metric-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.figma-metric-card:active { transform: scale(0.96); }
+
+/* Warna Soft untuk Ikon (Tren Desain 2024-2026) */
+.icon-box {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+}
+.bg-blue-light { background: #eff6ff; } .text-blue { color: #3b82f6; }
+.bg-orange-light { background: #fff7ed; } .text-orange { color: #f97316; }
+.bg-green-light { background: #f0fdf4; } .text-green { color: #10b981; }
+.bg-purple-light { background: #faf5ff; } .text-purple { color: #a855f7; }
+
+/* Teks Metrik */
+.metric-info { display: flex; flex-direction: column; }
+.metric-label { font-size: 0.75rem; color: #64748b; font-weight: 500; margin-bottom: 2px; }
+.metric-value { font-size: 1.5rem; font-weight: 700; color: #0f172a; line-height: 1; }
+
+/* 4. Bottom Nav (Standard iOS/Android App) */
+.mobile-nav {
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+    box-shadow: none !important;
+    height: 70px !important;
+}
+.mobile-nav .nav-item { color: #94a3b8; gap: 4px; }
+.mobile-nav .nav-item.active { color: #3b82f6; }
+.mobile-nav .nav-scan .scan-circle {
+    width: 50px; height: 50px; border-radius: 16px; /* Bukan bulat penuh, tapi rounded-box modern */
+    background: #3b82f6; color: white;
+    border: none !important;
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3) !important;
+    transform: translateY(-12px);
+}
+.mobile-nav .nav-scan:active .scan-circle { transform: translateY(-8px) scale(0.95); }
+
+/* Hide Desktop Elements on Mobile */
+@media (max-width: 991px) {
+    .desktop-only { display: none !important; }
+}
