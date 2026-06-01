@@ -3571,17 +3571,27 @@ async function findItemIntoIO(codeRaw) {
     }
   }
 
- // 5. JIKA ITEM KETEMU
+// JIKA ITEM KETEMU (Di dalam fungsi findItemIntoIO)
   if (item) {
     if (nameEl)  nameEl.value  = item.name || "";
     if (priceEl) priceEl.value = Number(item.price || 0);
     if (stockEl) stockEl.value = Number(item.stock || 0);
     
-    // --- KAIZEN: Suara Jepang Natural ---
-    // Bicara: "Konfirmasi. [Nama Barang]. Stok saat ini [Jumlah]"
-    // Bicara: "Diterima. [Nama]. Stok saat ini [Jml]"
+    // Suara Jepang Natural
     const msg = `OK。${item.name}。現在庫、${item.stock}`;
     speakJP(msg);
+    
+    // --- KAIZEN UI POST-SCAN: Pancing mata operator ke input Jumlah ---
+    const qtyInput = document.getElementById("io-qty");
+    if (qtyInput) {
+        qtyInput.classList.remove("input-scan-highlight");
+        void qtyInput.offsetWidth; // Trigger reflow agar animasi bisa diulang
+        qtyInput.classList.add("input-scan-highlight");
+        qtyInput.focus();
+        qtyInput.select();
+    }
+    
+ 
     
     return item;
   } else {
@@ -5126,7 +5136,76 @@ window.addEventListener("DOMContentLoaded", () => {
     ensureQRCode()
       .catch(()=>{})
       .finally(()=>{ try{ bindPreviewButtons(); }catch(e){} });
+// =========================================================
+  // FITUR BARU: DYNAMIC CONTEXTUAL HELP (Bantuan Per Menu)
+  // =========================================================
+  const HELP_CONTENT = {
+    "view-dashboard": `
+      <h6 class="fw-bold text-primary"><i class="bi bi-speedometer2"></i> ダッシュボード (Dashboard)</h6>
+      <p class="text-muted small">Ini adalah pusat informasi inventory Anda.</p>
+      <ul class="small">
+        <li><strong>AI Radar:</strong> Memprediksi barang yang akan habis dalam 14 hari ke depan berdasarkan rata-rata pengeluaran (OUT) 30 hari terakhir.</li>
+        <li><strong>ABC Analysis:</strong> Mengelompokkan barang berdasarkan seberapa sering barang tersebut ditransaksikan (A: Sangat sering, B: Sedang, C: Jarang/Mati).</li>
+      </ul>
+    `,
+    "view-io": `
+      <h6 class="fw-bold text-primary"><i class="bi bi-box-seam"></i> 入出庫 (In / Out Barang)</h6>
+      <p class="text-muted small">Menu untuk mencatat barang masuk atau keluar.</p>
+      <ul class="small">
+        <li>Tekan <strong>開始 (Mulai)</strong> untuk menggunakan kamera HP sebagai scanner barcode.</li>
+        <li>Setelah discan, ketik jumlahnya, lalu tekan <strong>即時登録 (Submit Instan)</strong> atau masukkan ke <strong>リスト (Keranjang)</strong> untuk memproses banyak barang sekaligus.</li>
+        <li>Jika salah scan/input, klik tombol <strong>Undo (元に戻す)</strong> yang muncul selama 10 detik di layar.</li>
+      </ul>
+    `,
+    "view-shelf": `
+      <h6 class="fw-bold text-primary"><i class="bi bi-clipboard-check"></i> 棚卸 (Stock Opname)</h6>
+      <p class="text-muted small">Gunakan menu ini untuk mencocokkan stok fisik gudang dengan sistem.</p>
+      <ul class="small">
+        <li>Scan barang, lalu ketik jumlah fisik yang ada di rak ke dalam kotak <strong>実在 (Aktual)</strong>.</li>
+        <li>Sistem akan mendeteksi perbedaan secara otomatis. Jika selesai, wajib tekan tombol <strong class="text-success">確定 (Commit)</strong> agar stok di database terupdate.</li>
+        <li>Gunakan <strong>保存 (Save)</strong> untuk menyimpan draf sementara ke HP jika opname belum selesai.</li>
+      </ul>
+    `,
+    "view-items": `
+      <h6 class="fw-bold text-primary"><i class="bi bi-boxes"></i> 商品一覧 (Daftar Barang)</h6>
+      <p class="text-muted small">Melihat dan mengelola master data barang.</p>
+      <ul class="small">
+        <li>Gunakan kotak <strong>検索 (Search)</strong> untuk mencari kode atau nama barang dengan cepat.</li>
+        <li>Klik ikon <strong>Tiga Titik (More)</strong> di sebelah kanan baris barang untuk: Mendownload Label QR, Menghapus, atau mencetak Lot.</li>
+        <li>Hanya akun <strong class="text-danger">Admin</strong> yang bisa menambah barang baru atau meng-import CSV.</li>
+      </ul>
+    `,
+    "view-history": `
+      <h6 class="fw-bold text-primary"><i class="bi bi-clock-history"></i> 履歴 (Riwayat Transaksi)</h6>
+      <p class="text-muted small">Log semua pergerakan barang (Masuk, Keluar, Transfer, Opname).</p>
+      <ul class="small">
+        <li>Hanya menampilkan 400 transaksi terbaru agar aplikasi tetap cepat.</li>
+        <li>Hanya <strong class="text-danger">Admin</strong> yang dapat melihat tombol <strong>修正 (Edit)</strong> untuk mengkoreksi jumlah jika terjadi salah input oleh operator.</li>
+      </ul>
+    `
+  };
 
+  const btnHelp = document.getElementById("btn-help");
+  if (btnHelp) {
+    btnHelp.addEventListener("click", () => {
+      const activeSection = document.querySelector("main section.active");
+      const activeId = activeSection ? activeSection.id : "view-dashboard";
+      const modalBody = document.getElementById("helpModalBody");
+      const modalTitle = document.getElementById("helpModalTitle");
+      
+      // Ambil konten berdasarkan menu yang aktif, atau tampilkan default jika tidak ditemukan
+      const content = HELP_CONTENT[activeId] || `<h6 class="fw-bold">ヘルプ</h6><p class="small text-muted">Bantuan belum tersedia untuk halaman ini.</p>`;
+      
+      if (modalBody) modalBody.innerHTML = content;
+      if (modalTitle) {
+         // Mengubah judul modal agar dinamis
+         const menuName = document.getElementById("page-title")?.textContent || "Bantuan";
+         modalTitle.innerHTML = `<i class="bi bi-info-circle-fill me-2 text-primary"></i>${menuName} のヘルプ`;
+      }
+    });
+  }
+
+  
     startLiveReload();
   });
 
