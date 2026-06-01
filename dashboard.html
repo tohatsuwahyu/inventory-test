@@ -181,34 +181,114 @@
             </div>
           </div>
 
-          <!-- ─── QUICK MENU (mobile) ─── -->
+          <!-- ─── QUICK ACTIONS (desktop) ─── -->
+          <div class="quick-actions desktop-only">
+            <button class="qa-chip qa-primary"
+                    onclick="document.querySelector('[data-view=view-io]').click(); setTimeout(()=>document.getElementById('btn-io-scan')?.click(), 380);">
+              <i class="bi bi-qr-code-scan"></i> スキャン開始
+            </button>
+            <button class="qa-chip"
+                    onclick="document.querySelector('[data-view=view-io]').click();">
+              <i class="bi bi-box-arrow-in-down"></i> 入出庫
+            </button>
+            <button class="qa-chip"
+                    onclick="document.querySelector('[data-view=view-items]').click();">
+              <i class="bi bi-boxes"></i> 商品一覧
+            </button>
+            <button class="qa-chip"
+                    onclick="document.querySelector('[data-view=view-shelf]').click();">
+              <i class="bi bi-clipboard-check"></i> 棚卸
+            </button>
+            <button class="qa-chip"
+                    onclick="document.querySelector('[data-view=view-history]').click();">
+              <i class="bi bi-clock-history"></i> 履歴
+            </button>
+            <button class="qa-chip"
+                    onclick="document.getElementById('btn-help')?.click();">
+              <i class="bi bi-question-circle"></i> ヘルプ
+            </button>
+          </div>
+
+          <!-- ─── MOBILE HERO + APP GRID ─── -->
           <div class="mobile-only mb-4">
-            <h6 class="fw-bold mb-3 px-1 text-dark">メニュー (Menu)</h6>
+
+            <!-- Hero greeting card (purple gradient) -->
+            <div class="mobile-hero-card">
+              <div class="mhc-left">
+                <div class="mhc-avatar" id="mob-hero-avatar">U</div>
+                <div class="mhc-text">
+                  <div class="mhc-name" id="mob-hero-name">在庫管理</div>
+                  <div class="mhc-sub">Inventory Dashboard</div>
+                </div>
+              </div>
+              <button class="mhc-bell"
+                      onclick="document.querySelector('[data-view=view-history]').click();"
+                      aria-label="履歴">
+                <i class="bi bi-bell-fill"></i>
+                <span class="dot"></span>
+              </button>
+            </div>
+
+            <!-- Section title -->
+            <div class="mob-section-title">
+              <span class="mob-st-label">クイックメニュー</span>
+              <span class="mob-st-hint"><i class="bi bi-grid-3x3-gap-fill"></i> 9 メニュー</span>
+            </div>
+
+            <!-- Round-icon app grid (3 cols, Image-1 style) -->
             <div class="modern-mobile-grid">
-              <div class="m-app-card" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
-                <div class="m-app-icon bg-blue-light text-blue"><i class="bi bi-qr-code-scan"></i></div>
-                <span class="m-app-title">スキャン<br><small>Scan QR</small></span>
+
+              <div class="m-app-card"
+                   onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
+                <div class="m-app-icon ring-lavender"><i class="bi bi-qr-code-scan"></i></div>
+                <span class="m-app-title">スキャン<small>Scan QR</small></span>
               </div>
+
               <div class="m-app-card" onclick="showSection('view-io', this);">
-                <div class="m-app-icon bg-green-light text-green"><i class="bi bi-box-arrow-in-down"></i></div>
-                <span class="m-app-title">入出庫<br><small>In/Out</small></span>
+                <div class="m-app-icon ring-mint"><i class="bi bi-box-arrow-in-down"></i></div>
+                <span class="m-app-title">入出庫<small>In / Out</small></span>
               </div>
+
               <div class="m-app-card" onclick="showSection('view-items', this);">
-                <div class="m-app-icon bg-orange-light text-orange"><i class="bi bi-boxes"></i></div>
-                <span class="m-app-title">商品一覧<br><small>Items</small></span>
+                <div class="m-app-icon ring-peach"><i class="bi bi-boxes"></i></div>
+                <span class="m-app-title">商品一覧<small>Items</small></span>
               </div>
+
               <div class="m-app-card" onclick="showSection('view-shelf', this);">
-                <div class="m-app-icon bg-pink-light text-pink"><i class="bi bi-clipboard-check"></i></div>
-                <span class="m-app-title">棚卸<br><small>Stocktake</small></span>
+                <div class="m-app-icon ring-rose"><i class="bi bi-clipboard-check"></i></div>
+                <span class="m-app-title">棚卸<small>Stocktake</small></span>
               </div>
+
+              <div class="m-app-card" onclick="showSection('view-shelf-list', this);">
+                <div class="m-app-icon ring-teal"><i class="bi bi-table"></i></div>
+                <span class="m-app-title">棚卸一覧<small>Records</small></span>
+              </div>
+
               <div class="m-app-card" onclick="showSection('view-history', this);">
-                <div class="m-app-icon bg-purple-light text-purple"><i class="bi bi-clock-history"></i></div>
-                <span class="m-app-title">履歴<br><small>History</small></span>
+                <div class="m-app-icon ring-violet"><i class="bi bi-clock-history"></i></div>
+                <span class="m-app-title">履歴<small>History</small></span>
               </div>
+
+              <div class="m-app-card" onclick="showSection('view-users', this);">
+                <div class="m-app-icon ring-pink"><i class="bi bi-person-badge"></i></div>
+                <span class="m-app-title">ユーザー<small>Users / QR</small></span>
+              </div>
+
+              <div class="m-app-card admin-only d-none" onclick="showSection('view-reports', this);">
+                <div class="m-app-icon ring-amber"><i class="bi bi-graph-up-arrow"></i></div>
+                <span class="m-app-title">レポート<small>Admin</small></span>
+              </div>
+
+              <div class="m-app-card" onclick="document.getElementById('btn-help')?.click();">
+                <div class="m-app-icon ring-sky"><i class="bi bi-question-circle"></i></div>
+                <span class="m-app-title">ヘルプ<small>Help</small></span>
+              </div>
+
               <div class="m-app-card" onclick="logout()">
-                <div class="m-app-icon bg-red-light text-red"><i class="bi bi-box-arrow-right"></i></div>
-                <span class="m-app-title">ログアウト<br><small>Logout</small></span>
+                <div class="m-app-icon ring-red"><i class="bi bi-box-arrow-right"></i></div>
+                <span class="m-app-title">ログアウト<small>Logout</small></span>
               </div>
+
             </div>
           </div>
 
@@ -807,14 +887,21 @@
       // ─── KEEP user-chip avatar synced with #who text ───
       const who = document.getElementById('who');
       if (who) {
-        const obs = new MutationObserver(() => {
+        const sync = () => {
           const span = who.querySelector('span:last-child');
           const name = (span ? span.textContent : who.textContent || '').trim();
           const initial = (name || 'U').charAt(0).toUpperCase();
           const av = who.querySelector('.avatar-sm');
           if (av) av.textContent = initial;
-        });
+          // also sync to mobile hero card
+          const mAv = document.getElementById('mob-hero-avatar');
+          const mNm = document.getElementById('mob-hero-name');
+          if (mAv) mAv.textContent = initial;
+          if (mNm && name) mNm.textContent = name;
+        };
+        const obs = new MutationObserver(sync);
         obs.observe(who, { childList: true, subtree: true, characterData: true });
+        sync();
       }
     })();
   </script>
