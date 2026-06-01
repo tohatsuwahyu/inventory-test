@@ -358,9 +358,9 @@ function setLoading(show, text) {
     });
   }
 
-async function ensureQRCode() {
-  if (window.QRCode) return;
-  const locals = ["./qrcode.min.js", "./vendor/qrcode.min.js"];
+  async function ensureQRCode() {
+    if (window.QRCode) return;
+    const locals = ["./qrlib.js", "./qrcode.min.js", "./vendor/qrcode.min.js"];
     for (const p of locals) { try { await loadScriptOnce(p); if (window.QRCode) return; } catch (e) {} }
     const cdns = [
       "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js",
@@ -4902,14 +4902,12 @@ async function processOfflineQueue() {
 window.addEventListener('online', processOfflineQueue);
 setInterval(processOfflineQueue, 15000); // Cek antrean tiap 15 detik
 // --------------------------------------------------------
+  
 function keepBackendWarm(){
-  if (!window.CONFIG || !CONFIG.FEATURES || !CONFIG.FEATURES.HEALTH_PING) return;
-
-  const ms = Number(CONFIG.HEALTH_PING_MS || 15000);
-  setInterval(() => {
-    api('ping', { method:'GET', silent:true }).catch(()=>{});
-  }, ms);
-}
+    if (!CONFIG?.FEATURES?.HEALTH_PING) return;
+    const ms = Number(CONFIG.HEALTH_PING_MS || 15000);
+    setInterval(() => { api('ping', { method:'GET', silent:true }).catch(()=>{}); }, ms);
+  }
 
   // =========================================================
   // FITUR BARU: INVENTORY CONTROL REPORTS BINDING
