@@ -25,141 +25,97 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ── LOGIN PAGE LAYOUT ── */
+    /* ─── LOGIN PAGE (single column, soft gradient background) ─── */
     body {
       min-height: 100vh;
-      background: var(--app-bg);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(99,102,241,.14), transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(139,92,246,.12), transparent 45%),
+        radial-gradient(circle at 90% 10%, rgba(14,165,233,.08), transparent 40%),
+        var(--app-bg);
       overflow-x: hidden;
     }
 
-    .login-shell {
-      display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      min-height: 100vh;
-    }
-
-    /* Left side — branding panel (desktop only) */
-    .brand-panel {
-      position: relative;
-      background:
-        radial-gradient(ellipse at top left, rgba(99,102,241,.30), transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(139,92,246,.22), transparent 55%),
-        linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
-      color: #fff;
-      padding: 56px 64px 56px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-    }
-    /* subtle grid texture */
-    .brand-panel::before {
+    /* faint dot pattern overlay for subtle texture */
+    body::before {
       content: '';
-      position: absolute; inset: 0;
+      position: fixed;
+      inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 32px 32px;
+        radial-gradient(circle at center, rgba(79,70,229,.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
       pointer-events: none;
-      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-    }
-    /* floating glow blobs */
-    .brand-panel::after {
-      content: '';
-      position: absolute;
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(99,102,241,.4), transparent 70%);
-      filter: blur(60px);
-      bottom: -120px; right: -80px;
-      pointer-events: none;
+      z-index: 0;
     }
 
-    .bp-top, .bp-mid, .bp-foot { position: relative; z-index: 1; }
-
-    .bp-logo {
-      display: inline-flex; align-items: center; gap: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700; font-size: 1.0625rem;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
-    .bp-logo .logo-square {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #818CF8, #A78BFA);
-      display: inline-flex; align-items: center; justify-content: center;
-      color: #1E1B4B; font-weight: 800;
-      box-shadow: 0 8px 20px rgba(129,140,248,.35);
-    }
-
-    .bp-headline {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
-      margin: 0 0 18px;
-      color: #fff;
-    }
-    .bp-headline .accent {
-      background: linear-gradient(135deg, #A5B4FC, #C4B5FD);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .bp-sub {
-      font-size: 0.9375rem;
-      color: rgba(255,255,255,.7);
-      max-width: 440px;
-      line-height: 1.6;
-    }
-
-    .bp-features {
-      list-style: none;
-      padding: 0;
-      margin: 28px 0 0;
-      display: grid;
-      gap: 12px;
-      max-width: 440px;
-    }
-    .bp-features li {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.875rem;
-      color: rgba(255,255,255,.85);
-    }
-    .bp-features .check {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: rgba(165,180,252,.18);
-      color: #A5B4FC;
-      display: inline-flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      font-size: 0.75rem;
-    }
-
-    .bp-foot { color: rgba(255,255,255,.5); font-size: 0.78rem; }
-
-    /* Right side — form */
-    .form-panel {
+    .login-shell {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 28px;
-      background: var(--app-bg);
+      padding: 32px 20px;
     }
 
     .login-card {
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       background: var(--surface);
-      border-radius: var(--r-lg);
-      padding: 40px 36px;
-      box-shadow: var(--shadow);
+      border-radius: var(--r-xl);
+      padding: 40px 36px 32px;
+      box-shadow:
+        0 1px 2px rgba(15,23,42,.04),
+        0 20px 50px rgba(15,23,42,.10),
+        0 4px 12px rgba(99,102,241,.06);
       border: 1px solid var(--border);
+      position: relative;
     }
+
+    /* tiny color accent strip at top of card */
+    .login-card::before {
+      content: '';
+      position: absolute;
+      left: 28px; right: 28px; top: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4F46E5, #8B5CF6, #EC4899);
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* Brand mark above title */
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .login-brand .logo-square {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4F46E5, #8B5CF6);
+      color: #fff; font-weight: 800;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 8px 20px rgba(79,70,229,.30);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .login-brand .lb-text {
+      line-height: 1.2;
+    }
+    .login-brand .lb-name {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .login-brand .lb-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
     .login-card h3 {
       font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
       font-weight: 700;
@@ -171,7 +127,7 @@
     .login-card .sub {
       color: var(--text-muted);
       font-size: 0.875rem;
-      margin: 6px 0 28px;
+      margin: 6px 0 26px;
     }
 
     .qr-link {
@@ -199,6 +155,11 @@
       font-weight: 600 !important;
       font-size: 0.9375rem !important;
       border-radius: var(--r-sm) !important;
+      justify-content: center;
+    }
+    #btn-qr-alt {
+      width: 100%;
+      justify-content: center;
     }
 
     /* QR scanner */
@@ -219,127 +180,67 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.78rem;
-      margin-top: 24px;
+      margin-top: 22px;
     }
 
-    /* responsive */
-    @media (max-width: 991.98px) {
-      .login-shell { grid-template-columns: 1fr; }
-      .brand-panel { display: none; }
-      .form-panel { padding: 24px 18px; }
-      .login-card { padding: 32px 24px; box-shadow: none; border: none; background: transparent; max-width: 460px; }
-    }
-
-    /* Top-mobile mini brand */
-    .mobile-brand {
-      display: none;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .mobile-brand .logo-square {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--brand), #8B5CF6);
-      color: #fff; font-weight: 800;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 10px 24px rgba(79,70,229,.35);
-      margin-bottom: 12px;
-    }
-    .mobile-brand .name {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
-      font-weight: 700;
-      font-size: 1.125rem;
-      color: var(--text-primary);
-    }
-    .mobile-brand .tag {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-    }
-    @media (max-width: 991.98px) {
-      .mobile-brand { display: block; }
+    /* mobile tweaks */
+    @media (max-width: 540px) {
+      .login-card { padding: 32px 24px 26px; border-radius: var(--r-lg); }
+      .login-card h3 { font-size: 1.45rem; }
     }
   </style>
 </head>
 <body>
   <div class="login-shell">
-    <!-- ─── Left: Branding Panel ─── -->
-    <aside class="brand-panel">
-      <div class="bp-top">
-        <div class="bp-logo">
-          <span class="logo-square">在</span>
-          <span>在庫管理 System</span>
+    <div class="login-card">
+
+      <!-- brand mark -->
+      <div class="login-brand">
+        <div class="logo-square">在</div>
+        <div class="lb-text">
+          <div class="lb-name">在庫管理 System</div>
+          <div class="lb-sub">Inventory Management</div>
         </div>
       </div>
 
-      <div class="bp-mid">
-        <h1 class="bp-headline">
-          リアルタイムで<br/>
-          在庫を<span class="accent">スマートに</span><br/>
-          管理。
-        </h1>
-        <p class="bp-sub">
-          QRコード対応の入出庫、棚卸、AI分析まで&mdash; 倉庫業務をワンストップで効率化します。
-        </p>
-        <ul class="bp-features">
-          <li><span class="check"><i class="bi bi-check-lg"></i></span> QRスキャンで瞬時に入出庫を記録</li>
-          <li><span class="check"><i class="bi bi-check-lg"></i></span> AI 枯渇予測 &amp; ABC分析レポート</li>
-          <li><span class="check"><i class="bi bi-check-lg"></i></span> モバイル・タブレット・PC すべて対応</li>
-        </ul>
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <h3 class="m-0">ログイン</h3>
+        <a id="btn-qr" href="#" class="qr-link"><i class="bi bi-qr-code-scan"></i> QR ログイン</a>
+      </div>
+      <p class="sub">ユーザーID か QR でログインできます。</p>
+
+      <form id="login-form" autocomplete="on">
+        <div class="mb-3">
+          <label class="form-label">ユーザーID</label>
+          <input id="login-user" class="form-control" placeholder="USER001" autocomplete="username" required/>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">パスコード</label>
+          <input id="login-pin" class="form-control" placeholder="PIN" type="password" autocomplete="current-password"/>
+        </div>
+
+        <div class="d-flex flex-column gap-2">
+          <button id="btn-login" type="submit" class="btn btn-primary">
+            <i class="bi bi-box-arrow-in-right me-1"></i> ログイン
+          </button>
+          <button id="btn-qr-alt" type="button" class="btn btn-outline-secondary d-none">
+            <i class="bi bi-qr-code-scan me-1"></i> QR ログイン
+          </button>
+        </div>
+      </form>
+
+      <div id="install-prompt" class="alert alert-primary mt-3 d-none align-items-center justify-content-between" role="alert">
+        <div class="small"><i class="bi bi-phone me-1"></i> アプリをインストール</div>
+        <button id="btn-install-app" class="btn btn-sm btn-light fw-bold" type="button">Install</button>
       </div>
 
-      <div class="bp-foot">© <span id="bp-year"></span> 在庫管理 — Designed by Wahyu</div>
-    </aside>
+      <!-- Area kamera QR -->
+      <div id="qr-area" class="mt-3" aria-label="QR Scanner"></div>
 
-    <!-- ─── Right: Login Form ─── -->
-    <section class="form-panel">
-      <div class="login-card">
-        <!-- mobile-only brand on top -->
-        <div class="mobile-brand">
-          <div class="logo-square">在</div>
-          <div class="name">在庫管理</div>
-          <div class="tag">Inventory Management System</div>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <h3 class="m-0">ログイン</h3>
-          <a id="btn-qr" href="#" class="qr-link"><i class="bi bi-qr-code-scan"></i> QR ログイン</a>
-        </div>
-        <p class="sub">ユーザーID か QR でログインできます。</p>
-
-        <form id="login-form" autocomplete="on">
-          <div class="mb-3">
-            <label class="form-label">ユーザーID</label>
-            <input id="login-user" class="form-control" placeholder="USER001" autocomplete="username" required/>
-          </div>
-          <div class="mb-4">
-            <label class="form-label">パスコード</label>
-            <input id="login-pin" class="form-control" placeholder="PIN" type="password" autocomplete="current-password"/>
-          </div>
-
-          <div class="d-flex flex-column gap-2">
-            <button id="btn-login" type="submit" class="btn btn-primary justify-content-center">
-              <i class="bi bi-box-arrow-in-right me-1"></i> ログイン
-            </button>
-            <button id="btn-qr-alt" type="button" class="btn btn-outline-secondary d-none justify-content-center">
-              <i class="bi bi-qr-code-scan me-1"></i> QR ログイン
-            </button>
-          </div>
-        </form>
-
-        <div id="install-prompt" class="alert alert-primary mt-3 d-none align-items-center justify-content-between" role="alert">
-          <div class="small"><i class="bi bi-phone me-1"></i> アプリをインストール</div>
-          <button id="btn-install-app" class="btn btn-sm btn-light fw-bold" type="button">Install</button>
-        </div>
-
-        <!-- Area kamera QR -->
-        <div id="qr-area" class="mt-3" aria-label="QR Scanner"></div>
-
-        <div class="login-footer">
-          © <span id="fy2"></span> &mdash; Design by <b>Wahyu</b>
-        </div>
+      <div class="login-footer">
+        © <span id="fy2"></span> &mdash; Design by <b>Wahyu</b>
       </div>
-    </section>
+    </div>
   </div>
 
   <!-- JS libs -->
@@ -357,7 +258,6 @@
 
   <script>
     document.getElementById('fy2').textContent = new Date().getFullYear();
-    document.getElementById('bp-year').textContent = new Date().getFullYear();
   </script>
   <script>
     if ('serviceWorker' in navigator) {
