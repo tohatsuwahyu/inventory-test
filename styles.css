@@ -290,3 +290,97 @@ body { background-color: var(--bg-app) !important; color: var(--text-primary) !i
 @media (min-width: 992px) {
     .mobile-only { display: none !important; }
 }
+/* =========================================================
+ * FRESH TYPOGRAPHY & MOBILE GRID (REFERENSI GAMBAR 3)
+ * =======================================================*/
+
+/* 1. FRESH FONT UPDATE */
+body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif !important;
+    background-color: #f4f7fb !important; 
+    color: #1e293b !important;
+}
+
+/* 2. MOBILE APP GRID (GAMBAR 3: 2 Kolom, Warna Warni, Ikon Besar) */
+.mobile-app-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Pasti 2 kolom sejajar */
+    gap: 12px;
+    padding: 0 4px;
+}
+.m-grid-item {
+    border-radius: 8px; /* Sedikit kotak sesuai referensi */
+    padding: 24px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+.m-grid-item:active { transform: scale(0.95); }
+.m-grid-item i { 
+    font-size: 2.8rem; /* Ikon besar */
+    margin-bottom: 12px; 
+}
+.m-grid-item span { 
+    font-weight: 700; 
+    font-size: 1.05rem; 
+    line-height: 1.2; 
+}
+.m-grid-item small { 
+    font-weight: 400; 
+    font-size: 0.8rem; 
+    opacity: 0.9; 
+    display: block; 
+    margin-top: 4px;
+}
+
+/* Warna persis seperti referensi Gambar 3 */
+.bg-ref-teal   { background-color: #2a9d8f; } /* Hijau toska */
+.bg-ref-blue   { background-color: #3f88c5; } /* Biru */
+.bg-ref-yellow { background-color: #e9c46a; color: #333 !important; } /* Kuning (Teks Gelap) */
+.bg-ref-red    { background-color: #e76f51; } /* Merah bata */
+.bg-ref-purple { background-color: #6a4c93; } /* Ungu */
+.bg-ref-green  { background-color: #4CAF50; } /* Hijau */
+
+/* Khusus kuning agar ikon & teks terbaca */
+.bg-ref-yellow i, .bg-ref-yellow span, .bg-ref-yellow small { color: #333333; }
+
+/* 3. DESKTOP METRICS (Tetap elegan seperti figma) */
+.figma-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+.metric-box {
+    border-radius: 12px; padding: 20px;
+    display: flex; align-items: center; gap: 16px; color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer;
+    background-size: 200% auto; transition: 0.3s;
+}
+.metric-box:hover { background-position: right center; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.bg-slate { background-image: linear-gradient(to right, #475569 0%, #334155 51%, #475569 100%); }
+.bg-orange { background-image: linear-gradient(to right, #f59e0b 0%, #d97706 51%, #f59e0b 100%); }
+.bg-green { background-image: linear-gradient(to right, #10b981 0%, #059669 51%, #10b981 100%); }
+.bg-purple { background-image: linear-gradient(to right, #8b5cf6 0%, #7c3aed 51%, #8b5cf6 100%); }
+.bg-blue { background-image: linear-gradient(to right, #3b82f6 0%, #2563eb 51%, #3b82f6 100%); }
+
+.metric-icon-wrap { width: 46px; height: 46px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
+.metric-content { display: flex; flex-direction: column; }
+.m-label { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-bottom: 2px; }
+.m-value { font-size: 1.6rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height: 1; }
+
+/* 4. MENGHILANGKAN BOTTOM NAV LAMA JIKA ADA */
+.mobile-nav.d-lg-none { display: none !important; }
+
+/* 5. VISIBILITY RULES */
+@media (max-width: 991px) {
+    .desktop-only { display: none !important; }
+}
+@media (min-width: 992px) {
+    .mobile-only { display: none !important; }
+}
