@@ -1619,3 +1619,14 @@ header.appbar {
 @media (min-width: 769px) {
     .mobile-only { display: none !important; }
 }
+/* ... kode-kode Anda yang sebelumnya ... */
+
+/* =========================================================
+ * Perbaikan UI: Sembunyikan bottom nav karena sudah pakai App Grid di Home
+ * ========================================================= */
+.mobile-nav {
+    display: none !important; 
+}
+.content {
+    padding-bottom: 20px !important; /* Kurangi padding bawah karena nav hilang */
+}
