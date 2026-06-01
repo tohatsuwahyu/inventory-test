@@ -129,104 +129,61 @@
             </div>
           </div>
 
-        <div class="metric-row" id="dash-metrics">
+     <div class="metric-row" id="dash-metrics">
             <div class="metric-card-solid bg-metric-red js-metric-drill" data-target="view-items">
               <i class="bi bi-boxes"></i>
-              <div class="metric-label">アイテム数 (Items)</div>
+              <div class="metric-label">アイテム数</div>
               <div class="metric-value" id="metric-items">0</div>
             </div>
-            
-            <div class="metric-card-solid bg-metric-blue js-metric-drill" data-target="view-io">
-              <i class="bi bi-box-seam"></i>
-              <div class="metric-label">入出庫 (In/Out)</div>
-              <div class="metric-value">スキャン開始</div>
-            </div>
-
             <div class="metric-card-solid bg-metric-orange js-metric-drill" data-target="view-items">
-              <i class="bi bi-exclamation-triangle"></i>
-              <div class="metric-label">要補充 (Low Stock)</div>
+              <i class="bi bi-arrow-down-circle"></i>
+              <div class="metric-label">要補充</div>
               <div class="metric-value" id="metric-below">0</div>
             </div>
-
-            <div class="metric-card-solid bg-metric-lightblue js-metric-drill" data-target="view-history">
-              <i class="bi bi-clock-history"></i>
-              <div class="metric-label">直近取引 (Last 30 Days)</div>
-              <div class="metric-value" id="metric-trx">0</div>
-            </div>
-
             <div class="metric-card-solid bg-metric-green js-metric-drill" data-target="view-users">
               <i class="bi bi-people"></i>
-              <div class="metric-label">ユーザー (Users)</div>
+              <div class="metric-label">ユーザー</div>
               <div class="metric-value" id="metric-users">0</div>
             </div>
-          </div>
-           <div class="col-12 col-md-6 col-xl">
-              <div class="card metric-card h-100 js-metric-drill" id="metric-card-value">
-                <div class="metric-icon metric-purple"><i class="bi bi-cash-coin"></i></div>
-                <div class="metric-text">
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="metric-label">在庫総額</div>
-                  </div>
-                  <div class="metric-value text-purple" id="metric-total-value">¥0</div>
-                  <div class="metric-sub">現在の在庫評価額</div>
-                </div>
-              </div>
+            <div class="metric-card-solid bg-metric-lightblue js-metric-drill">
+              <i class="bi bi-cash-coin"></i>
+              <div class="metric-label">在庫総額</div>
+              <div class="metric-value" id="metric-total-value">¥0</div>
             </div>
-           <div class="col-12 col-md-6 col-xl">
-              <div class="card metric-card h-100 js-metric-drill" id="metric-card-trx" data-target="view-history">
-                <div class="metric-icon metric-blue"><i class="bi bi-arrow-left-right"></i></div>
-                <div class="metric-text">
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="metric-label">直近30日の取引</div>
-                    <span class="metric-badge metric-badge-neutral" id="metric-trx-badge">計算中...</span>
-                  </div>
-                  <div class="metric-value" id="metric-trx">0</div>
-                  <div class="metric-sub fw-semibold" id="metric-trx-diff">前30日比...</div>
-                </div>
-              </div>
+            <div class="metric-card-solid bg-metric-blue js-metric-drill" data-target="view-history">
+              <i class="bi bi-arrow-left-right"></i>
+              <div class="metric-label">直近30日の取引</div>
+              <div class="metric-value" id="metric-trx">0</div>
             </div>
           </div>
-          <div class="mobile-only mb-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold m-0" style="color: #1e293b;">メニュー (Menu)</h5>
-    <div class="badge bg-light text-dark border">
-      <span id="mobile-user-name" class="fw-bold">User</span>
-    </div>
-  </div>
-  
-  <div class="mobile-app-grid">
-    <div class="mobile-grid-item bg-grid-red" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
-      <i class="bi bi-qr-code-scan"></i>
-      <span>スキャン<br><small class="fw-normal">Scan QR</small></span>
-    </div>
 
-    <div class="mobile-grid-item bg-grid-blue" onclick="showSection('view-io', this);">
-      <i class="bi bi-box-arrow-in-down"></i>
-      <span>入出庫<br><small class="fw-normal">In/Out</small></span>
-    </div>
+          <div class="mobile-only mb-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold m-0" style="color: #1e293b;">メニュー (Menu)</h5>
+            </div>
+            <div class="mobile-app-grid">
+              <div class="mobile-grid-item bg-grid-red" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
+                <i class="bi bi-qr-code-scan"></i><span>スキャン<br><small class="fw-normal">Scan QR</small></span>
+              </div>
+              <div class="mobile-grid-item bg-grid-blue" onclick="showSection('view-io', this);">
+                <i class="bi bi-box-arrow-in-down"></i><span>入出庫<br><small class="fw-normal">In/Out</small></span>
+              </div>
+              <div class="mobile-grid-item bg-grid-orange" onclick="showSection('view-items', this);">
+                <i class="bi bi-boxes"></i><span>商品一覧<br><small class="fw-normal">Items</small></span>
+              </div>
+              <div class="mobile-grid-item bg-grid-green" onclick="showSection('view-shelf', this);">
+                <i class="bi bi-clipboard-check"></i><span>棚卸<br><small class="fw-normal">Stocktake</small></span>
+              </div>
+              <div class="mobile-grid-item bg-grid-purple" onclick="showSection('view-history', this);">
+                <i class="bi bi-clock-history"></i><span>履歴<br><small class="fw-normal">History</small></span>
+              </div>
+              <div class="mobile-grid-item bg-grid-dark" onclick="logout();">
+                <i class="bi bi-box-arrow-right"></i><span>ログアウト<br><small class="fw-normal">Logout</small></span>
+              </div>
+            </div>
+          </div>
 
-    <div class="mobile-grid-item bg-grid-orange" onclick="showSection('view-items', this);">
-      <i class="bi bi-boxes"></i>
-      <span>商品一覧<br><small class="fw-normal">Items</small></span>
-    </div>
-
-    <div class="mobile-grid-item bg-grid-green" onclick="showSection('view-shelf', this);">
-      <i class="bi bi-clipboard-check"></i>
-      <span>棚卸<br><small class="fw-normal">Stocktake</small></span>
-    </div>
-
-    <div class="mobile-grid-item bg-grid-purple" onclick="showSection('view-history', this);">
-      <i class="bi bi-clock-history"></i>
-      <span>履歴<br><small class="fw-normal">History</small></span>
-    </div>
-
-    <div class="mobile-grid-item bg-grid-dark" onclick="logout();">
-      <i class="bi bi-box-arrow-right"></i>
-      <span>ログアウト<br><small class="fw-normal">Logout</small></span>
-    </div>
-  </div>
-</div>
-<div class="row g-3 metric-row desktop-only" id="dash-metrics">
+          <div class="row g-3 mt-4 mb-2 desktop-only">
             <div class="col-12">
               <div class="card chart-card p-3 border-0 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center mb-2">
