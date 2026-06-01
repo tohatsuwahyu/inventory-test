@@ -173,82 +173,120 @@ header.appbar {
 .ios-temp { font-size: 1.4rem; font-weight: bold; line-height: 1; }
 .ios-weather-desc { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 /* =========================================================
- * FIGMA UI/UX POLISH (CLEAN, SOFT, MODERN)
+ * THE FIGMA AESTHETIC OVERRIDES (FINAL & CLEAN)
  * =======================================================*/
 
-/* 1. Welcome Banner (Tanpa kotak berlebihan, langsung menyatu) */
-.figma-welcome { display: flex; align-items: center; gap: 14px; }
-.figma-welcome .avatar { 
-    width: 50px; height: 50px; border-radius: 50%; 
-    background: #e0e7ff; color: #4f46e5; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 1.4rem; font-weight: 700; 
+/* 1. Global Background & Colors */
+:root {
+    --bg-app: #f4f7fb;       /* Abu-abu kebiruan sangat muda, elegan */
+    --sidebar-bg: #0f172a;   /* Biru sangat gelap pekat (Figma Dark) */
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-soft: #e2e8f0;
+}
+body { background-color: var(--bg-app) !important; color: var(--text-primary) !important; }
+
+/* 2. Sidebar Premium */
+.sidebar { background-color: var(--sidebar-bg) !important; border-right: none !important;}
+.sidebar nav a { color: #94a3b8 !important; }
+.sidebar nav a:hover, .sidebar nav a.active { background-color: rgba(255,255,255,0.08) !important; color: #ffffff !important; }
+
+/* 3. Cards & Containers (Soft Shadows, Rounded Corners) */
+.card, .figma-card, .smart-banner {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
 }
 
-/* 2. AI Insight Alert (Lebih bersih) */
-.figma-alert {
-    display: flex; align-items: center; gap: 12px;
-    background: #f8fafc; border: 1px solid #e2e8f0;
-    border-radius: 16px; padding: 16px;
-}
-.figma-alert .alert-icon { font-size: 1.6rem; color: #4f46e5; }
-
-/* 3. Figma Metric Grid (Kotak rapi dengan soft background) */
+/* 4. Metric Boxes (Gaya Template Dashboard Modern) */
 .figma-metric-grid {
     display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
 }
-.figma-metric-card {
-    background: #ffffff;
-    border: 1px solid #f1f5f9;
+.metric-box {
     border-radius: 16px;
-    padding: 16px;
+    padding: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-    transition: all 0.2s ease;
+    align-items: center;
+    gap: 16px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
-.figma-metric-card:active { transform: scale(0.96); }
+.metric-box:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
 
-/* Warna Soft untuk Ikon (Tren Desain 2024-2026) */
-.icon-box {
+/* Warna Metrik Solid & Elegan */
+.bg-slate { background: linear-gradient(135deg, #475569, #334155); }
+.bg-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-green { background: linear-gradient(135deg, #10b981, #059669); }
+.bg-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.bg-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+/* Ikon di dalam Metrik */
+.metric-icon-wrap {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: white;
+}
+.metric-content { display: flex; flex-direction: column; }
+.m-label { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-bottom: 4px; }
+.m-value { font-size: 1.6rem; font-weight: 700; line-height: 1; }
+
+/* 5. Mobile App Grid (Icon Menu untuk HP) */
+.mobile-app-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Kolom sejajar di HP */
+    gap: 12px;
+}
+.m-grid-item {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    cursor: pointer;
+}
+.m-grid-item:active { background: #f8fafc; transform: scale(0.96); }
+.m-icon {
     width: 44px; height: 44px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.4rem; margin-bottom: 10px;
 }
+.m-grid-item span { font-size: 0.75rem; font-weight: 600; color: var(--text-primary); }
+
+/* Utility Colors untuk Icon Mobile */
 .bg-blue-light { background: #eff6ff; } .text-blue { color: #3b82f6; }
-.bg-orange-light { background: #fff7ed; } .text-orange { color: #f97316; }
 .bg-green-light { background: #f0fdf4; } .text-green { color: #10b981; }
+.bg-orange-light { background: #fff7ed; } .text-orange { color: #f97316; }
 .bg-purple-light { background: #faf5ff; } .text-purple { color: #a855f7; }
+.bg-slate-light { background: #f8fafc; } .text-slate { color: #475569; }
+.bg-red-light { background: #fef2f2; } .text-red { color: #ef4444; }
 
-/* Teks Metrik */
-.metric-info { display: flex; flex-direction: column; }
-.metric-label { font-size: 0.75rem; color: #64748b; font-weight: 500; margin-bottom: 2px; }
-.metric-value { font-size: 1.5rem; font-weight: 700; color: #0f172a; line-height: 1; }
-
-/* 4. Bottom Nav (Standard iOS/Android App) */
-.mobile-nav {
-    background: #ffffff !important;
-    border-top: 1px solid #f1f5f9 !important;
-    box-shadow: none !important;
-    height: 70px !important;
+/* 6. Dashboard Alert (AI Insight) */
+.dashboard-alert {
+    background: #e0e7ff; border: 1px solid #c7d2fe; border-radius: 16px;
+    padding: 16px; display: flex; align-items: center; gap: 16px;
 }
-.mobile-nav .nav-item { color: #94a3b8; gap: 4px; }
-.mobile-nav .nav-item.active { color: #3b82f6; }
-.mobile-nav .nav-scan .scan-circle {
-    width: 50px; height: 50px; border-radius: 16px; /* Bukan bulat penuh, tapi rounded-box modern */
-    background: #3b82f6; color: white;
-    border: none !important;
-    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3) !important;
-    transform: translateY(-12px);
-}
-.mobile-nav .nav-scan:active .scan-circle { transform: translateY(-8px) scale(0.95); }
+.dashboard-alert .alert-icon { font-size: 1.8rem; color: #4f46e5; }
+.dashboard-alert h6 { color: #3730a3; }
+.dashboard-alert .small { color: #4338ca; }
 
-/* Hide Desktop Elements on Mobile */
+/* 7. Visibility Rules (Desktop vs Mobile) */
 @media (max-width: 991px) {
     .desktop-only { display: none !important; }
+    .figma-metric-grid { grid-template-columns: repeat(2, 1fr); }
+    /* Supaya metrik Total Value penuh di HP */
+    #metric-card-value { grid-column: span 2; }
+}
+@media (min-width: 992px) {
+    .mobile-only { display: none !important; }
 }
