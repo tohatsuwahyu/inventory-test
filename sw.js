@@ -2,7 +2,7 @@
  * sw.js — Service Worker (Cache Strategy)
  * =======================================================*/
 
-const CACHE_NAME = 'tsh-inventory-V35a';
+const CACHE_NAME = 'tsh-inventory-V36';
 const ASSETS = [
   './',
   './index.html',
