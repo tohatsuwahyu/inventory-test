@@ -384,3 +384,107 @@ body {
 @media (min-width: 992px) {
     .mobile-only { display: none !important; }
 }
+/* =========================================================
+ * FINAL OVERRIDE: DEPOSITO DESKTOP & FIGMA MOBILE APP
+ * =======================================================*/
+
+/* 1. GLOBAL SETTINGS */
+:root {
+    --bg-body: #F4F7FE;       /* Latar abu-abu sangat muda (Deposito) */
+    --sidebar-bg: #2B2853;    /* Ungu gelap pekat (Deposito) */
+    --card-bg: #FFFFFF;
+    --text-dark: #2B3674;
+    --text-muted: #A3AED0;
+}
+body { 
+    background-color: var(--bg-body) !important; 
+    font-family: 'Poppins', 'Noto Sans JP', sans-serif !important; 
+    color: var(--text-dark) !important;
+}
+
+/* 2. SIDEBAR (DEPOSITO STYLE) */
+.sidebar { background-color: var(--sidebar-bg) !important; border-right: none !important; }
+.sidebar nav a { color: #A3AED0 !important; font-weight: 500; font-family: 'Poppins', sans-serif; }
+.sidebar nav a:hover, .sidebar nav a.active { 
+    background-color: rgba(255,255,255,0.05) !important; 
+    color: #FFFFFF !important; 
+    border-radius: 8px;
+}
+
+/* 3. METRICS CARDS (DEPOSITO DESKTOP - GAMBAR 2) */
+.deposito-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.deposito-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.08); /* Soft shadow Deposito */
+    border: none !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+.deposito-card:hover { transform: translateY(-4px); box-shadow: 0px 12px 28px rgba(149, 157, 165, 0.15); }
+.d-info { display: flex; flex-direction: column; }
+.d-val { font-size: 2rem; font-weight: 700; margin: 0; line-height: 1.1; font-family: 'Poppins', sans-serif; }
+.d-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin: 4px 0 0 0; }
+.d-icon {
+    width: 55px; height: 55px; border-radius: 50%; /* Lingkaran penuh seperti Deposito */
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+}
+
+/* 4. MOBILE APP GRID (FIGMA APP STYLE - GAMBAR 3) */
+.modern-mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Kolom untuk HP */
+    gap: 16px;
+}
+.m-app-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(149, 157, 165, 0.08); /* Kartu putih melayang */
+    border: none;
+    cursor: pointer;
+}
+.m-app-card:active { transform: scale(0.95); background: #F8FAFC; }
+.m-app-icon {
+    width: 56px; height: 56px; border-radius: 16px; /* Rounded box icon */
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin-bottom: 14px;
+}
+.m-app-title { font-weight: 600; font-size: 0.95rem; color: var(--text-dark); line-height: 1.3; }
+.m-app-title small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; }
+
+/* 5. UTILITY COLORS */
+.bg-blue-light { background-color: #F4F7FE; } .text-blue { color: #4318FF; }
+.bg-orange-light { background-color: #FFF6E5; } .text-orange { color: #FFB547; }
+.bg-pink-light { background-color: #FEECEF; } .text-pink { color: #EE5D50; }
+.bg-green-light { background-color: #E8F8F5; } .text-green { color: #05CD99; }
+.bg-purple-light { background-color: #F4F0FF; } .text-purple { color: #8A2BE2; }
+.bg-red-light { background-color: #FFEDED; } .text-red { color: #E03131; }
+
+/* 6. CHARTS & TABLES (DEPOSITO) */
+.deposito-chart-card {
+    border-radius: 20px !important;
+    border: none !important;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.08) !important;
+}
+
+/* 7. RESPONSIVE VISIBILITY */
+@media (max-width: 991px) {
+    .desktop-only { display: none !important; }
+}
+@media (min-width: 992px) {
+    .mobile-only { display: none !important; }
+}
