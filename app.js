@@ -358,9 +358,9 @@ function setLoading(show, text) {
     });
   }
 
-  async function ensureQRCode() {
-    if (window.QRCode) return;
-    const locals = ["./qrlib.js", "./qrcode.min.js", "./vendor/qrcode.min.js"];
+async function ensureQRCode() {
+  if (window.QRCode) return;
+  const locals = ["./qrcode.min.js", "./vendor/qrcode.min.js"];
     for (const p of locals) { try { await loadScriptOnce(p); if (window.QRCode) return; } catch (e) {} }
     const cdns = [
       "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js",
