@@ -1,526 +1,145 @@
 /* =========================================================
- * styles.css — Modern Enterprise Inventory UI
+ * styles.css — Master UI/UX System (Modern Standard 2026)
  * =======================================================*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root {
-    --bg-color: #f4f6f8;
-    --text-main: #333333;
-    --text-muted: #757575;
-    --border-color: #e0e0e0;
-    --sidebar-bg: #263238; /* Abu-abu kehitaman elegan */
+    /* Color Palette */
+    --bg-app: #F8FAFC;
+    --surface: #FFFFFF;
+    --sidebar-bg: #0F172A;
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --border-soft: #E2E8F0;
     
-    /* Solid Colors for Blocks (Berdasarkan Referensi) */
-    --color-red: #d32f2f;
-    --color-blue: #1976d2;
-    --color-orange: #f57c00;
-    --color-green: #388e3c;
-    --color-lightblue: #0288d1;
+    /* Metrics / Status Colors */
+    --color-blue: #3B82F6;
+    --color-orange: #F59E0B;
+    --color-green: #10B981;
+    --color-purple: #8B5CF6;
+    --color-red: #EF4444;
+
+    /* Shadows & Radius */
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-float: 0 12px 32px rgba(79, 70, 229, 0.15);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
 }
 
-* { box-sizing: border-box; }
+/* Base Styles */
 body {
-    margin: 0; background: var(--bg-color); color: var(--text-main);
-    font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
+    background-color: var(--bg-app) !important;
+    color: var(--text-main) !important;
+    font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* --- APPBAR / NAVBAR --- */
-header.appbar {
-    position: sticky; top: 0; z-index: 1020; height: 60px;
-    background: #ffffff; border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+/* Cards & Containers */
+.card, .deposito-chart-card {
+    background: var(--surface) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: box-shadow 0.3s ease;
 }
-.brand { color: var(--color-blue); }
+.card:hover { box-shadow: var(--shadow-md) !important; }
 
-/* --- SIDEBAR --- */
-.sidebar {
-    width: 250px; background: var(--sidebar-bg); padding: 15px 10px;
+/* Buttons */
+.btn {
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.btn-primary { background-color: var(--primary); border-color: var(--primary); }
+.btn-primary:hover, .btn-primary:active { background-color: var(--primary-hover); transform: translateY(-1px); }
+
+/* Sidebar */
+.sidebar { background-color: var(--sidebar-bg) !important; padding: 20px 12px; }
 .sidebar nav a {
-    display: flex; align-items: center; gap: 10px; color: #b0bec5;
-    text-decoration: none; padding: 10px 15px; border-radius: 6px;
-    margin-bottom: 5px; font-weight: 500; font-size: 0.95rem;
+    color: #94A3B8 !important;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 4px;
     transition: 0.2s;
 }
-.sidebar nav a:hover { background: rgba(255,255,255,0.05); color: #ffffff; }
-.sidebar nav a.active { background: #ffffff; color: var(--sidebar-bg); }
-
-/* --- SOLID METRIC CARDS (Seperti Gambar Referensi) --- */
-.metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;}
-.metric-card-solid {
-    border-radius: 4px; padding: 20px; color: #ffffff;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; cursor: pointer; border: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s;
-    min-height: 120px;
-}
-.metric-card-solid:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-.metric-card-solid .bi { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.9; }
-.metric-card-solid .metric-label { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
-.metric-card-solid .metric-value { font-size: 1rem; font-weight: 400; margin-top: 5px; opacity: 0.9;}
-
-/* Card Colors */
-.bg-metric-red { background-color: var(--color-red); }
-.bg-metric-blue { background-color: var(--color-blue); }
-.bg-metric-orange { background-color: var(--color-orange); }
-.bg-metric-green { background-color: var(--color-green); }
-.bg-metric-lightblue { background-color: var(--color-lightblue); }
-
-/* --- STANDARD CARDS & TABLES --- */
-.card {
-    background: #ffffff; border: 1px solid var(--border-color);
-    border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 20px;
-}
-.card-header, .items-toolbar { background: #ffffff; border-bottom: 1px solid var(--border-color); padding: 15px; }
-
-.table { width: 100%; border-collapse: collapse; margin-bottom: 0; }
-.table thead th { 
-    background: #f4f6f8; color: var(--text-muted); font-size: 0.8rem; 
-    text-transform: uppercase; font-weight: 600; border-bottom: 2px solid var(--border-color);
-    padding: 12px 15px;
-}
-.table tbody td { padding: 12px 15px; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
-.table-hover tbody tr:hover { background-color: #f9fbfd; }
-
-/* --- BUTTONS --- */
-.btn { font-weight: 500; border-radius: 4px; padding: 8px 16px; transition: 0.2s; }
-.btn-primary { background-color: var(--color-blue); border: none; }
-.btn-primary:hover { background-color: #1565c0; }
-.btn-success { background-color: var(--color-green); border: none; }
-
-/* --- MOBILE RESPONSIVENESS --- */
-@media (max-width: 991px) {
-    .sidebar { display: none; }
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-    
-    /* Bottom Navigation Mobile */
-    .mobile-nav {
-        position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
-        background: #ffffff; border-top: 1px solid var(--border-color);
-        display: flex; justify-content: space-around; align-items: center;
-        z-index: 1050; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-    }
-    .mobile-nav a { 
-        display: flex; flex-direction: column; align-items: center; 
-        color: var(--text-muted); text-decoration: none; font-size: 0.7rem; 
-    }
-    .mobile-nav a i { font-size: 1.4rem; margin-bottom: 2px; }
-    .mobile-nav a.active { color: var(--color-blue); }
-    
-    /* Mobile Scan Button (Center) */
-    .nav-scan .scan-circle {
-        width: 50px; height: 50px; border-radius: 50%;
-        background: var(--color-blue); color: white;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; transform: translateY(-15px);
-        border: 4px solid var(--bg-color); box-shadow: 0 4px 10px rgba(25, 118, 210, 0.4);
-    }
-}
-/* =========================================================
- * RESTORE MISSING UI UTILITIES & MOBILE GRID
- * =======================================================*/
-
-/* 1. Visibility Helpers (Pencegah Bocor) */
-@media (min-width: 992px) {
-    .mobile-only { display: none !important; }
-}
-@media (max-width: 991px) {
-    .desktop-only { display: none !important; }
+.sidebar nav a i { margin-right: 8px; font-size: 1.1rem; }
+.sidebar nav a:hover, .sidebar nav a.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
 }
 
-/* 2. Mobile App Grid Menu (Menu Kotak di HP) */
-.mobile-app-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-.mobile-grid-item {
-    border-radius: 12px;
-    padding: 20px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-.mobile-grid-item:active { transform: scale(0.95); }
-.mobile-grid-item i { font-size: 2.2rem; margin-bottom: 8px; }
-.mobile-grid-item span { font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
-.mobile-grid-item small { font-size: 0.75rem; opacity: 0.85; }
-
-/* Warna Gradasi Menu HP */
-.bg-grid-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-.bg-grid-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.bg-grid-orange { background: linear-gradient(135deg, #f59e0b, #b45309); }
-.bg-grid-green { background: linear-gradient(135deg, #10b981, #047857); }
-.bg-grid-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.bg-grid-dark { background: linear-gradient(135deg, #475569, #1e293b); }
-
-/* 3. iOS Style Widget (Tanggal & Cuaca) */
-.ios-widget {
-    display: flex; align-items: center; gap: 15px;
-    background: #ffffff; padding: 10px 15px; border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color);
-}
-.ios-calendar { text-align: center; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; min-width: 50px; }
-.ios-calendar-head { background: var(--color-red); color: white; font-size: 0.6rem; font-weight: bold; padding: 3px; text-transform: uppercase;}
-.ios-calendar-body { font-size: 1.2rem; font-weight: bold; padding: 4px 2px; color: var(--text-main); }
-.ios-weather { text-align: right; }
-.ios-temp { font-size: 1.4rem; font-weight: bold; line-height: 1; }
-.ios-weather-desc { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-/* =========================================================
- * THE FIGMA AESTHETIC OVERRIDES (FINAL & CLEAN)
- * =======================================================*/
-
-/* 1. Global Background & Colors */
-:root {
-    --bg-app: #f4f7fb;       /* Abu-abu kebiruan sangat muda, elegan */
-    --sidebar-bg: #0f172a;   /* Biru sangat gelap pekat (Figma Dark) */
-    --card-bg: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --border-soft: #e2e8f0;
-}
-body { background-color: var(--bg-app) !important; color: var(--text-primary) !important; }
-
-/* 2. Sidebar Premium */
-.sidebar { background-color: var(--sidebar-bg) !important; border-right: none !important;}
-.sidebar nav a { color: #94a3b8 !important; }
-.sidebar nav a:hover, .sidebar nav a.active { background-color: rgba(255,255,255,0.08) !important; color: #ffffff !important; }
-
-/* 3. Cards & Containers (Soft Shadows, Rounded Corners) */
-.card, .figma-card, .smart-banner {
-    background-color: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
-}
-
-/* 4. Metric Boxes (Gaya Template Dashboard Modern) */
-.figma-metric-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-}
-.metric-box {
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-}
-.metric-box:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-
-/* Warna Metrik Solid & Elegan */
-.bg-slate { background: linear-gradient(135deg, #475569, #334155); }
-.bg-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.bg-green { background: linear-gradient(135deg, #10b981, #059669); }
-.bg-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-.bg-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-
-/* Ikon di dalam Metrik */
-.metric-icon-wrap {
-    width: 48px; height: 48px; border-radius: 12px;
-    background: rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem; color: white;
-}
-.metric-content { display: flex; flex-direction: column; }
-.m-label { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-bottom: 4px; }
-.m-value { font-size: 1.6rem; font-weight: 700; line-height: 1; }
-
-/* 5. Mobile App Grid (Icon Menu untuk HP) */
-.mobile-app-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 Kolom sejajar di HP */
-    gap: 12px;
-}
-.m-grid-item {
-    background: #ffffff;
-    border: 1px solid var(--border-soft);
-    border-radius: 16px;
-    padding: 16px 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    cursor: pointer;
-}
-.m-grid-item:active { background: #f8fafc; transform: scale(0.96); }
-.m-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; margin-bottom: 10px;
-}
-.m-grid-item span { font-size: 0.75rem; font-weight: 600; color: var(--text-primary); }
-
-/* Utility Colors untuk Icon Mobile */
-.bg-blue-light { background: #eff6ff; } .text-blue { color: #3b82f6; }
-.bg-green-light { background: #f0fdf4; } .text-green { color: #10b981; }
-.bg-orange-light { background: #fff7ed; } .text-orange { color: #f97316; }
-.bg-purple-light { background: #faf5ff; } .text-purple { color: #a855f7; }
-.bg-slate-light { background: #f8fafc; } .text-slate { color: #475569; }
-.bg-red-light { background: #fef2f2; } .text-red { color: #ef4444; }
-
-/* 6. Dashboard Alert (AI Insight) */
-.dashboard-alert {
-    background: #e0e7ff; border: 1px solid #c7d2fe; border-radius: 16px;
-    padding: 16px; display: flex; align-items: center; gap: 16px;
-}
-.dashboard-alert .alert-icon { font-size: 1.8rem; color: #4f46e5; }
-.dashboard-alert h6 { color: #3730a3; }
-.dashboard-alert .small { color: #4338ca; }
-
-/* 7. Visibility Rules (Desktop vs Mobile) */
-@media (max-width: 991px) {
-    .desktop-only { display: none !important; }
-    .figma-metric-grid { grid-template-columns: repeat(2, 1fr); }
-    /* Supaya metrik Total Value penuh di HP */
-    #metric-card-value { grid-column: span 2; }
-}
-@media (min-width: 992px) {
-    .mobile-only { display: none !important; }
-}
-/* =========================================================
- * FRESH TYPOGRAPHY & MOBILE GRID (REFERENSI GAMBAR 3)
- * =======================================================*/
-
-/* 1. FRESH FONT UPDATE */
-body {
-    font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif !important;
-    background-color: #f4f7fb !important; 
-    color: #1e293b !important;
-}
-
-/* 2. MOBILE APP GRID (GAMBAR 3: 2 Kolom, Warna Warni, Ikon Besar) */
-.mobile-app-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Pasti 2 kolom sejajar */
-    gap: 12px;
-    padding: 0 4px;
-}
-.m-grid-item {
-    border-radius: 8px; /* Sedikit kotak sesuai referensi */
-    padding: 24px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.15s ease;
-}
-.m-grid-item:active { transform: scale(0.95); }
-.m-grid-item i { 
-    font-size: 2.8rem; /* Ikon besar */
-    margin-bottom: 12px; 
-}
-.m-grid-item span { 
-    font-weight: 700; 
-    font-size: 1.05rem; 
-    line-height: 1.2; 
-}
-.m-grid-item small { 
-    font-weight: 400; 
-    font-size: 0.8rem; 
-    opacity: 0.9; 
-    display: block; 
-    margin-top: 4px;
-}
-
-/* Warna persis seperti referensi Gambar 3 */
-.bg-ref-teal   { background-color: #2a9d8f; } /* Hijau toska */
-.bg-ref-blue   { background-color: #3f88c5; } /* Biru */
-.bg-ref-yellow { background-color: #e9c46a; color: #333 !important; } /* Kuning (Teks Gelap) */
-.bg-ref-red    { background-color: #e76f51; } /* Merah bata */
-.bg-ref-purple { background-color: #6a4c93; } /* Ungu */
-.bg-ref-green  { background-color: #4CAF50; } /* Hijau */
-
-/* Khusus kuning agar ikon & teks terbaca */
-.bg-ref-yellow i, .bg-ref-yellow span, .bg-ref-yellow small { color: #333333; }
-
-/* 3. DESKTOP METRICS (Tetap elegan seperti figma) */
-.figma-metric-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-}
-.metric-box {
-    border-radius: 12px; padding: 20px;
-    display: flex; align-items: center; gap: 16px; color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer;
-    background-size: 200% auto; transition: 0.3s;
-}
-.metric-box:hover { background-position: right center; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.bg-slate { background-image: linear-gradient(to right, #475569 0%, #334155 51%, #475569 100%); }
-.bg-orange { background-image: linear-gradient(to right, #f59e0b 0%, #d97706 51%, #f59e0b 100%); }
-.bg-green { background-image: linear-gradient(to right, #10b981 0%, #059669 51%, #10b981 100%); }
-.bg-purple { background-image: linear-gradient(to right, #8b5cf6 0%, #7c3aed 51%, #8b5cf6 100%); }
-.bg-blue { background-image: linear-gradient(to right, #3b82f6 0%, #2563eb 51%, #3b82f6 100%); }
-
-.metric-icon-wrap { width: 46px; height: 46px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
-.metric-content { display: flex; flex-direction: column; }
-.m-label { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-bottom: 2px; }
-.m-value { font-size: 1.6rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height: 1; }
-
-/* 4. MENGHILANGKAN BOTTOM NAV LAMA JIKA ADA */
-.mobile-nav.d-lg-none { display: none !important; }
-
-/* 5. VISIBILITY RULES */
-@media (max-width: 991px) {
-    .desktop-only { display: none !important; }
-}
-@media (min-width: 992px) {
-    .mobile-only { display: none !important; }
-}
-/* =========================================================
- * FINAL OVERRIDE: DEPOSITO DESKTOP & FIGMA MOBILE APP
- * =======================================================*/
-
-/* 1. GLOBAL SETTINGS */
-:root {
-    --bg-body: #F4F7FE;       /* Latar abu-abu sangat muda (Deposito) */
-    --sidebar-bg: #2B2853;    /* Ungu gelap pekat (Deposito) */
-    --card-bg: #FFFFFF;
-    --text-dark: #2B3674;
-    --text-muted: #A3AED0;
-}
-body { 
-    background-color: var(--bg-body) !important; 
-    font-family: 'Poppins', 'Noto Sans JP', sans-serif !important; 
-    color: var(--text-dark) !important;
-}
-
-/* 2. SIDEBAR (DEPOSITO STYLE) */
-.sidebar { background-color: var(--sidebar-bg) !important; border-right: none !important; }
-.sidebar nav a { color: #A3AED0 !important; font-weight: 500; font-family: 'Poppins', sans-serif; }
-.sidebar nav a:hover, .sidebar nav a.active { 
-    background-color: rgba(255,255,255,0.05) !important; 
-    color: #FFFFFF !important; 
-    border-radius: 8px;
-}
-
-/* 3. METRICS CARDS (DEPOSITO DESKTOP - GAMBAR 2) */
+/* Desktop Metrics Grid */
 .deposito-metric-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 .deposito-card {
-    background: var(--card-bg);
-    border-radius: 16px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
     padding: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.08); /* Soft shadow Deposito */
-    border: none !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-sm);
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.deposito-card:hover { transform: translateY(-4px); box-shadow: 0px 12px 28px rgba(149, 157, 165, 0.15); }
+.deposito-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
 .d-info { display: flex; flex-direction: column; }
-.d-val { font-size: 2rem; font-weight: 700; margin: 0; line-height: 1.1; font-family: 'Poppins', sans-serif; }
-.d-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin: 4px 0 0 0; }
+.d-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+.d-val { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height: 1; margin: 0; color: var(--text-main); }
 .d-icon {
-    width: 55px; height: 55px; border-radius: 50%; /* Lingkaran penuh seperti Deposito */
+    width: 56px; height: 56px; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.6rem;
 }
 
-/* 4. MOBILE APP GRID (FIGMA APP STYLE - GAMBAR 3) */
+/* Mobile App Grid */
 .modern-mobile-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Kolom untuk HP */
-    gap: 16px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
 }
 .m-app-card {
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 24px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0px 8px 20px rgba(149, 157, 165, 0.08); /* Kartu putih melayang */
-    border: none;
-    cursor: pointer;
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 20px 12px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease;
 }
-.m-app-card:active { transform: scale(0.95); background: #F8FAFC; }
+.m-app-card:active { transform: scale(0.96); background: #F8FAFC; }
 .m-app-icon {
-    width: 56px; height: 56px; border-radius: 16px; /* Rounded box icon */
+    width: 52px; height: 52px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; margin-bottom: 14px;
+    font-size: 1.6rem; margin-bottom: 12px;
 }
-.m-app-title { font-weight: 600; font-size: 0.95rem; color: var(--text-dark); line-height: 1.3; }
-.m-app-title small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; }
+.m-app-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); line-height: 1.2; }
+.m-app-title small { display: block; font-weight: 500; color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; }
 
-/* 5. UTILITY COLORS */
-.bg-blue-light { background-color: #F4F7FE; } .text-blue { color: #4318FF; }
-.bg-orange-light { background-color: #FFF6E5; } .text-orange { color: #FFB547; }
-.bg-pink-light { background-color: #FEECEF; } .text-pink { color: #EE5D50; }
-.bg-green-light { background-color: #E8F8F5; } .text-green { color: #05CD99; }
-.bg-purple-light { background-color: #F4F0FF; } .text-purple { color: #8A2BE2; }
-.bg-red-light { background-color: #FFEDED; } .text-red { color: #E03131; }
+/* Utility Colors (Background + Text) */
+.bg-blue-light { background-color: #EFF6FF; } .text-blue { color: var(--color-blue); }
+.bg-orange-light { background-color: #FFF7ED; } .text-orange { color: var(--color-orange); }
+.bg-pink-light { background-color: #FDF2F8; } .text-pink { color: #EC4899; }
+.bg-green-light { background-color: #ECFDF5; } .text-green { color: var(--color-green); }
+.bg-purple-light { background-color: #F5F3FF; } .text-purple { color: var(--color-purple); }
+.bg-red-light { background-color: #FEF2F2; } .text-red { color: var(--color-red); }
 
-/* 6. CHARTS & TABLES (DEPOSITO) */
-.deposito-chart-card {
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.08) !important;
-}
+/* Tables */
+.table { font-size: 0.9rem; }
+.table thead th { background-color: #F8FAFC; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-soft); padding: 12px 16px; }
+.table tbody td { padding: 14px 16px; vertical-align: middle; border-bottom: 1px solid #F1F5F9; }
 
-/* 7. RESPONSIVE VISIBILITY */
-@media (max-width: 991px) {
-    .desktop-only { display: none !important; }
-}
-@media (min-width: 992px) {
-    .mobile-only { display: none !important; }
-}
-/* =========================================================
- * FIX: BANNER & WARNA DEPOSITO YANG LEBIH TEGAS (TIDAK PUCAT)
- * =======================================================*/
-
-/* 1. Welcome Banner Fix (Agar huruf A dan teks rapi) */
-.deposito-welcome {
-    display: flex; align-items: center; gap: 16px;
-    background: #ffffff; padding: 20px 24px;
-    border-radius: 16px; box-shadow: 0px 4px 15px rgba(0,0,0,0.03);
-    border: 1px solid #e2e8f0; width: 100%;
-}
-.d-avatar {
-    width: 55px; height: 55px; border-radius: 50%;
-    background: #4318FF; color: #ffffff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; font-weight: bold;
-}
-.d-welcome-text h4 { font-family: 'Poppins', sans-serif; color: #2B3674 !important; }
-
-/* 2. Warna Ikon Kartu Dibuat Lebih "Nendang" (Vibrant) */
-.bg-blue-light { background-color: #E2E8FF !important; } .text-blue { color: #4318FF !important; }
-.bg-orange-light { background-color: #FFECD1 !important; } .text-orange { color: #FF9800 !important; }
-.bg-pink-light { background-color: #FFE0E5 !important; } .text-pink { color: #EE5D50 !important; }
-.bg-green-light { background-color: #D1F4EB !important; } .text-green { color: #05CD99 !important; }
-.bg-purple-light { background-color: #EADDFF !important; } .text-purple { color: #8A2BE2 !important; }
-
-/* 3. Teks Angka Metrik Diperbesar & Dipertegas */
-.d-val { 
-    font-size: 2.2rem !important; 
-    font-weight: 800 !important; 
-    font-family: 'Poppins', sans-serif !important; 
-}
-
-/* 4. Background Body (Deposito Style) */
-body { background-color: #F4F7FE !important; }
-.sidebar { background-color: #11047A !important; } /* Sidebar lebih gelap pekat */
+/* Responsive Visibility */
+@media (max-width: 991px) { .desktop-only { display: none !important; } }
+@media (min-width: 992px) { .mobile-only { display: none !important; } }
