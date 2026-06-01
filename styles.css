@@ -1494,3 +1494,128 @@ header.appbar::after {
 .input-scan-highlight {
     animation: highlightFocus 1.5s ease-out;
 }
+/* =========================================================
+ * UI/UX MASSIVE OVERHAUL (ENTERPRISE SAAS STYLE)
+ * =======================================================*/
+:root {
+    --bg-main: #f4f5f7; /* Abu-abu sangat muda untuk background */
+    --sidebar-bg: #1a1b23; /* Sidebar sangat gelap */
+    --sidebar-text: #a1a1aa;
+    --sidebar-active-bg: #ef4444; /* Merah menyala seperti di referensi */
+    --sidebar-active-text: #ffffff;
+    --card-border: #e5e7eb;
+}
+
+body { background-color: var(--bg-main) !important; }
+
+/* --- SIDEBAR DESKTOP --- */
+.sidebar {
+    background-color: var(--sidebar-bg) !important;
+    border-right: none !important;
+    padding-top: 20px !important;
+}
+.sidebar nav a {
+    color: var(--sidebar-text) !important;
+    font-weight: 500;
+    border-radius: 6px !important;
+    margin-bottom: 8px !important;
+    padding: 12px 16px !important;
+}
+.sidebar nav a:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+}
+.sidebar nav a.active {
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active-text) !important;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4) !important; /* Glow merah */
+}
+
+/* Header/Appbar Desktop lebih bersih */
+header.appbar {
+    background-color: #ffffff !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+    border-bottom: none !important;
+}
+/* --- METRIC CARDS (DESKTOP ZOHO STYLE) --- */
+.metric-card {
+    background: #ffffff !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 8px !important; /* Sudut lebih tajam/profesional */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 24px 16px !important;
+}
+.metric-icon { display: none !important; } /* Matikan icon besar lama */
+.metric-text { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+/* Label ditaruh di atas, huruf kapital kecil */
+.metric-label {
+    font-size: 0.8rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b7280 !important;
+    margin-bottom: 12px !important;
+}
+
+/* Angkanya dibuat RAKSASA dan berwarna */
+.metric-value {
+    font-size: 2.8rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Warnai tiap angka berbeda seperti di gambar */
+#metric-card-items .metric-value { color: #3b82f6 !important; } /* Biru */
+#metric-card-below .metric-value { color: #ef4444 !important; } /* Merah */
+#metric-card-users .metric-value { color: #10b981 !important; } /* Hijau */
+#metric-card-value .metric-value { color: #8b5cf6 !important; } /* Ungu */
+#metric-card-trx .metric-value   { color: #f59e0b !important; } /* Orange */
+
+.metric-card .metric-badge, .metric-card .d-flex { justify-content: center !important; }
+
+/* --- MOBILE GRID MENU (eSWAP STYLE) --- */
+.mobile-app-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 10px 0;
+}
+.mobile-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease;
+    cursor: pointer;
+}
+.mobile-grid-item:active { transform: scale(0.95); }
+.mobile-grid-item i { font-size: 2.8rem; margin-bottom: 8px; }
+.mobile-grid-item span { font-weight: 600; font-size: 1rem; text-align: center; line-height: 1.2;}
+
+/* Warna spesifik untuk tiap kotak */
+.bg-grid-red { background: #b91c1c; }
+.bg-grid-blue { background: #1d4ed8; }
+.bg-grid-orange { background: #c2410c; }
+.bg-grid-green { background: #15803d; }
+.bg-grid-purple { background: #6d28d9; }
+.bg-grid-dark { background: #334155; }
+
+/* Sembunyikan elemen desktop di HP, sembunyikan elemen HP di desktop */
+@media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    /* Sembunyikan Widget cuaca & banner lama di HP agar bersih */
+    .ios-widget, #welcome-banner { display: none !important; } 
+    .content { padding: 16px 12px; }
+}
+@media (min-width: 769px) {
+    .mobile-only { display: none !important; }
+}
