@@ -1715,8 +1715,8 @@ function ensureItemsColgroup() {
   table.insertBefore(cg, table.firstChild);
 }
 
-/* --- KAIZEN: renderItems dengan Live Search --- */
-async function renderItems(silent = false){
+/* --- KAIZEN: renderItems dengan Live Search & Kebab Menu FIX --- */
+async function renderItems(silent = false) {
   const tbody = $("#tbl-items");
   if (!tbody) return;
 
@@ -1752,14 +1752,11 @@ async function renderItems(silent = false){
 
     // --- SETUP PAGING & SEARCH ---
     let page = 0, size = 100;
-    let filterTerm = ""; // Menyimpan kata kunci pencarian
+    let filterTerm = "";
 
-    // Ambil elemen Search Box
     const searchInput = document.getElementById("items-search");
     
-    // Fungsi Render Halaman (Cerdas: Cek filter dulu)
-    async function renderPage(){
-      // 1. Filter data berdasarkan kata kunci pencarian
+    async function renderPage() {
       let filteredData = _ITEMS_CACHE;
       if (filterTerm) {
         const term = filterTerm.toLowerCase();
@@ -1769,10 +1766,8 @@ async function renderItems(silent = false){
         );
       }
 
-      // 2. Potong data sesuai halaman (Paging)
       const slice = filteredData.slice(page*size, (page+1)*size);
 
-      // 3. Tampilkan ke HTML
       if (page === 0) {
         if (slice.length === 0) {
            tbody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-muted">該当する商品はありません (Tidak ditemukan)</td></tr>';
@@ -1785,7 +1780,6 @@ async function renderItems(silent = false){
 
       page++;
       
-      // Fungsi tambahan (QR, Header, Scrollbar)
       try { await ensureQRCode(); } catch(_) {}
       renderRowQRCodes(slice);
       ensureItemsHeader();
@@ -1794,27 +1788,23 @@ async function renderItems(silent = false){
       if (typeof window.__resyncTopScroll === "function") window.__resyncTopScroll();
     }
 
-    // --- EVENT LISTENER PENCARIAN (KAIZEN: LIVE SEARCH) ---
     if (searchInput && !searchInput.__bound) {
       searchInput.__bound = true;
       searchInput.addEventListener("input", (e) => {
         filterTerm = (e.target.value || "").trim();
-        page = 0; // Reset ke halaman 1 setiap mengetik
+        page = 0;
         renderPage(); 
       });
     }
 
-    // Render pertama kali
     await renderPage();
 
-    // Tombol Load More
-    // Hapus tombol lama jika ada (biar tidak duplikat saat reload)
     const oldMore = document.getElementById("btn-load-more-container");
     if(oldMore) oldMore.remove();
 
     if (_ITEMS_CACHE.length > size) {
       const moreContainer = document.createElement("div");
-      moreContainer.id = "btn-load-more-container"; // Beri ID agar mudah dikelola
+      moreContainer.id = "btn-load-more-container";
       moreContainer.className = "text-center my-3";
       moreContainer.innerHTML = '<button id="btn-load-more" class="btn btn-outline-secondary btn-sm">Load more</button>';
       
@@ -1825,7 +1815,6 @@ async function renderItems(silent = false){
       moreContainer.addEventListener("click", async (e)=>{
         e.preventDefault();
         await renderPage();
-        // Cek apakah data sudah habis setelah di-filter
         let currentTotal = filterTerm 
            ? _ITEMS_CACHE.filter(it => (it.code||"").includes(filterTerm) || (it.name||"").includes(filterTerm)).length
            : _ITEMS_CACHE.length;
@@ -1839,10 +1828,10 @@ async function renderItems(silent = false){
     toast("商品一覧の読み込みに失敗しました。");
   }
 
-// Delegasi klik (Edit, Del, DL, dll) - FIX: Mendukung Kebab Menu Dropdown (tag <a>)
+  // Delegasi klik (Edit, Del, DL, dll) - FIX: Mendukung Kebab Menu Dropdown (tag <a>)
   if (!tbody.__bound) {
     tbody.addEventListener("click", async (ev)=>{
-      // UBAH DISINI: Deteksi tag <button> ATAU <a> yang punya class .dropdown-item
+      // Deteksi tag <button> ATAU <a> yang punya class .dropdown-item
       const btn  = ev.target.closest("button, .dropdown-item");
       if (!btn) return;
       
@@ -1853,11 +1842,11 @@ async function renderItems(silent = false){
       if (!code) return;
 
       const item = _ITEMS_CACHE.find(x => String(x.code) === String(code));
+      
       if (btn.classList.contains("btn-edit")) { openEditItem(code); return; }
-     if (btn.classList.contains("btn-del")) {
+      
+      if (btn.classList.contains("btn-del")) {
         if (!isAdmin()) return toast("Akses ditolak (admin only)");
-        
-        // MENGGUNAKAN CUSTOM DIALOG
         const isSure = await showCustomDialog({
           type: 'delete',
           title: '商品削除 (Hapus Barang)',
@@ -1865,16 +1854,15 @@ async function renderItems(silent = false){
           confirmText: '削除 (Hapus)',
           cancelText: 'キャンセル (Batal)'
         });
-        
-        if (!isSure) return; // Batal hapus
-
-        try{
+        if (!isSure) return;
+        try {
           const r = await api("deleteItem", { method:"POST", body:{ code }});
           if (r?.ok) { toast("削除しました (Berhasil dihapus)"); renderItems(); }
           else toast(r?.error || "削除失敗");
-        }catch(e){ toast("削除失敗: " + (e?.message||e)); }
+        } catch(e) { toast("削除失敗: " + (e?.message||e)); }
         return;
       }
+      
       if (btn.classList.contains("btn-dl")) {
         if (!item) return;
         const url = await makeItemLabel62mmDataURL(item);
@@ -1882,11 +1870,13 @@ async function renderItems(silent = false){
         a.href = url; a.download = `label_${sanitizeFilename(item.code)}.png`; a.click();
         return;
       }
+      
       if (btn.classList.contains("btn-lotqr")) {
         if (!item) return;
         openLotQRModal(item);
         return;
       }
+      
       if (btn.classList.contains("btn-preview")) {
         if (!item) return;
         showItemPreview(item);
