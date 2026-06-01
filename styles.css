@@ -1275,7 +1275,7 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
 }
 
 /* -------------------------------------------------------------
- * 19. SKELETON LOADERS
+ * 19. SKELETON LOADERS  +  GLOBAL LOADING INDICATOR
  * ----------------------------------------------------------- */
 .skeleton {
   background: linear-gradient(90deg, var(--surface-2), var(--surface-3), var(--surface-2));
@@ -1288,6 +1288,84 @@ header.appbar > .container-fluid { padding: 0; max-width: 100%; }
 @keyframes skeleton {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* — slim top progress bar (non-blocking) — */
+#global-loading {
+  position: fixed;
+  top: var(--topbar-h);
+  left: 0;
+  right: 0;
+  z-index: 1090;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#global-loading.d-none { display: none !important; }
+
+#global-loading .gl-bar {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  overflow: hidden;
+}
+#global-loading .gl-bar::before,
+#global-loading .gl-bar span {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), #8B5CF6, var(--brand));
+  border-radius: 0 4px 4px 0;
+}
+#global-loading .gl-bar::before {
+  left: -35%; width: 35%;
+  animation: glBar1 2.1s cubic-bezier(.65,.815,.735,.395) infinite;
+}
+#global-loading .gl-bar span {
+  left: -100%; width: 100%;
+  animation: glBar2 2.1s cubic-bezier(.165,.84,.44,1) infinite;
+  animation-delay: 1.15s;
+}
+@keyframes glBar1 {
+  0%   { left: -35%; right: 100%; }
+  60%  { left: 100%; right: -90%; }
+  100% { left: 100%; right: -90%; }
+}
+@keyframes glBar2 {
+  0%   { left: -100%; right: 100%; }
+  60%  { left: 107%; right: -8%; }
+  100% { left: 107%; right: -8%; }
+}
+
+#global-loading .gl-text {
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+#global-loading .gl-text::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: glDot 1.2s ease infinite;
+}
+@keyframes glDot {
+  0%, 100% { opacity: .3; transform: scale(.9); }
+  50%      { opacity: 1;  transform: scale(1.1); }
 }
 
 /* -------------------------------------------------------------
