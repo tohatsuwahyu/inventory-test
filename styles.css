@@ -196,8 +196,9 @@ header.appbar {
 /* 3. Figma Metric Grid (Kotak rapi dengan soft background) */
 .figma-metric-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 16px;
 }
 .figma-metric-card {
     background: #ffffff;
