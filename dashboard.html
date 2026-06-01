@@ -10,9 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap.min.css'"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap-icons.css'"/>
 
-  <link href="styles.css?v=redesign-2026-4" rel="stylesheet"/>
+  <link href="styles.css?v=fix-2026-2" rel="stylesheet"/>
   <link href="print.css?v=20251030" rel="stylesheet"/>
-  <link href="qrlib.js?v=redesign-2026-4" rel="stylesheet"/>
+  <link href="qrlib.js?v=fix-2026-2" rel="stylesheet"/>
 
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
@@ -96,6 +96,7 @@
         <a href="#" data-view="view-history"><i class="bi bi-clock-history"></i> <span>履歴</span></a>
       </nav>
 
+
       <div class="sidebar-label">Admin</div>
       <nav class="d-flex flex-column gap-1">
         <a href="#" data-view="view-reports" class="admin-only d-none"><i class="bi bi-graph-up-arrow"></i> <span>管理レポート</span></a>
@@ -118,7 +119,7 @@
         <div class="page-head">
           <div>
             <h1 id="page-title" class="section-title">ダッシュボード</h1>
-            <div class="section-subtitle d-none d-md-block">在庫の最新状況・分析・取引履歴の概要</div>
+            <div id="page-subtitle" class="section-subtitle d-none d-md-block">在庫の最新状況・分析・取引履歴の概要</div>
           </div>
           <div class="d-flex align-items-center gap-2">
             <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>
@@ -233,7 +234,7 @@
             <!-- Section title -->
             <div class="mob-section-title">
               <span class="mob-st-label">クイックメニュー</span>
-              <span class="mob-st-hint"><i class="bi bi-grid-3x3-gap-fill"></i> 9 メニュー</span>
+              <span class="mob-st-hint"><i class="bi bi-grid-3x3-gap-fill"></i> 10 メニュー</span>
             </div>
 
             <!-- Round-icon app grid (3 cols, Image-1 style) -->
@@ -264,6 +265,8 @@
                 <div class="m-app-icon ring-teal"><i class="bi bi-table"></i></div>
                 <span class="m-app-title">棚卸一覧<small>Records</small></span>
               </div>
+
+
 
               <div class="m-app-card" onclick="showSection('view-history', this);">
                 <div class="m-app-icon ring-violet"><i class="bi bi-clock-history"></i></div>
@@ -404,7 +407,7 @@
 
         <!-- ╔════ VIEW: IO ════╗ -->
         <section id="view-io" class="d-none">
-          <div class="card p-3 mb-3">
+          <div class="card scan-card mb-3">
             <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">スキャン</div>
               <div class="right d-flex gap-2">
@@ -412,11 +415,12 @@
                 <button id="btn-io-stop" class="btn btn-sm btn-outline-secondary">停止</button>
               </div>
             </div>
-            <div class="d-flex gap-2 mb-3">
-              <button onclick="showSection('view-io', this)" class="btn btn-sm btn-primary w-50">入出庫モード</button>
-              <button onclick="showSection('view-shelf', this)" class="btn btn-sm btn-outline-primary w-50">棚卸モード</button>
+            <div class="scan-mode-switch">
+              <button onclick="showSection('view-io', this)" class="btn btn-primary"><i class="bi bi-box-arrow-in-down me-1"></i>入出庫モード</button>
+              <button onclick="showSection('view-shelf', this)" class="btn"><i class="bi bi-clipboard-check me-1"></i>棚卸モード</button>
             </div>
             <div id="io-scan-area">カメラ待機中…</div>
+            <div class="scan-tip"><i class="bi bi-lightbulb-fill"></i> QRコードを枠内に合わせると自動で読み取ります</div>
           </div>
 
           <div class="card p-3">
@@ -456,7 +460,7 @@
 
         <!-- ╔════ VIEW: SHELF (Stocktake) ════╗ -->
         <section id="view-shelf" class="d-none">
-          <div class="card p-3 mb-3">
+          <div class="card scan-card mb-3">
             <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">スキャン</div>
               <div class="right d-flex gap-2">
@@ -464,7 +468,12 @@
                 <button id="btn-stop-scan" class="btn btn-sm btn-outline-secondary">停止</button>
               </div>
             </div>
+            <div class="scan-mode-switch">
+              <button onclick="showSection('view-io', this)" class="btn"><i class="bi bi-box-arrow-in-down me-1"></i>入出庫モード</button>
+              <button onclick="showSection('view-shelf', this)" class="btn btn-primary"><i class="bi bi-clipboard-check me-1"></i>棚卸モード</button>
+            </div>
             <div id="scan-area">カメラ待機中…</div>
+            <div class="scan-tip"><i class="bi bi-lightbulb-fill"></i> 商品QRをスキャンして実在数を記録します</div>
           </div>
           <div class="card p-3">
             <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
@@ -679,6 +688,8 @@
           </div>
         </section>
 
+        <!-- ╔═══════════════════════════════════════════════════╗
+
       </div>
       <footer class="app-footer">© <span id="fy"></span> &mdash; Inventory System &mdash; Design by <b>Wahyu</b></footer>
     </main>
@@ -794,7 +805,11 @@
 
   <!-- Footer year + mobile nav helper (kept identical for app.js compat) -->
   <script>
-    document.getElementById('fy').textContent = new Date().getFullYear();
+    // Safe-set: never throw on null
+    (function () {
+      const fyEl = document.getElementById('fy');
+      if (fyEl) fyEl.textContent = new Date().getFullYear();
+    })();
 
     function showSection(viewId, el) {
       const link = document.querySelector(`#sb a[data-view="${viewId}"]`);
@@ -802,7 +817,7 @@
       document.querySelectorAll('.mobile-nav .nav-item').forEach(x => x.classList.remove('active'));
       if (el) {
         if (el.classList.contains('nav-scan') || (el.parentElement && el.parentElement.classList.contains('nav-scan'))) {
-          document.querySelector('.nav-scan').classList.add('active');
+          document.querySelector('.nav-scan')?.classList.add('active');
         } else {
           el.classList.add('active');
         }
@@ -920,6 +935,63 @@
         syncIcon();
       });
 
+      // ─── DYNAMIC SUBTITLE PER VIEW ───
+      // Mengikuti perubahan #page-title (yang di-set oleh app.js saat menu berganti)
+      const SUBTITLES = {
+        'view-dashboard'  : '在庫の最新状況・分析・取引履歴の概要',
+        'view-io'         : 'QRコードで入出庫を素早く登録',
+        'view-shelf'      : '実在庫を数えて差異を記録',
+        'view-shelf-list' : '過去の棚卸結果を閲覧・出力',
+        'view-items'      : '商品マスタの管理 (検索・編集・印刷)',
+        'view-users'      : 'ログインユーザーとQRカードの管理',
+        'view-history'    : '入出庫の全履歴を時系列で表示',
+        'view-reports'    : '管理者向けの自動レポート機能'
+      };
+      const pageTitleEl = document.getElementById('page-title');
+      const pageSubEl   = document.getElementById('page-subtitle');
+      const updateSubtitle = () => {
+        if (!pageSubEl) return;
+        const activeSec = document.querySelector('main section.active');
+        const id = activeSec ? activeSec.id : 'view-dashboard';
+        pageSubEl.textContent = SUBTITLES[id] || '';
+        pageSubEl.style.display = SUBTITLES[id] ? '' : 'none';
+      };
+      if (pageTitleEl) {
+        const titleObs = new MutationObserver(updateSubtitle);
+        titleObs.observe(pageTitleEl, { childList: true, characterData: true, subtree: true });
+      }
+      // Also run when any sidebar link is clicked (in case section.active changes without title change)
+      document.querySelectorAll('a[data-view]').forEach(a => {
+        a.addEventListener('click', () => setTimeout(updateSubtitle, 50));
+      });
+      updateSubtitle();
+
+      // ─── SAFETY: ensure backdrop never blocks clicks after sidebar closes ───
+      const _backdrop = document.getElementById('sb-backdrop');
+      if (_backdrop) {
+        // Force-clean any stuck pointer-events / opacity
+        const cleanBackdrop = () => {
+          if (!document.body.classList.contains('sb-open')) {
+            _backdrop.classList.remove('show');
+            _backdrop.style.display = '';
+            _backdrop.style.pointerEvents = '';
+          }
+        };
+        // Run on resize, on any sidebar link click, on document click
+        window.addEventListener('resize', cleanBackdrop);
+        document.addEventListener('click', (e) => {
+          // If user clicked anywhere outside drawer when it's closed, sanitize
+          if (!document.body.classList.contains('sb-open')) cleanBackdrop();
+        }, true);
+
+        // Backdrop click → close sidebar (in case app.js handler is bypassed)
+        _backdrop.addEventListener('click', () => {
+          document.body.classList.remove('sb-open');
+          document.querySelector('#sb')?.classList.remove('show');
+          cleanBackdrop();
+        });
+      }
+
       // ─── KEEP user-chip avatar synced with #who text ───
       // Use a guard flag + value check to prevent infinite mutation loop.
       const who = document.getElementById('who');
@@ -950,5 +1022,5 @@
       }
     })();
   </script>
-</body>
-</html>
+
+  <!-- ╔══════════════════════════════════════════════════╗
