@@ -5141,46 +5141,46 @@ window.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   const HELP_CONTENT = {
     "view-dashboard": `
-      <h6 class="fw-bold text-primary"><i class="bi bi-speedometer2"></i> ダッシュボード (Dashboard)</h6>
-      <p class="text-muted small">Ini adalah pusat informasi inventory Anda.</p>
+      <h6 class="fw-bold text-primary"><i class="bi bi-speedometer2"></i> ダッシュボード</h6>
+      <p class="text-muted small">在庫状況を一目で確認できるメイン画面です。</p>
       <ul class="small">
-        <li><strong>AI Radar:</strong> Memprediksi barang yang akan habis dalam 14 hari ke depan berdasarkan rata-rata pengeluaran (OUT) 30 hari terakhir.</li>
-        <li><strong>ABC Analysis:</strong> Mengelompokkan barang berdasarkan seberapa sering barang tersebut ditransaksikan (A: Sangat sering, B: Sedang, C: Jarang/Mati).</li>
+        <li><strong>AI 枯渇予測レーダー:</strong> 過去30日間の出庫ペースを分析し、今後14日以内に在庫切れになる可能性のある商品を予測・警告します。</li>
+        <li><strong>ABC分析:</strong> 出庫頻度に応じて商品を自動分類します（A: 高回転、B: 標準、C: 低回転・不動在庫）。</li>
       </ul>
     `,
     "view-io": `
-      <h6 class="fw-bold text-primary"><i class="bi bi-box-seam"></i> 入出庫 (In / Out Barang)</h6>
-      <p class="text-muted small">Menu untuk mencatat barang masuk atau keluar.</p>
+      <h6 class="fw-bold text-primary"><i class="bi bi-box-seam"></i> 入出庫 (In/Out)</h6>
+      <p class="text-muted small">商品の入庫・出庫を記録するメニューです。</p>
       <ul class="small">
-        <li>Tekan <strong>開始 (Mulai)</strong> untuk menggunakan kamera HP sebagai scanner barcode.</li>
-        <li>Setelah discan, ketik jumlahnya, lalu tekan <strong>即時登録 (Submit Instan)</strong> atau masukkan ke <strong>リスト (Keranjang)</strong> untuk memproses banyak barang sekaligus.</li>
-        <li>Jika salah scan/input, klik tombol <strong>Undo (元に戻す)</strong> yang muncul selama 10 detik di layar.</li>
+        <li><strong>開始</strong>ボタンを押すと、スマートフォンのカメラがバーコードスキャナーとして起動します。</li>
+        <li>スキャン後、数量を入力して<strong>即時登録</strong>を押すか、<strong>リストに追加</strong>して複数の商品を後で一括登録できます。</li>
+        <li>誤ってスキャン・登録した場合は、画面右下に10秒間表示される<strong>元に戻す (Undo)</strong>ボタンで取り消しが可能です。</li>
       </ul>
     `,
     "view-shelf": `
-      <h6 class="fw-bold text-primary"><i class="bi bi-clipboard-check"></i> 棚卸 (Stock Opname)</h6>
-      <p class="text-muted small">Gunakan menu ini untuk mencocokkan stok fisik gudang dengan sistem.</p>
+      <h6 class="fw-bold text-primary"><i class="bi bi-clipboard-check"></i> 棚卸 (Stocktake)</h6>
+      <p class="text-muted small">システム上の在庫と実際の物理在庫を照合するメニューです。</p>
       <ul class="small">
-        <li>Scan barang, lalu ketik jumlah fisik yang ada di rak ke dalam kotak <strong>実在 (Aktual)</strong>.</li>
-        <li>Sistem akan mendeteksi perbedaan secara otomatis. Jika selesai, wajib tekan tombol <strong class="text-success">確定 (Commit)</strong> agar stok di database terupdate.</li>
-        <li>Gunakan <strong>保存 (Save)</strong> untuk menyimpan draf sementara ke HP jika opname belum selesai.</li>
+        <li>商品をスキャンし、実際の在庫数を<strong>実在</strong>の入力欄に入力します。</li>
+        <li>システムが帳簿との差異を自動計算します。作業完了後、在庫データを更新するために必ず<strong class="text-success">確定</strong>を押してください。</li>
+        <li>作業を一時中断する場合は、<strong>保存</strong>を押して入力中のデータを端末に一時保存できます。</li>
       </ul>
     `,
     "view-items": `
-      <h6 class="fw-bold text-primary"><i class="bi bi-boxes"></i> 商品一覧 (Daftar Barang)</h6>
-      <p class="text-muted small">Melihat dan mengelola master data barang.</p>
+      <h6 class="fw-bold text-primary"><i class="bi bi-boxes"></i> 商品一覧 (Items)</h6>
+      <p class="text-muted small">商品マスターデータの閲覧と管理を行います。</p>
       <ul class="small">
-        <li>Gunakan kotak <strong>検索 (Search)</strong> untuk mencari kode atau nama barang dengan cepat.</li>
-        <li>Klik ikon <strong>Tiga Titik (More)</strong> di sebelah kanan baris barang untuk: Mendownload Label QR, Menghapus, atau mencetak Lot.</li>
-        <li>Hanya akun <strong class="text-danger">Admin</strong> yang bisa menambah barang baru atau meng-import CSV.</li>
+        <li>上部の<strong>検索</strong>ボックスで、コードや品名から商品をすばやく探せます。</li>
+        <li>各行の右端にある<strong>操作メニュー (︙)</strong>から、QRラベルのダウンロードやロットQRの発行が行えます。</li>
+        <li><strong class="text-danger">管理者 (Admin)</strong>のみ、新規商品の追加やCSVインポートを実行できます。</li>
       </ul>
     `,
     "view-history": `
-      <h6 class="fw-bold text-primary"><i class="bi bi-clock-history"></i> 履歴 (Riwayat Transaksi)</h6>
-      <p class="text-muted small">Log semua pergerakan barang (Masuk, Keluar, Transfer, Opname).</p>
+      <h6 class="fw-bold text-primary"><i class="bi bi-clock-history"></i> 履歴 (History)</h6>
+      <p class="text-muted small">過去の入出庫、移動、棚卸などの全ての取引ログです。</p>
       <ul class="small">
-        <li>Hanya menampilkan 400 transaksi terbaru agar aplikasi tetap cepat.</li>
-        <li>Hanya <strong class="text-danger">Admin</strong> yang dapat melihat tombol <strong>修正 (Edit)</strong> untuk mengkoreksi jumlah jika terjadi salah input oleh operator.</li>
+        <li>システムの動作を高速に保つため、最新の400件のみを表示します（全件はCSV出力可能）。</li>
+        <li>入力ミスがあった場合、<strong class="text-danger">管理者 (Admin)</strong>のみが表示される<strong>修正 (Edit)</strong>ボタンからデータを修正できます。</li>
       </ul>
     `
   };
@@ -5194,12 +5194,12 @@ window.addEventListener("DOMContentLoaded", () => {
       const modalTitle = document.getElementById("helpModalTitle");
       
       // Ambil konten berdasarkan menu yang aktif, atau tampilkan default jika tidak ditemukan
-      const content = HELP_CONTENT[activeId] || `<h6 class="fw-bold">ヘルプ</h6><p class="small text-muted">Bantuan belum tersedia untuk halaman ini.</p>`;
+      const content = HELP_CONTENT[activeId] || `<h6 class="fw-bold">ヘルプ</h6><p class="small text-muted">このページのヘルプはまだありません。</p>`;
       
       if (modalBody) modalBody.innerHTML = content;
       if (modalTitle) {
          // Mengubah judul modal agar dinamis
-         const menuName = document.getElementById("page-title")?.textContent || "Bantuan";
+         const menuName = document.getElementById("page-title")?.textContent || "ヘルプ";
          modalTitle.innerHTML = `<i class="bi bi-info-circle-fill me-2 text-primary"></i>${menuName} のヘルプ`;
       }
     });
@@ -5833,9 +5833,7 @@ document.addEventListener("click", (e) => {
 
 })();
 
-/* =========================================================
- * TOP SCROLLBAR — sinkronisasi dengan tabel items
- * =======================================================*/
+
 
 /* =========================================================
  * TOP SCROLLBAR — sinkronisasi dengan tabel items
@@ -5976,9 +5974,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateWeatherBox();
 });
 
-// ===============================
-// Sidebar + View Switch ala app
-// ===============================
+
 // ===============================
 // Sidebar + View Switch ala app
 // ===============================
