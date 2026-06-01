@@ -9,7 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap.min.css'"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap-icons.css'"/>
 
-<link href="styles.css?v=ui-baru-01" rel="stylesheet"/>
+<link href="styles.css?v=deposito-mobile-fix-final" rel="stylesheet"/>
   <link href="print.css?v=20251030" rel="stylesheet"/>
   
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -21,46 +21,31 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-  /* Modern App Header */
-  header.appbar {
-    position: sticky; top: 0; z-index: 1020; background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px); border-bottom: 1px solid #E2E8F0;
-  }
-  header .brand img { height: 28px; }
-  .layout { display: flex; min-height: 100vh; align-items: stretch; }
-  main { flex: 1 1 auto; min-width: 0; padding-bottom: 80px; }
-  .content { padding: 24px; max-width: 1600px; margin: 0 auto; }
-  .section-title { font-weight: 800; color: #0F172A; letter-spacing: -0.5px; }
-  
-  /* Scanner Box Modern */
-  #io-scan-area, #scan-area {
-    width: 100%; max-width: 480px; margin: 0 auto; aspect-ratio: 4/3;
-    position: relative; overflow: hidden; background: #F8FAFC;
-    border-radius: 20px; border: 2px dashed #CBD5E1;
-  }
-  #io-scan-area video, #scan-area video { width: 100% !important; height: 100% !important; object-fit: cover; }
-  
-  /* Welcome Banner */
-  .deposito-welcome {
-    display: flex; align-items: center; gap: 16px; background: #FFFFFF;
-    padding: 24px; border-radius: 20px; border: 1px solid #E2E8F0;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03); width: 100%;
-  }
-  .d-avatar {
-    width: 60px; height: 60px; border-radius: 16px;
-    background: linear-gradient(135deg, #4F46E5, #3B82F6); color: #FFFFFF;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; font-weight: 800; box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
-  }
-  .d-welcome-text h4 { font-weight: 800; color: #0F172A; letter-spacing: -0.5px; }
-  
-  /* Scrollbar & Misc */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-  @media (max-width: 480px) { .content { padding: 16px; } }
-</style>
+    /* Fix sticky header & layout */
+    header.appbar{position:sticky;top:0;z-index:1020;background:#fff;border-bottom:1px solid #e5e7eb}
+    header .brand{display:flex;align-items:center;gap:.6rem}
+    header .brand img{height:32px}
+    .layout{display:flex;min-height:100vh;gap:0;align-items:stretch}
+    main{flex:1 1 auto;min-width:0}
+    .content{padding:16px}
+    .section-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #io-scan-area,#scan-area{width:100%;max-width:480px;margin:0 auto;aspect-ratio:4/3;position:relative;overflow:hidden;background:#0b0b0b10;border-radius:12px}
+    #io-scan-area video,#scan-area video{width:100%!important;height:100%!important;object-fit:cover}
+    .html5-qrcode-element{display:none!important}
+    .welcome{background:linear-gradient(135deg,#eef2ff,#f5f7ff);border:1px solid #e5e7eb;border-radius:12px;padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;box-shadow:0 10px 20px rgba(15,23,42,.04) inset}
+    .welcome .avatar{width:34px;height:34px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;background:linear-gradient(135deg,#0ea5e9,#22d3ee)}
+    @media (max-width:480px){ header.appbar .btn{padding:.28rem .5rem;font-size:.82rem;border-radius:10px} .content{padding:12px} }
+    
+    /* Efek UI/UX Modern */
+    .table tbody tr { transition: background-color 0.2s ease, transform 0.1s ease; }
+    .table tbody tr:hover { background-color: #f8fafc !important; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 10; position: relative; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .btn { transition: all 0.2s ease; }
+    .btn:active { transform: scale(0.95); }
+  </style>
 </head>
 <body>
  <header class="appbar">
@@ -580,20 +565,18 @@
     </div>
   </div>
 
-<div class="modal fade" id="helpModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
-      <div class="modal-header border-0 pb-0" style="padding: 32px 32px 0 32px;">
-        <h5 class="modal-title fw-bold fs-4 text-dark" id="helpModalTitle">
-          <i class="bi bi-info-circle-fill me-2 text-primary"></i> ヘルプ
-        </h5>
-        <button type="button" class="btn-close bg-light rounded-circle p-2" data-bs-dismiss="modal"></button>
+ <div class="modal fade" id="helpModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold" id="helpModalTitle"><i class="bi bi-info-circle-fill me-2 text-primary"></i>ヘルプ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body text-secondary" id="helpModalBody" style="padding: 24px 32px; font-size: 0.95rem; line-height: 1.6;">
+      <div class="modal-body p-4" id="helpModalBody">
          読み込み中...
       </div>
-      <div class="modal-footer border-0" style="padding: 0 32px 32px 32px;">
-        <button type="button" class="btn btn-light w-100 fw-bold" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px;">閉じる (Tutup)</button>
+      <div class="modal-footer bg-light border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
       </div>
     </div>
   </div>
