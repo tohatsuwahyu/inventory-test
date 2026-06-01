@@ -488,3 +488,39 @@ body {
 @media (min-width: 992px) {
     .mobile-only { display: none !important; }
 }
+/* =========================================================
+ * FIX: BANNER & WARNA DEPOSITO YANG LEBIH TEGAS (TIDAK PUCAT)
+ * =======================================================*/
+
+/* 1. Welcome Banner Fix (Agar huruf A dan teks rapi) */
+.deposito-welcome {
+    display: flex; align-items: center; gap: 16px;
+    background: #ffffff; padding: 20px 24px;
+    border-radius: 16px; box-shadow: 0px 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0; width: 100%;
+}
+.d-avatar {
+    width: 55px; height: 55px; border-radius: 50%;
+    background: #4318FF; color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-weight: bold;
+}
+.d-welcome-text h4 { font-family: 'Poppins', sans-serif; color: #2B3674 !important; }
+
+/* 2. Warna Ikon Kartu Dibuat Lebih "Nendang" (Vibrant) */
+.bg-blue-light { background-color: #E2E8FF !important; } .text-blue { color: #4318FF !important; }
+.bg-orange-light { background-color: #FFECD1 !important; } .text-orange { color: #FF9800 !important; }
+.bg-pink-light { background-color: #FFE0E5 !important; } .text-pink { color: #EE5D50 !important; }
+.bg-green-light { background-color: #D1F4EB !important; } .text-green { color: #05CD99 !important; }
+.bg-purple-light { background-color: #EADDFF !important; } .text-purple { color: #8A2BE2 !important; }
+
+/* 3. Teks Angka Metrik Diperbesar & Dipertegas */
+.d-val { 
+    font-size: 2.2rem !important; 
+    font-weight: 800 !important; 
+    font-family: 'Poppins', sans-serif !important; 
+}
+
+/* 4. Background Body (Deposito Style) */
+body { background-color: #F4F7FE !important; }
+.sidebar { background-color: #11047A !important; } /* Sidebar lebih gelap pekat */
