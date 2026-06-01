@@ -1338,7 +1338,7 @@ function setTextSafe(selector, value) {
 
   // --- GANTI fungsi lama updateWelcomeBanner ---
 // --- 🌤️ IDE 3: SMART COMMAND CENTER BANNER ---
-  function updateWelcomeBanner() {
+function updateWelcomeBanner() {
     const banner = document.getElementById('welcome-banner');
     if (!banner) return;
 
@@ -1354,15 +1354,13 @@ function setTextSafe(selector, value) {
     else if (hours >= 11 && hours < 17) greeting = "こんにちは";
     else if (hours >= 17 && hours < 19) greeting = "お疲れ様です";
 
+    // DESAIN FIGMA YANG BERSIH TANPA KOTAK NESTED
     banner.innerHTML = `
-      <div class="smart-banner shadow-sm">
-        <div class="avatar-lg shadow-sm">${escapeHtml(nama).charAt(0).toUpperCase()}</div>
-        <div class="flex-grow-1">
-          <div class="fs-5 fw-bold text-dark mb-1">${greeting}、${escapeHtml(nama)}さん。</div>
-          <div class="text-muted small">
-            <i class="bi bi-info-circle text-primary me-1"></i> 
-            ${isAdmin ? '管理者モードでログイン中です。全体の管理が可能です。(Mode Admin)' : '今日も一日安全作業でお願いします。'}
-          </div>
+      <div class="figma-welcome">
+        <div class="avatar">${escapeHtml(nama).charAt(0).toUpperCase()}</div>
+        <div class="welcome-text">
+          <h5 class="m-0 fw-bold text-dark">${greeting}、${escapeHtml(nama)}さん</h5>
+          <p class="m-0 small text-muted">${isAdmin ? '管理者モード (Mode Admin)' : '今日も一日安全作業でお願いします'}</p>
         </div>
       </div>
     `;
@@ -1371,13 +1369,7 @@ function setTextSafe(selector, value) {
       if (isAdmin) el.classList.remove('d-none');
       else el.classList.add('d-none');
     });
-  }
-
-// === Live reload (user-configurable) & Edge Sleeping Tab Fix ===
-  const LIVE_KEY = "liveRefreshSec";
-  let LIVE_TIMER = null;
-  // FIX: Default diubah ke 10 detik agar antar-device langsung sinkron (Real-time)
-  let LIVE_SEC = Number(localStorage.getItem(LIVE_KEY) || "30"); 
+  } 
 
   function setLiveRefresh(seconds){
     LIVE_SEC = Math.max(0, Number(seconds || 0));
