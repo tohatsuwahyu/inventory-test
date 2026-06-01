@@ -10,8 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap.min.css'"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap-icons.css'"/>
 
-  <link href="styles.css?v=redesign-2026" rel="stylesheet"/>
+  <link href="styles.css?v=redesign-2026-3" rel="stylesheet"/>
   <link href="print.css?v=20251030" rel="stylesheet"/>
+  <link href="qrlib.js?v=redesign-2026-3" rel="stylesheet"/>
 
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
@@ -753,8 +754,43 @@
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-<script src="config.js?v=20260527-2"></script>
-<script src="app.js?v=20260527-scanfix2"></script>
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  STUCK-LOADING SAFETY NET                        ║
+       ║  Some users got infinite skeleton because the    ║
+       ║  Google Apps Script call hung. After 10s we      ║
+       ║  hide the overlay and let app.js show whatever   ║
+       ║  it has (or empty state).                        ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <script>
+    (function () {
+      // 1) Hard timeout for loading overlay
+      setTimeout(() => {
+        const ov = document.getElementById('global-loading');
+        if (ov && !ov.classList.contains('d-none')) {
+          ov.classList.add('d-none');
+          console.warn('[safety] global-loading auto-hidden after 10s');
+        }
+      }, 10000);
+
+      // 2) Force SW to fetch latest assets on every reload (kill stale cache)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+          regs.forEach((r) => r.update());
+        }).catch(() => {});
+      }
+
+      // 3) Surface any uncaught error so user sees something instead of spinner
+      window.addEventListener('error', (e) => {
+        console.error('[app-error]', e.message, e.filename, e.lineno);
+      });
+      window.addEventListener('unhandledrejection', (e) => {
+        console.error('[app-promise-error]', e.reason);
+      });
+    })();
+  </script>
+
+  <script src="config.js?v=20260527-2"></script>
+  <script src="app.js?v=20260527-scanfix2"></script>
 
   <!-- Footer year + mobile nav helper (kept identical for app.js compat) -->
   <script>
@@ -885,22 +921,31 @@
       });
 
       // ─── KEEP user-chip avatar synced with #who text ───
+      // Use a guard flag + value check to prevent infinite mutation loop.
       const who = document.getElementById('who');
       if (who) {
+        let _syncing = false;
         const sync = () => {
-          const span = who.querySelector('span:last-child');
-          const name = (span ? span.textContent : who.textContent || '').trim();
-          const initial = (name || 'U').charAt(0).toUpperCase();
-          const av = who.querySelector('.avatar-sm');
-          if (av) av.textContent = initial;
-          // also sync to mobile hero card
-          const mAv = document.getElementById('mob-hero-avatar');
-          const mNm = document.getElementById('mob-hero-name');
-          if (mAv) mAv.textContent = initial;
-          if (mNm && name) mNm.textContent = name;
+          if (_syncing) return;
+          _syncing = true;
+          try {
+            const span = who.querySelector('span:last-child');
+            const name = (span ? span.textContent : who.textContent || '').trim();
+            const initial = (name || 'U').charAt(0).toUpperCase();
+            const av = who.querySelector('.avatar-sm');
+            if (av && av.textContent !== initial) av.textContent = initial;
+            const mAv = document.getElementById('mob-hero-avatar');
+            const mNm = document.getElementById('mob-hero-name');
+            if (mAv && mAv.textContent !== initial) mAv.textContent = initial;
+            if (mNm && name && mNm.textContent !== name) mNm.textContent = name;
+          } finally {
+            // release the lock after the current event loop tick
+            setTimeout(() => { _syncing = false; }, 0);
+          }
         };
         const obs = new MutationObserver(sync);
-        obs.observe(who, { childList: true, subtree: true, characterData: true });
+        // observe only childList changes (no characterData) → no recursion
+        obs.observe(who, { childList: true });
         sync();
       }
     })();
