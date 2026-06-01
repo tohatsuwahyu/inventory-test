@@ -129,7 +129,7 @@
             </div>
           </div>
 
-          <div class="row g-3 metric-row" id="dash-metrics">
+          <div class="row g-3 metric-row desktop-only" id="dash-metrics">
             <div class="col-12 col-md-6 col-xl">
               <div class="card metric-card h-100 js-metric-drill" id="metric-card-items" data-target="view-items">
                 <div class="metric-icon metric-blue"><i class="bi-box"></i></div>
@@ -195,7 +195,47 @@
               </div>
             </div>
           </div>
-<div class="row g-3 mt-4 mb-2">
+          <div class="mobile-only mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold m-0" style="color: #1e293b;">メニュー (Menu)</h5>
+    <div class="badge bg-light text-dark border">
+      <span id="mobile-user-name" class="fw-bold">User</span>
+    </div>
+  </div>
+  
+  <div class="mobile-app-grid">
+    <div class="mobile-grid-item bg-grid-red" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
+      <i class="bi bi-qr-code-scan"></i>
+      <span>スキャン<br><small class="fw-normal">Scan QR</small></span>
+    </div>
+
+    <div class="mobile-grid-item bg-grid-blue" onclick="showSection('view-io', this);">
+      <i class="bi bi-box-arrow-in-down"></i>
+      <span>入出庫<br><small class="fw-normal">In/Out</small></span>
+    </div>
+
+    <div class="mobile-grid-item bg-grid-orange" onclick="showSection('view-items', this);">
+      <i class="bi bi-boxes"></i>
+      <span>商品一覧<br><small class="fw-normal">Items</small></span>
+    </div>
+
+    <div class="mobile-grid-item bg-grid-green" onclick="showSection('view-shelf', this);">
+      <i class="bi bi-clipboard-check"></i>
+      <span>棚卸<br><small class="fw-normal">Stocktake</small></span>
+    </div>
+
+    <div class="mobile-grid-item bg-grid-purple" onclick="showSection('view-history', this);">
+      <i class="bi bi-clock-history"></i>
+      <span>履歴<br><small class="fw-normal">History</small></span>
+    </div>
+
+    <div class="mobile-grid-item bg-grid-dark" onclick="logout();">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>ログアウト<br><small class="fw-normal">Logout</small></span>
+    </div>
+  </div>
+</div>
+<div class="row g-3 metric-row desktop-only" id="dash-metrics">
             <div class="col-12">
               <div class="card chart-card p-3 border-0 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center mb-2">
