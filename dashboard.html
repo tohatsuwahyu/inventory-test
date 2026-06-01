@@ -102,7 +102,7 @@
           <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>メニュー</button>
         </div>
 
-      <section id="view-dashboard" class="active">
+     <section id="view-dashboard" class="active">
           
           <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
             <div id="welcome-banner" class="w-100"></div>
@@ -141,22 +141,133 @@
               </div>
             </div>
 
+            <div class="figma-metric-card js-metric-drill" id="metric-card-value">
+              <div class="icon-box bg-purple-light text-purple"><i class="bi bi-cash-coin"></i></div>
+              <div class="metric-info">
+                <span class="metric-label">在庫総額</span>
+                <span class="metric-value" id="metric-total-value">¥0</span>
+              </div>
+            </div>
+
             <div class="figma-metric-card js-metric-drill" data-target="view-history">
-              <div class="icon-box bg-purple-light text-purple"><i class="bi bi-clock-history"></i></div>
+              <div class="icon-box text-danger" style="background:#fee2e2;"><i class="bi bi-arrow-left-right"></i></div>
               <div class="metric-info">
                 <span class="metric-label">直近30日の取引</span>
                 <span class="metric-value" id="metric-trx">0</span>
+                <span class="small fw-semibold mt-1" id="metric-trx-diff"></span>
               </div>
             </div>
           </div>
 
-          <div class="row g-3 desktop-only">
+          <div class="row g-3 mb-4 desktop-only">
              <div class="col-12">
-               <div class="card p-3 border-0 shadow-sm" style="border-radius: 16px;">
-                 <div class="fw-bold text-secondary mb-3"><i class="bi bi-activity text-primary me-2"></i>14日間のトレンド</div>
-                 <div style="height: 250px;"><canvas id="chart-daily"></canvas></div>
+               <div class="card p-4 border-0 shadow-sm" style="border-radius: 16px;">
+                 <div class="fw-bold text-secondary mb-3"><i class="bi bi-activity text-primary me-2"></i>14日間の入出庫トレンド</div>
+                 <div style="height: 250px; position: relative;"><canvas id="chart-daily"></canvas></div>
                </div>
              </div>
+          </div>
+
+          <div class="row g-3 mb-4 desktop-only">
+            <div class="col-lg-6">
+              <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="fw-bold text-secondary"><i class="bi bi-bar-chart-fill me-1"></i> 月次 IN/OUT</div>
+                  <button id="btn-export-mov" class="btn btn-sm btn-light text-primary"><i class="bi bi-download me-1"></i>CSV</button>
+                </div>
+                <div id="chart-monthly-sub" class="text-muted small mb-3"></div>
+                <div style="height: 240px; position: relative;"><canvas id="chart-monthly"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="fw-bold text-secondary mb-2"><i class="bi bi-pie-chart-fill me-1"></i> 当月比率</div>
+                <div id="chart-pie-sub" class="text-muted small mb-3"></div>
+                <div style="height: 240px; position: relative;"><canvas id="chart-pie"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="fw-bold text-secondary mb-2"><i class="bi bi-heart-pulse-fill text-danger me-1"></i> 健康状態</div>
+                <div id="chart-health-sub" class="text-muted small mb-3">全アイテム</div>
+                <div style="height: 240px; position: relative;"><canvas id="chart-health"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4 desktop-only">
+            <div class="col-lg-6">
+              <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="fw-bold text-secondary mb-2"><i class="bi bi-cash-stack text-success me-1"></i> 在庫金額 トップ5</div>
+                <div class="text-muted small mb-3">資産価値の高い商品</div>
+                <div style="height: 240px; position: relative;"><canvas id="chart-top-value"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card p-4 h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="fw-bold text-secondary mb-2"><i class="bi bi-diagram-3-fill text-info me-1"></i> ABC分析</div>
+                <div class="text-muted small mb-3">A:高頻度 / B:中頻度 / C:低頻度</div>
+                <div style="height: 240px; position: relative;"><canvas id="chart-abc"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+              <div class="card-header bg-white border-bottom pt-4 pb-3" style="border-radius: 16px 16px 0 0;">
+                <h6 class="fw-bold mb-0"><i class="bi bi-activity me-2"></i>最新のアクティビティ (Timeline)</h6>
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="dash-timeline">
+                  <div class="p-4 text-center text-muted">読み込み中...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+              <div class="card h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="d-flex justify-content-between align-items-center p-4 border-bottom bg-white" style="border-radius: 16px 16px 0 0;">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger rounded-pill"><i class="bi bi-radar"></i></span>
+                    <div class="fw-bold text-dark">枯渇予測 <span class="badge bg-danger-subtle text-danger ms-1" id="radar-count">0</span></div>
+                  </div>
+                </div>
+                <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                  <table class="table table-sm table-hover mb-0">
+                    <thead style="position: sticky; top: 0; background: #f8fafc; z-index: 1;">
+                      <tr><th class="px-4">品名</th><th class="text-end">現在庫</th><th class="text-end px-4">予測</th></tr>
+                    </thead>
+                    <tbody id="tbl-runout-radar">
+                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="card h-100 border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="d-flex justify-content-between align-items-center p-4 border-bottom bg-white" style="border-radius: 16px 16px 0 0;">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary rounded-pill"><i class="bi bi-trophy-fill"></i></span>
+                    <div class="fw-bold text-dark">入出庫 Top 20</div>
+                  </div>
+                  <input type="month" id="rank-month-select" class="form-control form-control-sm text-primary border-0 bg-primary bg-opacity-10 rounded-pill px-3 fw-bold" style="width: auto; cursor: pointer; outline: none;">
+                </div>
+                <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                  <table class="table table-sm table-hover mb-0">
+                    <thead style="position: sticky; top: 0; background: #f8fafc; z-index: 1;">
+                      <tr><th class="px-4" style="width:60px">順位</th><th>コード/品名</th><th class="text-end px-4">合計</th></tr>
+                    </thead>
+                    <tbody id="tbl-rank-month">
+                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
 
         </section>
