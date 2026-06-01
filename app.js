@@ -1336,8 +1336,6 @@ function setTextSafe(selector, value) {
     });
   }
 
-  // --- GANTI fungsi lama updateWelcomeBanner ---
-// --- 🌤️ IDE 3: SMART COMMAND CENTER BANNER ---
 function updateWelcomeBanner() {
     const banner = document.getElementById('welcome-banner');
     if (!banner) return;
@@ -1347,20 +1345,19 @@ function updateWelcomeBanner() {
     const rawRole = (user.role || user.roleName || '').toLowerCase();
     const isAdmin = rawRole === 'admin' || user.isAdmin === true;
     
-    // Logika Sapaan Waktu
     const hours = new Date().getHours();
     let greeting = "こんばんは";
     if (hours >= 5 && hours < 11) greeting = "おはようございます";
     else if (hours >= 11 && hours < 17) greeting = "こんにちは";
     else if (hours >= 17 && hours < 19) greeting = "お疲れ様です";
 
-    // DESAIN FIGMA YANG BERSIH TANPA KOTAK NESTED
+    // Struktur Banner yang Rapi
     banner.innerHTML = `
-      <div class="figma-welcome">
-        <div class="avatar">${escapeHtml(nama).charAt(0).toUpperCase()}</div>
-        <div class="welcome-text">
-          <h5 class="m-0 fw-bold text-dark">${greeting}、${escapeHtml(nama)}さん</h5>
-          <p class="m-0 small text-muted">${isAdmin ? '管理者モード (Mode Admin)' : '今日も一日安全作業でお願いします'}</p>
+      <div class="deposito-welcome">
+        <div class="d-avatar">${escapeHtml(nama).charAt(0).toUpperCase()}</div>
+        <div class="d-welcome-text">
+          <h4 class="m-0 fw-bold text-dark">${greeting}、${escapeHtml(nama)}さん</h4>
+          <p class="m-0 text-muted small">${isAdmin ? '管理者モード (Mode Admin)' : '今日も一日安全作業でお願いします'}</p>
         </div>
       </div>
     `;
@@ -1369,7 +1366,15 @@ function updateWelcomeBanner() {
       if (isAdmin) el.classList.remove('d-none');
       else el.classList.add('d-none');
     });
-  } 
+  }
+
+  // =================================================================
+  // INI ADALAH VARIABEL YANG TERHAPUS SEHINGGA APLIKASI CRASH. 
+  // JANGAN DIHAPUS.
+  // =================================================================
+  const LIVE_KEY = "liveRefreshSec";
+  let LIVE_TIMER = null; 
+  let LIVE_SEC = Number(localStorage.getItem(LIVE_KEY) || "30"); 
 
   function setLiveRefresh(seconds){
     LIVE_SEC = Math.max(0, Number(seconds || 0));
@@ -1382,7 +1387,6 @@ function updateWelcomeBanner() {
       const active = document.querySelector("main section.active")?.id || "";
       fetchItemsDelta(true).then(() => {
          if (active === "view-dashboard") {
-            // FIX: Tarik history juga agar Timeline Dashboard langsung update real-time
             api("history", { method: "GET", silent: true }).then(raw => {
                const list = pickRows(raw);
                if(list.length) { _HISTORY_CACHE = list; renderDashboard(); }
@@ -1399,7 +1403,6 @@ function updateWelcomeBanner() {
     if (LIVE_SEC <= 0) return;
     LIVE_TIMER = setInterval(executeLiveReload, LIVE_SEC * 1000);
   }
-
   // [👇 KAIZEN PERFORMA TAB TIDUR] Matikan interval saat tab tidak aktif
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
