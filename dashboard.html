@@ -19,7 +19,7 @@
   <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* Fix sticky header & layout */
     header.appbar{position:sticky;top:0;z-index:1020;background:#fff;border-bottom:1px solid #e5e7eb}
@@ -102,51 +102,74 @@
           <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>メニュー</button>
         </div>
 
-  <section id="view-dashboard" class="active">
+ <section id="view-dashboard" class="active">
           
-          <div class="mb-4 mt-2">
+          <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
             <div id="welcome-banner" class="w-100"></div>
           </div>
 
-          <div id="ai-insight-banner" class="dashboard-alert d-none mb-4">
+          <div id="ai-insight-banner" class="figma-alert d-none mb-4">
             <div class="alert-icon"><i class="bi bi-cpu-fill"></i></div>
-            <div class="alert-text">
-              <h6 class="fw-bold mb-1">AI 在庫インサイト</h6>
-              <div id="ai-insight-text" class="small">分析中...</div>
+            <div>
+              <h6 class="fw-bold mb-1 text-dark">AI 在庫インサイト</h6>
+              <div id="ai-insight-text" class="small text-muted">分析中...</div>
             </div>
           </div>
 
-          <div class="figma-metric-grid mb-4">
+          <div class="mobile-only mb-4">
+            <div class="mobile-app-grid">
+              <div class="m-grid-item bg-ref-teal" onclick="showSection('view-items', this)">
+                <i class="bi bi-boxes"></i><span>商品一覧<br><small>Items</small></span>
+              </div>
+              <div class="m-grid-item bg-ref-blue" onclick="showSection('view-io', this)">
+                <i class="bi bi-box-arrow-in-down"></i><span>入出庫<br><small>In/Out</small></span>
+              </div>
+              <div class="m-grid-item bg-ref-yellow" onclick="showSection('view-shelf', this)">
+                <i class="bi bi-clipboard-check"></i><span>棚卸<br><small>Stocktake</small></span>
+              </div>
+              <div class="m-grid-item bg-ref-red" onclick="showSection('view-history', this)">
+                <i class="bi bi-clock-history"></i><span>履歴<br><small>History</small></span>
+              </div>
+              <div class="m-grid-item bg-ref-purple" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
+                <i class="bi bi-qr-code-scan"></i><span>スキャン<br><small>Scan QR</small></span>
+              </div>
+              <div class="m-grid-item bg-ref-green" onclick="logout()">
+                <i class="bi bi-box-arrow-right"></i><span>ログアウト<br><small>Logout</small></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="figma-metric-grid mb-4 desktop-only">
             <div class="metric-box bg-slate js-metric-drill" data-target="view-items">
-              <div class="metric-icon-wrap text-slate"><i class="bi bi-boxes"></i></div>
+              <div class="metric-icon-wrap"><i class="bi bi-boxes"></i></div>
               <div class="metric-content">
                 <span class="m-label">アイテム数</span>
                 <span class="m-value" id="metric-items">0</span>
               </div>
             </div>
             <div class="metric-box bg-orange js-metric-drill" data-target="view-items">
-              <div class="metric-icon-wrap text-orange"><i class="bi bi-exclamation-triangle-fill"></i></div>
+              <div class="metric-icon-wrap"><i class="bi bi-exclamation-triangle-fill"></i></div>
               <div class="metric-content">
                 <span class="m-label">要補充 (Low)</span>
                 <span class="m-value" id="metric-below">0</span>
               </div>
             </div>
             <div class="metric-box bg-green js-metric-drill" data-target="view-users">
-              <div class="metric-icon-wrap text-green"><i class="bi bi-people-fill"></i></div>
+              <div class="metric-icon-wrap"><i class="bi bi-people-fill"></i></div>
               <div class="metric-content">
                 <span class="m-label">ユーザー</span>
                 <span class="m-value" id="metric-users">0</span>
               </div>
             </div>
             <div class="metric-box bg-purple js-metric-drill" id="metric-card-value">
-              <div class="metric-icon-wrap text-purple"><i class="bi bi-cash-stack"></i></div>
+              <div class="metric-icon-wrap"><i class="bi bi-cash-stack"></i></div>
               <div class="metric-content">
                 <span class="m-label">在庫総額</span>
                 <span class="m-value" id="metric-total-value">¥0</span>
               </div>
             </div>
             <div class="metric-box bg-blue js-metric-drill" data-target="view-history">
-              <div class="metric-icon-wrap text-blue"><i class="bi bi-arrow-left-right"></i></div>
+              <div class="metric-icon-wrap"><i class="bi bi-arrow-left-right"></i></div>
               <div class="metric-content">
                 <span class="m-label">直近30日の取引</span>
                 <span class="m-value" id="metric-trx">0</span>
@@ -154,67 +177,91 @@
             </div>
           </div>
 
-          <div class="mobile-only mb-4">
-            <h6 class="fw-bold mb-3 px-1 text-dark">クイックメニュー (Menu)</h6>
-            <div class="mobile-app-grid">
-              <div class="m-grid-item" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
-                <div class="m-icon bg-blue-light text-blue"><i class="bi bi-qr-code-scan"></i></div>
-                <span>スキャン</span>
-              </div>
-              <div class="m-grid-item" onclick="showSection('view-io', this);">
-                <div class="m-icon bg-green-light text-green"><i class="bi bi-box-arrow-in-down"></i></div>
-                <span>入出庫</span>
-              </div>
-              <div class="m-grid-item" onclick="showSection('view-items', this);">
-                <div class="m-icon bg-orange-light text-orange"><i class="bi bi-boxes"></i></div>
-                <span>商品一覧</span>
-              </div>
-              <div class="m-grid-item" onclick="showSection('view-shelf', this);">
-                <div class="m-icon bg-purple-light text-purple"><i class="bi bi-clipboard-check"></i></div>
-                <span>棚卸</span>
-              </div>
-              <div class="m-grid-item" onclick="showSection('view-history', this);">
-                <div class="m-icon bg-slate-light text-slate"><i class="bi bi-clock-history"></i></div>
-                <span>履歴</span>
-              </div>
-              <div class="m-grid-item" onclick="logout();">
-                <div class="m-icon bg-red-light text-red"><i class="bi bi-box-arrow-right"></i></div>
-                <span>ログアウト</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-3 desktop-only mb-4">
+          <div class="row g-3 mb-4 desktop-only">
              <div class="col-12">
-               <div class="card figma-card p-4">
+               <div class="card p-4 border-0 shadow-sm rounded-4">
                  <div class="fw-bold text-dark mb-3"><i class="bi bi-graph-up-arrow text-primary me-2"></i>14日間の入出庫トレンド</div>
                  <div style="height: 250px;"><canvas id="chart-daily"></canvas></div>
                </div>
              </div>
+             <div class="col-lg-6">
+               <div class="card p-4 border-0 shadow-sm rounded-4 h-100">
+                 <div class="fw-bold text-dark mb-2"><i class="bi bi-bar-chart-fill text-primary me-2"></i>月次 IN/OUT</div>
+                 <div style="height: 240px;"><canvas id="chart-monthly"></canvas></div>
+               </div>
+             </div>
+             <div class="col-lg-3 col-md-6">
+               <div class="card p-4 border-0 shadow-sm rounded-4 h-100">
+                 <div class="fw-bold text-dark mb-2"><i class="bi bi-pie-chart-fill text-primary me-2"></i>当月比率</div>
+                 <div style="height: 240px;"><canvas id="chart-pie"></canvas></div>
+               </div>
+             </div>
+             <div class="col-lg-3 col-md-6">
+               <div class="card p-4 border-0 shadow-sm rounded-4 h-100">
+                 <div class="fw-bold text-dark mb-2"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>健康状態</div>
+                 <div style="height: 240px;"><canvas id="chart-health"></canvas></div>
+               </div>
+             </div>
           </div>
 
-          <div class="row g-3 desktop-only mb-4">
-            <div class="col-lg-6">
-              <div class="card figma-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div class="fw-bold text-dark"><i class="bi bi-bar-chart-fill text-primary me-2"></i>月次 IN/OUT</div>
+          <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white border-bottom p-4 rounded-top-4">
+                <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-activity text-primary me-2"></i>最新のアクティビティ (Timeline)</h6>
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="dash-timeline">
+                  <div class="p-4 text-center text-muted">読み込み中...</div>
                 </div>
-                <div style="height: 240px;"><canvas id="chart-monthly"></canvas></div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="card figma-card p-4 h-100">
-                <div class="fw-bold text-dark mb-2"><i class="bi bi-pie-chart-fill text-primary me-2"></i>当月比率</div>
-                <div style="height: 240px;"><canvas id="chart-pie"></canvas></div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="card figma-card p-4 h-100">
-                <div class="fw-bold text-dark mb-2"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>健康状態</div>
-                <div style="height: 240px;"><canvas id="chart-health"></canvas></div>
               </div>
             </div>
           </div>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+              <div class="card h-100 border-0 shadow-sm rounded-4">
+                <div class="d-flex justify-content-between align-items-center p-4 border-bottom bg-white rounded-top-4">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger rounded-pill"><i class="bi bi-radar"></i></span>
+                    <div class="fw-bold text-dark m-0">枯渇予測 <span class="badge bg-danger-subtle text-danger ms-1" id="radar-count">0</span></div>
+                  </div>
+                </div>
+                <div class="table-responsive" style="max-height: 320px;">
+                  <table class="table table-hover mb-0">
+                    <thead style="background: #f8fafc;">
+                      <tr><th class="px-4">品名</th><th class="text-end">現在庫</th><th class="text-end px-4">予測</th></tr>
+                    </thead>
+                    <tbody id="tbl-runout-radar">
+                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="card h-100 border-0 shadow-sm rounded-4">
+                <div class="d-flex justify-content-between align-items-center p-4 border-bottom bg-white rounded-top-4">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary rounded-pill"><i class="bi bi-trophy-fill"></i></span>
+                    <div class="fw-bold text-dark m-0">入出庫 Top 20</div>
+                  </div>
+                  <input type="month" id="rank-month-select" class="form-control form-control-sm text-primary bg-light border-0 rounded-pill px-3 fw-bold" style="width: auto;">
+                </div>
+                <div class="table-responsive" style="max-height: 320px;">
+                  <table class="table table-hover mb-0">
+                    <thead style="background: #f8fafc;">
+                      <tr><th class="px-4" style="width:60px">順位</th><th>コード/品名</th><th class="text-end px-4">合計</th></tr>
+                    </thead>
+                    <tbody id="tbl-rank-month">
+                      <tr><td colspan="3" class="text-center text-muted py-4">読み込み中…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </section>
 
         <section id="view-io" class="d-none">
