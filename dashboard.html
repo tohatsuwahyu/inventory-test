@@ -3,119 +3,145 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  
+  <meta name="theme-color" content="#4F46E5"/>
+
   <title>在庫管理 - ダッシュボード</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap.min.css'"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" onerror="this.onerror=null;this.href='vendor/bootstrap-icons.css'"/>
 
-<link href="styles.css?v=deposito-mobile-fix-final" rel="stylesheet"/>
+  <link href="styles.css?v=redesign-2026" rel="stylesheet"/>
   <link href="print.css?v=20251030" rel="stylesheet"/>
-  
+
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    /* Fix sticky header & layout */
-    header.appbar{position:sticky;top:0;z-index:1020;background:#fff;border-bottom:1px solid #e5e7eb}
-    header .brand{display:flex;align-items:center;gap:.6rem}
-    header .brand img{height:32px}
-    .layout{display:flex;min-height:100vh;gap:0;align-items:stretch}
-    main{flex:1 1 auto;min-width:0}
-    .content{padding:16px}
-    .section-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    #io-scan-area,#scan-area{width:100%;max-width:480px;margin:0 auto;aspect-ratio:4/3;position:relative;overflow:hidden;background:#0b0b0b10;border-radius:12px}
-    #io-scan-area video,#scan-area video{width:100%!important;height:100%!important;object-fit:cover}
-    .html5-qrcode-element{display:none!important}
-    .welcome{background:linear-gradient(135deg,#eef2ff,#f5f7ff);border:1px solid #e5e7eb;border-radius:12px;padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;box-shadow:0 10px 20px rgba(15,23,42,.04) inset}
-    .welcome .avatar{width:34px;height:34px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;background:linear-gradient(135deg,#0ea5e9,#22d3ee)}
-    @media (max-width:480px){ header.appbar .btn{padding:.28rem .5rem;font-size:.82rem;border-radius:10px} .content{padding:12px} }
-    
-    /* Efek UI/UX Modern */
-    .table tbody tr { transition: background-color 0.2s ease, transform 0.1s ease; }
-    .table tbody tr:hover { background-color: #f8fafc !important; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 10; position: relative; }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    .btn { transition: all 0.2s ease; }
-    .btn:active { transform: scale(0.95); }
-  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
- <header class="appbar">
-    <div class="container-fluid h-100">
-      <div class="d-flex align-items-center justify-content-between h-100">
-        
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  TOPBAR                                          ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <header class="appbar">
+    <div class="container-fluid h-100 w-100">
+      <div class="d-flex align-items-center h-100">
+
+        <!-- Brand + burger -->
         <div class="brand d-flex align-items-center gap-2">
-          <button id="burger" class="btn btn-sm btn-burger border-0 p-1" data-burger aria-label="Menu">
-             <i class="bi bi-list fs-4"></i>
+          <button id="burger" class="btn btn-burger" data-burger aria-label="Menu">
+            <i class="bi bi-list fs-5"></i>
           </button>
-          <img id="brand-logo" alt="logo" style="height: 28px;"/>
+          <img id="brand-logo" alt="logo"/>
           <div class="fw-bold d-none d-sm-block text-nowrap">在庫管理</div>
         </div>
 
-       <div class="d-flex align-items-center gap-2">
-          <button id="btn-theme" class="btn btn-sm btn-light border-0 text-secondary" title="テーマ切替">
-            <i class="bi bi-moon-stars-fill"></i>
+        <!-- Search (desktop only) -->
+        <div class="topbar-search d-none d-lg-block">
+          <i class="bi bi-search"></i>
+          <input type="search" placeholder="商品コード・名称を検索…" aria-label="検索"/>
+          <kbd>⌘K</kbd>
+        </div>
+
+        <!-- Right actions -->
+        <div class="topbar-actions ms-auto">
+          <button id="btn-theme" class="icon-btn" title="テーマ切替" aria-label="Theme">
+            <i class="bi bi-moon-stars"></i>
           </button>
-          <span id="who" class="text-muted small d-none d-md-block text-end" style="line-height:1.2">user</span>
-          <button id="btn-help" class="btn btn-sm btn-light border-0 d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#helpModal" title="ヘルプ">
+
+          <button id="btn-help" class="icon-btn" data-bs-toggle="modal" data-bs-target="#helpModal" title="ヘルプ" aria-label="Help">
             <i class="bi bi-question-circle"></i>
           </button>
-          <button id="btn-logout" class="btn btn-sm btn-danger d-flex align-items-center gap-1 text-white shadow-sm border-0">
-             <i class="bi bi-box-arrow-right"></i>
-             <span class="d-none d-md-inline fw-semibold">ログアウト</span> 
+
+          <span id="who" class="user-chip d-none d-md-inline-flex">
+            <span class="avatar-sm">U</span>
+            <span>user</span>
+          </span>
+
+          <button id="btn-logout" title="ログアウト">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="d-none d-md-inline">ログアウト</span>
           </button>
         </div>
+
       </div>
     </div>
+
     <span id="health-dot" class="health-dot" title="Backend health"></span>
     <span id="low-badge" class="badge badge-danger d-none">Low-stock!</span>
     <div id="toast-area" class="toast-area"></div>
   </header>
 
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  LAYOUT (sidebar + main)                         ║
+       ╚══════════════════════════════════════════════════╝ -->
   <div class="layout">
+
+    <!-- ── Sidebar ── -->
     <aside id="sb" class="sidebar">
-     <nav class="d-flex flex-column gap-1">
-        <a href="#" data-view="view-dashboard" class="active"><i class="bi bi-speedometer2"></i> ダッシュボード</a>
-        <a href="#" data-view="view-io"><i class="bi bi-box-seam"></i> 入出庫（QR対応）</a>
-        <a href="#" data-view="view-shelf"><i class="bi bi-clipboard-check"></i> 棚卸</a>
-        <a href="#" data-view="view-shelf-list"><i class="bi bi-table"></i> 棚卸一覧</a>
-        <a href="#" data-view="view-items"><i class="bi bi-boxes"></i> 商品一覧</a>
-        <a href="#" data-view="view-users"><i class="bi bi-person-badge"></i> ユーザー / QR</a>
-        <a href="#" data-view="view-history"><i class="bi bi-clock-history"></i> 履歴</a>
-        
-        <a href="#" data-view="view-reports" class="admin-only d-none"><i class="bi bi-graph-up-arrow"></i> 管理レポート</a>
+      <div class="sidebar-label">Main Menu</div>
+      <nav class="d-flex flex-column gap-1">
+        <a href="#" data-view="view-dashboard" class="active"><i class="bi bi-speedometer2"></i> <span>ダッシュボード</span></a>
+        <a href="#" data-view="view-io"><i class="bi bi-box-seam"></i> <span>入出庫（QR対応）</span></a>
+        <a href="#" data-view="view-shelf"><i class="bi bi-clipboard-check"></i> <span>棚卸</span></a>
+        <a href="#" data-view="view-shelf-list"><i class="bi bi-table"></i> <span>棚卸一覧</span></a>
+        <a href="#" data-view="view-items"><i class="bi bi-boxes"></i> <span>商品一覧</span></a>
+        <a href="#" data-view="view-users"><i class="bi bi-person-badge"></i> <span>ユーザー / QR</span></a>
+        <a href="#" data-view="view-history"><i class="bi bi-clock-history"></i> <span>履歴</span></a>
       </nav>
+
+      <div class="sidebar-label">Admin</div>
+      <nav class="d-flex flex-column gap-1">
+        <a href="#" data-view="view-reports" class="admin-only d-none"><i class="bi bi-graph-up-arrow"></i> <span>管理レポート</span></a>
+      </nav>
+
+      <div class="sb-foot-card">
+        <div class="sf-title"><i class="bi bi-lightbulb-fill text-warning me-1"></i> ヒント</div>
+        <div class="sf-desc">ヘッダーの「?」ボタンで、各メニューの使い方を確認できます。</div>
+        <a href="#" class="sf-link" id="btn-help-shortcut">
+          ガイドを開く <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
     </aside>
 
+    <!-- ── Main content ── -->
     <main class="w-100">
       <div class="content container-fluid">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <h5 id="page-title" class="section-title m-0">ダッシュボード</h5>
-          <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>メニュー</button>
+
+        <!-- Page Head -->
+        <div class="page-head">
+          <div>
+            <h1 id="page-title" class="section-title">ダッシュボード</h1>
+            <div class="section-subtitle d-none d-md-block">在庫の最新状況・分析・取引履歴の概要</div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button id="btn-menu" class="btn btn-outline-secondary d-lg-none" data-burger>
+              <i class="bi bi-list me-1"></i> メニュー
+            </button>
+          </div>
         </div>
 
-<section id="view-dashboard" class="active">
-          
-          <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
+        <!-- ╔════ VIEW: DASHBOARD ════╗ -->
+        <section id="view-dashboard" class="active">
+
+          <div class="mb-4">
             <div id="welcome-banner" class="w-100"></div>
           </div>
 
-          <div id="ai-insight-banner" class="alert d-none align-items-center border-0 shadow-sm mb-4" style="border-radius: 12px; background: linear-gradient(to right, #e0e7ff, #eff6ff); border-left: 4px solid #4f46e5 !important;">
-            <i class="bi bi-cpu-fill fs-2 text-primary me-3"></i>
+          <div id="ai-insight-banner" class="d-none mb-4">
+            <i class="bi bi-cpu-fill"></i>
             <div>
-              <h6 class="fw-bold text-primary mb-1">AI 在庫インサイト</h6>
-              <div id="ai-insight-text" class="small text-dark">分析中...</div>
+              <h6 class="fw-bold mb-1">AI 在庫インサイト</h6>
+              <div id="ai-insight-text" class="small text-secondary">分析中...</div>
             </div>
           </div>
 
+          <!-- ─── METRICS (desktop) ─── -->
           <div class="deposito-metric-grid mb-4 desktop-only">
             <div class="deposito-card js-metric-drill" data-target="view-items">
               <div class="d-info">
@@ -155,8 +181,9 @@
             </div>
           </div>
 
+          <!-- ─── QUICK MENU (mobile) ─── -->
           <div class="mobile-only mb-4">
-            <h6 class="fw-bold mb-3 px-1 text-dark" style="font-family: 'Poppins', sans-serif;">メニュー (Menu)</h6>
+            <h6 class="fw-bold mb-3 px-1 text-dark">メニュー (Menu)</h6>
             <div class="modern-mobile-grid">
               <div class="m-app-card" onclick="showSection('view-io', this); setTimeout(()=>document.getElementById('btn-io-scan').click(), 400);">
                 <div class="m-app-icon bg-blue-light text-blue"><i class="bi bi-qr-code-scan"></i></div>
@@ -185,77 +212,80 @@
             </div>
           </div>
 
+          <!-- ─── CHARTS (desktop) ─── -->
           <div class="row g-4 mb-4 desktop-only">
-             <div class="col-12">
-               <div class="card deposito-chart-card p-4">
-                 <div class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">14日間の入出庫トレンド</div>
-                 <div style="height: 250px;"><canvas id="chart-daily"></canvas></div>
-               </div>
-             </div>
-             <div class="col-lg-6">
-               <div class="card deposito-chart-card p-4 h-100">
-                 <div class="d-flex justify-content-between align-items-center mb-3">
-                   <div class="fw-bold text-dark" style="font-family: 'Poppins', sans-serif;">月次 IN/OUT</div>
-                   <button id="btn-export-mov" class="btn btn-sm btn-light text-primary"><i class="bi bi-download"></i> CSV</button>
-                 </div>
-                 <div id="chart-monthly-sub" class="text-muted small mb-3"></div>
-                 <div style="height: 240px;"><canvas id="chart-monthly"></canvas></div>
-               </div>
-             </div>
-             <div class="col-lg-3 col-md-6">
-               <div class="card deposito-chart-card p-4 h-100">
-                 <div class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">当月比率</div>
-                 <div id="chart-pie-sub" class="text-muted small mb-3"></div>
-                 <div style="height: 240px;"><canvas id="chart-pie"></canvas></div>
-               </div>
-             </div>
-             <div class="col-lg-3 col-md-6">
-               <div class="card deposito-chart-card p-4 h-100">
-                 <div class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">健康状態</div>
-                 <div id="chart-health-sub" class="text-muted small mb-3"></div>
-                 <div style="height: 240px;"><canvas id="chart-health"></canvas></div>
-               </div>
-             </div>
+            <div class="col-12">
+              <div class="card deposito-chart-card p-4">
+                <div class="fw-bold mb-3">14日間の入出庫トレンド</div>
+                <div style="height: 250px;"><canvas id="chart-daily"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card deposito-chart-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="fw-bold">月次 IN/OUT</div>
+                  <button id="btn-export-mov" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> CSV</button>
+                </div>
+                <div id="chart-monthly-sub" class="text-muted small mb-3"></div>
+                <div style="height: 240px;"><canvas id="chart-monthly"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card deposito-chart-card p-4 h-100">
+                <div class="fw-bold mb-3">当月比率</div>
+                <div id="chart-pie-sub" class="text-muted small mb-3"></div>
+                <div style="height: 240px;"><canvas id="chart-pie"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="card deposito-chart-card p-4 h-100">
+                <div class="fw-bold mb-3">健康状態</div>
+                <div id="chart-health-sub" class="text-muted small mb-3"></div>
+                <div style="height: 240px;"><canvas id="chart-health"></canvas></div>
+              </div>
+            </div>
           </div>
 
           <div class="row g-4 mb-4 desktop-only">
             <div class="col-lg-6">
               <div class="card deposito-chart-card p-4 h-100">
-                <div class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">在庫金額 トップ5</div>
+                <div class="fw-bold mb-3">在庫金額 トップ5</div>
                 <div id="chart-value-sub" class="text-muted small mb-3"></div>
                 <div style="height: 240px;"><canvas id="chart-top-value"></canvas></div>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="card deposito-chart-card p-4 h-100">
-                <div class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">ABC分析</div>
+                <div class="fw-bold mb-3">ABC分析</div>
                 <div id="chart-abc-sub" class="text-muted small mb-3"></div>
                 <div style="height: 240px;"><canvas id="chart-abc"></canvas></div>
               </div>
             </div>
           </div>
-          
+
+          <!-- ─── TIMELINE ─── -->
           <div class="col-12 mb-4">
             <div class="card deposito-chart-card p-4">
-              <h6 class="fw-bold mb-3 text-dark" style="font-family: 'Poppins', sans-serif;">最新のアクティビティ (Timeline)</h6>
+              <h6 class="fw-bold mb-3">最新のアクティビティ (Timeline)</h6>
               <div class="list-group list-group-flush" id="dash-timeline">
                 <div class="p-4 text-center text-muted">読み込み中...</div>
               </div>
             </div>
           </div>
 
+          <!-- ─── RADAR + RANK ─── -->
           <div class="row g-4 mb-4">
             <div class="col-lg-6">
               <div class="card deposito-chart-card p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div class="d-flex align-items-center gap-2">
                     <span class="badge bg-danger rounded-pill"><i class="bi bi-radar"></i></span>
-                    <div class="fw-bold text-dark m-0" style="font-family: 'Poppins', sans-serif;">枯渇予測 <span class="badge bg-danger-subtle text-danger ms-1" id="radar-count">0</span></div>
+                    <div class="fw-bold m-0">枯渇予測 <span class="badge bg-danger-subtle text-danger ms-1" id="radar-count">0</span></div>
                   </div>
                 </div>
                 <div class="table-responsive" style="max-height: 320px;">
                   <table class="table table-hover mb-0">
-                    <thead style="background: #f8fafc;">
+                    <thead>
                       <tr><th class="px-2">品名</th><th class="text-end">現在庫</th><th class="text-end px-2">予測</th></tr>
                     </thead>
                     <tbody id="tbl-runout-radar">
@@ -271,13 +301,13 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div class="d-flex align-items-center gap-2">
                     <span class="badge bg-primary rounded-pill"><i class="bi bi-trophy-fill"></i></span>
-                    <div class="fw-bold text-dark m-0" style="font-family: 'Poppins', sans-serif;">入出庫 Top 20</div>
+                    <div class="fw-bold m-0">入出庫 Top 20</div>
                   </div>
-                  <input type="month" id="rank-month-select" class="form-control form-control-sm text-primary bg-light border-0 rounded-pill px-3 fw-bold" style="width: auto;">
+                  <input type="month" id="rank-month-select" class="form-control form-control-sm" style="width: auto;">
                 </div>
                 <div class="table-responsive" style="max-height: 320px;">
                   <table class="table table-hover mb-0">
-                    <thead style="background: #f8fafc;">
+                    <thead>
                       <tr><th class="px-2" style="width:60px">順位</th><th>コード/品名</th><th class="text-end px-2">合計</th></tr>
                     </thead>
                     <tbody id="tbl-rank-month">
@@ -290,73 +320,77 @@
           </div>
 
         </section>
+
+        <!-- ╔════ VIEW: IO ════╗ -->
         <section id="view-io" class="d-none">
           <div class="card p-3 mb-3">
-            <div class="items-toolbar d-flex justify-content-between align-items-center">
+            <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">スキャン</div>
-              <div class="right">
+              <div class="right d-flex gap-2">
                 <button id="btn-io-scan" class="btn btn-sm btn-primary"><i class="bi bi-camera-video me-1"></i> 開始</button>
                 <button id="btn-io-stop" class="btn btn-sm btn-outline-secondary">停止</button>
               </div>
             </div>
-            <div class="d-flex gap-2 mb-2">
+            <div class="d-flex gap-2 mb-3">
               <button onclick="showSection('view-io', this)" class="btn btn-sm btn-primary w-50">入出庫モード</button>
               <button onclick="showSection('view-shelf', this)" class="btn btn-sm btn-outline-primary w-50">棚卸モード</button>
             </div>
-            <div id="io-scan-area" class="border rounded p-3 text-center text-muted">カメラ待機中…</div>
+            <div id="io-scan-area">カメラ待機中…</div>
           </div>
+
           <div class="card p-3">
-            <div class="items-toolbar d-flex justify-content-between align-items-center">
+            <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">入出庫入力</div>
               <div class="right">
                 <button id="btn-io-lookup" class="btn btn-sm btn-outline-secondary"><i class="bi bi-search me-1"></i> 照会</button>
               </div>
             </div>
-            <form id="form-io" class="row g-3">
+            <form id="form-io" class="row g-3 mt-1">
               <div class="col-md-4"><label class="form-label">コード</label><input id="io-code" class="form-control"/></div>
               <div class="col-md-4"><label class="form-label">名称</label><input id="io-name" class="form-control" readonly/></div>
               <div class="col-md-2"><label class="form-label">価格</label><input id="io-price" class="form-control" readonly/></div>
               <div class="col-md-2"><label class="form-label">在庫</label><input id="io-stock" class="form-control" readonly/></div>
-            <div class="col-md-3"><label class="form-label">数量</label>
+              <div class="col-md-3"><label class="form-label">数量</label>
                 <input type="tel" inputmode="numeric" pattern="[0-9]*" id="io-qty" class="form-control form-control-lg text-center fw-bold" placeholder="0" style="font-size:1.5rem;" onclick="this.select()" onfocus="this.select()">
               </div>
               <div class="col-md-3"><label class="form-label">単位</label><select id="io-unit" class="form-select"><option>pcs</option><option>kg</option><option>m</option></select></div>
-             <div class="col-md-3"><label class="form-label">種別</label><select id="io-type" class="form-select"><option>IN</option><option>OUT</option></select></div>
-              
+              <div class="col-md-3"><label class="form-label">種別</label><select id="io-type" class="form-select"><option>IN</option><option>OUT</option></select></div>
+
               <div class="col-12 d-flex gap-2 mt-4">
                 <button type="submit" id="btn-io-submit" class="btn btn-primary flex-grow-1"><i class="bi bi-check2-circle me-1"></i> 即時登録</button>
-                <button type="button" id="btn-io-add-cart" class="btn btn-outline-primary"><i class="bi bi-cart-plus me-1"></i> リストに追加 </button>
+                <button type="button" id="btn-io-add-cart" class="btn btn-outline-primary"><i class="bi bi-cart-plus me-1"></i> リストに追加</button>
               </div>
             </form>
 
             <div id="io-cart-container" class="mt-4 d-none">
               <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                <span class="fw-bold text-primary"><i class="bi bi-cart-check me-2"></i>スキャンリスト<span id="io-cart-count" class="badge bg-primary rounded-pill">0</span></span>
-                <button id="btn-io-clear-cart" class="btn btn-sm btn-outline-danger py-0">クリア</button>
+                <span class="fw-bold text-primary"><i class="bi bi-cart-check me-2"></i>スキャンリスト<span id="io-cart-count" class="badge bg-primary rounded-pill ms-2">0</span></span>
+                <button id="btn-io-clear-cart" class="btn btn-sm btn-outline-danger">クリア</button>
               </div>
-              <ul id="io-cart-list" class="list-group mb-3 shadow-sm" style="max-height: 250px; overflow-y: auto;"></ul>
-              <button id="btn-io-submit-cart" class="btn btn-success w-100 fw-bold shadow-sm"><i class="bi bi-cloud-arrow-up-fill me-2"></i>一括登録</button>
+              <ul id="io-cart-list" class="list-group mb-3" style="max-height: 250px; overflow-y: auto;"></ul>
+              <button id="btn-io-submit-cart" class="btn btn-success w-100 fw-bold"><i class="bi bi-cloud-arrow-up-fill me-2"></i>一括登録</button>
             </div>
           </div>
         </section>
 
+        <!-- ╔════ VIEW: SHELF (Stocktake) ════╗ -->
         <section id="view-shelf" class="d-none">
           <div class="card p-3 mb-3">
-            <div class="items-toolbar d-flex justify-content-between align-items-center">
+            <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">スキャン</div>
-              <div class="right">
+              <div class="right d-flex gap-2">
                 <button id="btn-start-scan" class="btn btn-sm btn-primary"><i class="bi bi-camera-video me-1"></i> 開始</button>
                 <button id="btn-stop-scan" class="btn btn-sm btn-outline-secondary">停止</button>
               </div>
             </div>
-            <div id="scan-area" class="border rounded p-3 text-center text-muted">カメラ待機中…</div>
+            <div id="scan-area">カメラ待機中…</div>
           </div>
           <div class="card p-3">
-            <div class="items-toolbar d-flex justify-content-between align-items-center">
+            <div class="items-toolbar d-flex justify-content-between align-items-center mb-2 border-0 p-0">
               <div class="left fw-semibold">棚卸入力</div>
               <div class="right"></div>
             </div>
-            <div class="row g-3 mb-2">
+            <div class="row g-3 mb-2 mt-1">
               <div class="col-md-4"><label class="form-label">コード</label><input id="st-code" class="form-control"/></div>
               <div class="col-md-3"><label class="form-label">実在数量</label><input id="st-qty" type="number" class="form-control"/></div>
               <div class="col-md-2 d-flex align-items-end"><button id="st-add" class="btn btn-primary w-100">追加</button></div>
@@ -382,8 +416,9 @@
           </div>
         </section>
 
+        <!-- ╔════ VIEW: SHELF LIST ════╗ -->
         <section id="view-shelf-list" class="d-none">
-          <div class="items-toolbar d-flex justify-content-between align-items-center mb-2">
+          <div class="items-toolbar card d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
             <div class="fw-semibold">棚卸結果一覧</div>
             <div class="right d-flex align-items-center gap-2 flex-wrap">
               <input id="tana-month" type="month" class="form-control form-control-sm" style="width:auto;">
@@ -404,14 +439,15 @@
           </div><div id="tana-summary" class="mt-2 small text-muted"></div></div></div>
         </section>
 
+        <!-- ╔════ VIEW: ITEMS ════╗ -->
         <section id="view-items" class="d-none">
           <div class="items-toolbar card p-3 mb-3 d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3">
             <div class="left d-flex align-items-center gap-3 flex-wrap">
               <div class="fw-semibold"><i class="bi bi-box-seam me-1"></i> 商品一覧</div>
               <span id="items-low-badge" class="badge rounded-pill bg-warning-subtle text-warning-emphasis small d-none">⚠ 要補充</span>
-              <input id="items-search" class="form-control search" placeholder="名称で検索…" style="max-width:200px"/>
+              <input id="items-search" class="form-control search" placeholder="名称で検索…" style="max-width:220px"/>
             </div>
-            
+
             <div class="d-flex gap-2 overflow-auto" style="scrollbar-width: none; white-space: nowrap;">
               <button class="btn btn-sm btn-outline-secondary js-filter rounded-pill active" data-f="all">すべて</button>
               <button class="btn btn-sm btn-outline-warning js-filter rounded-pill" data-f="low">要補充</button>
@@ -430,7 +466,7 @@
                 <i class="bi bi-upload"></i> 取込 (Import)
                 <input type="file" id="input-items-import" accept=".csv" class="d-none">
               </label>
-                     <button id="btn-items-print-selected" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> 選択印刷</button>
+              <button id="btn-items-print-selected" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> 選択印刷</button>
               <button id="btn-items-print-all" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> 全件</button>
               <button id="btn-open-new-item" class="btn btn-sm btn-primary d-none"><i class="bi bi-plus-circle"></i> 新規</button>
             </div>
@@ -444,9 +480,10 @@
           </div>
         </section>
 
+        <!-- ╔════ VIEW: USERS ════╗ -->
         <section id="view-users" class="d-none">
           <div class="items-toolbar card p-3 mb-3 d-flex justify-content-between align-items-center">
-            <div class="left fw-semibold">ユーザー / QR</div>
+            <div class="left fw-semibold"><i class="bi bi-person-badge me-1"></i> ユーザー / QR</div>
             <div class="right d-flex align-items-center gap-2">
               <button id="btn-users-export" class="btn btn-sm btn-outline-secondary d-none">Export</button>
               <button id="btn-users-import" class="btn btn-sm btn-outline-secondary d-none">Import</button>
@@ -455,22 +492,32 @@
             </div>
           </div>
           <div class="row g-3">
-            <div class="col-lg-7"><div class="card p-3"><div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th style="width:170px">QR</th><th>ID</th><th>名前</th><th>権限</th><th class="text-end">DL</th></tr></thead><tbody id="tbl-userqr"></tbody></table></div></div></div>
-            <div class="col-lg-5"><div class="card p-3"><div class="fw-semibold mb-2">印刷プレビュー</div><div id="print-qr-users-grid" class="d-flex flex-column gap-2"></div></div></div>
+            <div class="col-lg-7">
+              <div class="card p-3"><div class="table-responsive">
+                <table class="table table-sm align-middle"><thead><tr><th style="width:170px">QR</th><th>ID</th><th>名前</th><th>権限</th><th class="text-end">DL</th></tr></thead><tbody id="tbl-userqr"></tbody></table>
+              </div></div>
+            </div>
+            <div class="col-lg-5">
+              <div class="card p-3">
+                <div class="fw-semibold mb-2">印刷プレビュー</div>
+                <div id="print-qr-users-grid" class="d-flex flex-column gap-2"></div>
+              </div>
+            </div>
           </div>
         </section>
 
-       <section id="view-history" class="d-none">
-          <div class="items-toolbar d-flex justify-content-between align-items-center mb-3">
+        <!-- ╔════ VIEW: HISTORY ════╗ -->
+        <section id="view-history" class="d-none">
+          <div class="items-toolbar card d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
             <div class="fw-semibold">履歴 <span id="history-range-badge" class="badge bg-light text-muted fw-normal ms-2"></span></div>
-            
+
             <div class="right d-flex align-items-center gap-2 flex-wrap">
               <div id="hist-export-group" class="d-none align-items-center gap-1">
                 <input type="month" id="hist-export-month" class="form-control form-control-sm" style="width: auto;" title="出力する月を選択">
                 <button id="btn-hist-export" class="btn btn-sm btn-outline-primary" title="CSV出力"><i class="bi bi-download"></i></button>
               </div>
-              
-              <div class="btn-group btn-group-sm"> 
+
+              <div class="btn-group btn-group-sm">
                 <button class="btn btn-outline-secondary js-hist-filter active" data-range="all">すべて</button>
                 <button class="btn btn-outline-secondary js-hist-filter" data-range="today">本日</button>
               </div>
@@ -487,10 +534,12 @@
                       <th>担当者</th>
                       <th>コード</th>
                       <th>品名</th>
-                      <th class="text-end">数量</th> <th class="text-center">単位</th>
+                      <th class="text-end">数量</th>
+                      <th class="text-center">単位</th>
                       <th class="text-center">種別</th>
                       <th>備考</th>
-                      <th class="text-end">修正</th> </tr>
+                      <th class="text-end">修正</th>
+                    </tr>
                   </thead>
                   <tbody>
                     <tr>
@@ -503,15 +552,16 @@
           </div>
         </section>
 
+        <!-- ╔════ VIEW: REPORTS (Admin) ════╗ -->
         <section id="view-reports" class="d-none">
-          <div class="items-toolbar mb-4">
+          <div class="items-toolbar card mb-4">
             <div class="fw-semibold fs-5"><i class="bi bi-shield-check text-primary me-2"></i>在庫管理レポート (Inventory Control)</div>
-            <p class="text-muted small mt-1">ワンクリックでシステムの監査とレポート作成を実行します。結果は管理者のメールアドレスに送信されます。</p>
+            <p class="text-muted small mt-1 mb-0">ワンクリックでシステムの監査とレポート作成を実行します。結果は管理者のメールアドレスに送信されます。</p>
           </div>
 
-         <div class="row g-4">
+          <div class="row g-4">
             <div class="col-md-6">
-              <div class="card h-100 p-4 text-center border-0 shadow-sm">
+              <div class="card h-100 p-4 text-center">
                 <div class="mb-3"><i class="bi bi-hourglass-bottom fs-1 text-secondary"></i></div>
                 <h6 class="fw-bold">不動在庫レポート<br><small class="text-muted">(Dead Stock Report)</small></h6>
                 <p class="small text-muted mb-4">90日以上動きのない在庫を検出し、リスト化して通知します。無駄な保管コストの削減に役立ちます。</p>
@@ -520,16 +570,16 @@
             </div>
 
             <div class="col-md-6">
-              <div class="card h-100 p-4 text-center border-0 shadow-sm">
+              <div class="card h-100 p-4 text-center">
                 <div class="mb-3"><i class="bi bi-clipboard2-pulse fs-1 text-success"></i></div>
                 <h6 class="fw-bold">在庫データ監査<br><small class="text-muted">(Reconciliation Audit)</small></h6>
                 <p class="small text-muted mb-4">マイナス在庫などの異常なデータがないかシステム全体をスキャンし、警告レポートをメールで送信します。</p>
                 <button id="btn-run-audit" class="btn btn-outline-success w-100 mt-auto">監査実行 (Audit)</button>
               </div>
             </div>
-            
+
             <div class="col-md-6">
-              <div class="card h-100 p-4 text-center border-0 shadow-sm">
+              <div class="card h-100 p-4 text-center">
                 <div class="mb-3"><i class="bi bi-lightbulb-fill fs-1 text-warning"></i></div>
                 <h6 class="fw-bold">適正在庫のAI分析<br><small class="text-muted">(Smart Min-Stock)</small></h6>
                 <p class="small text-muted mb-4">過去30日の出庫ペースを分析し、古くなった「最小在庫」設定の最適値を提案します。</p>
@@ -538,7 +588,7 @@
             </div>
 
             <div class="col-md-6">
-              <div class="card h-100 p-4 text-center border-0 shadow-sm">
+              <div class="card h-100 p-4 text-center">
                 <div class="mb-3"><i class="bi bi-archive-fill fs-1 text-info"></i></div>
                 <h6 class="fw-bold">履歴のアーカイブ<br><small class="text-muted">(Auto-Archiving)</small></h6>
                 <p class="small text-muted mb-4">1年以上前の古い履歴データを別シート（履歴_Archive）に移動し、システムの動作を軽くします。</p>
@@ -547,12 +597,17 @@
             </div>
           </div>
         </section>
-      </div> <footer class="app-footer">© <span id="fy"></span> — Inventory System</footer>
+
+      </div>
+      <footer class="app-footer">© <span id="fy"></span> &mdash; Inventory System &mdash; Design by <b>Wahyu</b></footer>
     </main>
   </div>
 
+  <!-- Drawer backdrop -->
   <div id="sb-backdrop"></div>
- <div id="global-loading" class="d-none" style="position: fixed; top: 60px; left: 0; width: 100%; height: 100%; z-index: 9999;">
+
+  <!-- Loading overlay -->
+  <div id="global-loading" class="d-none" style="position: fixed; top: 60px; left: 0; width: 100%; height: 100%; z-index: 9999;">
     <div class="container-fluid mt-4" style="max-width: 1200px;">
       <div class="skeleton sk-title"></div>
       <div class="row mt-4">
@@ -565,73 +620,203 @@
     </div>
   </div>
 
- <div class="modal fade" id="helpModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header bg-light">
-        <h5 class="modal-title fw-bold" id="helpModalTitle"><i class="bi bi-info-circle-fill me-2 text-primary"></i>ヘルプ</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-4" id="helpModalBody">
-         読み込み中...
-      </div>
-      <div class="modal-footer bg-light border-0">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  HELP MODAL                                      ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <div class="modal fade" id="helpModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpModalTitle">
+            <i class="bi bi-info-circle-fill me-2 text-primary"></i>ヘルプ
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="helpModalBody">
+          読み込み中...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-    
 
- <nav class="mobile-nav d-lg-none">
-  <a href="#" onclick="showSection('view-dashboard', this)" class="nav-item active">
-    <i class="bi bi-grid-fill"></i><span>Home</span>
-  </a>
-  <a href="#" onclick="showSection('view-io', this)" class="nav-item">
-    <i class="bi bi-box-seam-fill"></i><span>入出庫</span>
-  </a>
-  <a href="#" id="btn-universal-scan" class="nav-item nav-scan">
-    <div class="scan-circle">
-      <i class="bi bi-qr-code-scan"></i>
-    </div>
-  </a>
-  <a href="#" onclick="showSection('view-shelf', this)" class="nav-item">
-    <i class="bi bi-clipboard-data-fill"></i><span>棚卸</span>
-  </a>
-  <a href="#" onclick="showSection('view-history', this)" class="nav-item">
-    <i class="bi bi-clock-history"></i><span>履歴</span>
-  </a>
-</nav>
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  MOBILE BOTTOM NAV                               ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <nav class="mobile-nav d-lg-none">
+    <a href="#" onclick="showSection('view-dashboard', this)" class="nav-item active">
+      <i class="bi bi-grid-fill"></i><span>Home</span>
+    </a>
+    <a href="#" onclick="showSection('view-io', this)" class="nav-item">
+      <i class="bi bi-box-seam-fill"></i><span>入出庫</span>
+    </a>
+    <a href="#" id="btn-universal-scan" class="nav-item nav-scan">
+      <div class="scan-circle">
+        <i class="bi bi-qr-code-scan"></i>
+      </div>
+    </a>
+    <a href="#" onclick="showSection('view-shelf', this)" class="nav-item">
+      <i class="bi bi-clipboard-data-fill"></i><span>棚卸</span>
+    </a>
+    <a href="#" onclick="showSection('view-history', this)" class="nav-item">
+      <i class="bi bi-clock-history"></i><span>履歴</span>
+    </a>
+  </nav>
 
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  JS LIBS + APP                                   ║
+       ╚══════════════════════════════════════════════════╝ -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  
- <script src="config.js?v=20260527-2"></script>
-<script src="app.js?v=20260527-scanfix2"></script>
-  
+
+  <script src="config.js?v=20260527-2"></script>
+  <script src="app.js?v=20260527-scanfix2"></script>
+
+  <!-- Footer year + mobile nav helper (kept identical for app.js compat) -->
   <script>
-    document.getElementById('fy').textContent=new Date().getFullYear();
-    // Navigasi Mobile & Getar
+    document.getElementById('fy').textContent = new Date().getFullYear();
+
     function showSection(viewId, el) {
       const link = document.querySelector(`#sb a[data-view="${viewId}"]`);
-      if(link) link.click();
+      if (link) link.click();
       document.querySelectorAll('.mobile-nav .nav-item').forEach(x => x.classList.remove('active'));
-      if(el) {
-        if(el.classList.contains('nav-scan') || el.parentElement.classList.contains('nav-scan')) {
+      if (el) {
+        if (el.classList.contains('nav-scan') || (el.parentElement && el.parentElement.classList.contains('nav-scan'))) {
           document.querySelector('.nav-scan').classList.add('active');
         } else {
           el.classList.add('active');
         }
       }
-      if(navigator.vibrate) navigator.vibrate(10);
+      if (navigator.vibrate) navigator.vibrate(10);
     }
-    // Effect Getar Tombol
+
     document.addEventListener('DOMContentLoaded', () => {
       const scanBtns = document.querySelectorAll('.btn-scan, #btn-start-scan, #btn-io-scan');
       scanBtns.forEach(btn => btn.addEventListener('click', () => { if(navigator.vibrate) navigator.vibrate([30,50,30]); }));
     });
+  </script>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  HELP EXTENSION — adds help for menus app.js     ║
+       ║  doesn't cover (users / shelf-list / reports)    ║
+       ║  Runs AFTER app.js handler, fills body if it     ║
+       ║  shows the fallback message.                     ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <script>
+    (function () {
+      const EXTRA_HELP = {
+        "view-users": `
+          <div class="help-block">
+            <div class="hb-title"><i class="bi bi-person-badge"></i> ユーザー / QR <span class="hb-id-tip">(Pengguna)</span></div>
+            <div class="hb-body">
+              <p>ログイン用ユーザーIDの管理と、QRログインカードの印刷を行います。</p>
+              <ul>
+                <li>左側のテーブルでユーザー一覧を確認できます。</li>
+                <li>右側の<strong>印刷プレビュー</strong>で複数のQRをまとめて印刷できます（社員証用）。</li>
+                <li><strong>管理者 (Admin)</strong>のみ、新規ユーザーの追加が可能です。</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        "view-shelf-list": `
+          <div class="help-block">
+            <div class="hb-title"><i class="bi bi-table"></i> 棚卸一覧 <span class="hb-id-tip">(Riwayat Stocktake)</span></div>
+            <div class="hb-body">
+              <p>過去に確定した棚卸の結果を一覧で確認・出力できます。</p>
+              <ul>
+                <li>月選択ボックスで対象月を絞り込めます。<strong>全件</strong>で絞り込みをリセット。</li>
+                <li><strong>CSV(月)</strong>: 選択中の月だけ出力。 <strong>CSV(年)</strong>: 同じ年の全件を出力。</li>
+                <li><strong>インポート</strong>: 過去のデータをCSVから取り込みます (上書きされません)。</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        "view-reports": `
+          <div class="help-block">
+            <div class="hb-title"><i class="bi bi-shield-check"></i> 管理レポート <span class="hb-id-tip">(Laporan Admin)</span></div>
+            <div class="hb-body">
+              <p>管理者向けの自動レポート機能です。実行結果は登録メールに送信されます。</p>
+              <ul>
+                <li><strong>不動在庫</strong>: 90日以上動かない商品を抽出。</li>
+                <li><strong>監査</strong>: マイナス在庫など異常データを検出。</li>
+                <li><strong>適正在庫AI</strong>: 出庫履歴から最適な最小在庫を提案。</li>
+                <li><strong>アーカイブ</strong>: 1年以上前の履歴を別シートへ移動し動作を軽量化。</li>
+              </ul>
+            </div>
+          </div>
+        `
+      };
+
+      // Run AFTER the click handler defined in app.js fills the body.
+      // We re-fill ONLY when app.js shows the fallback "まだありません" text.
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('#btn-help, #btn-help-shortcut');
+        if (!btn) return;
+
+        // open help modal manually for sidebar shortcut
+        if (btn.id === 'btn-help-shortcut') {
+          e.preventDefault();
+          try {
+            const m = new bootstrap.Modal(document.getElementById('helpModal'));
+            m.show();
+            // simulate triggering #btn-help so app.js fills body
+            document.getElementById('btn-help')?.click();
+          } catch(_) {}
+        }
+
+        // a tick after app.js handler — replace fallback if needed
+        setTimeout(() => {
+          const body  = document.getElementById('helpModalBody');
+          const title = document.getElementById('helpModalTitle');
+          if (!body) return;
+          const activeId = (document.querySelector('main section.active') || {}).id;
+          const html = EXTRA_HELP[activeId];
+          if (html && body.innerHTML.includes('まだありません')) {
+            body.innerHTML = html;
+            const menuName = document.getElementById('page-title')?.textContent || 'ヘルプ';
+            if (title) title.innerHTML = `<i class="bi bi-info-circle-fill me-2 text-primary"></i>${menuName} のヘルプ`;
+          }
+        }, 30);
+      });
+
+      // ─── THEME TOGGLE (dark / light) ───
+      const root = document.documentElement;
+      const KEY  = 'tsh-theme';
+      const saved = localStorage.getItem(KEY);
+      if (saved === 'dark') root.setAttribute('data-theme', 'dark');
+
+      function syncIcon() {
+        const icon = document.querySelector('#btn-theme i');
+        if (!icon) return;
+        const dark = root.getAttribute('data-theme') === 'dark';
+        icon.className = dark ? 'bi bi-sun-fill' : 'bi bi-moon-stars';
+      }
+      syncIcon();
+
+      document.getElementById('btn-theme')?.addEventListener('click', () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        if (dark) { root.removeAttribute('data-theme'); localStorage.setItem(KEY,'light'); }
+        else      { root.setAttribute('data-theme','dark'); localStorage.setItem(KEY,'dark'); }
+        syncIcon();
+      });
+
+      // ─── KEEP user-chip avatar synced with #who text ───
+      const who = document.getElementById('who');
+      if (who) {
+        const obs = new MutationObserver(() => {
+          const span = who.querySelector('span:last-child');
+          const name = (span ? span.textContent : who.textContent || '').trim();
+          const initial = (name || 'U').charAt(0).toUpperCase();
+          const av = who.querySelector('.avatar-sm');
+          if (av) av.textContent = initial;
+        });
+        obs.observe(who, { childList: true, subtree: true, characterData: true });
+      }
+    })();
   </script>
 </body>
 </html>
