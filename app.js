@@ -4902,12 +4902,14 @@ async function processOfflineQueue() {
 window.addEventListener('online', processOfflineQueue);
 setInterval(processOfflineQueue, 15000); // Cek antrean tiap 15 detik
 // --------------------------------------------------------
-  
 function keepBackendWarm(){
-    if (!CONFIG?.FEATURES?.HEALTH_PING) return;
-    const ms = Number(CONFIG.HEALTH_PING_MS || 15000);
-    setInterval(() => { api('ping', { method:'GET', silent:true }).catch(()=>{}); }, ms);
-  }
+  if (!window.CONFIG || !CONFIG.FEATURES || !CONFIG.FEATURES.HEALTH_PING) return;
+
+  const ms = Number(CONFIG.HEALTH_PING_MS || 15000);
+  setInterval(() => {
+    api('ping', { method:'GET', silent:true }).catch(()=>{});
+  }, ms);
+}
 
   // =========================================================
   // FITUR BARU: INVENTORY CONTROL REPORTS BINDING
