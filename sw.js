@@ -1,8 +1,9 @@
 /* =========================================================
  * sw.js — Service Worker (Cache Strategy)
+ * Bumped CACHE_NAME to force clearing of stale assets.
  * =======================================================*/
 
-const CACHE_NAME = 'tsh-inventory-V39';
+const CACHE_NAME = 'tsh-inventory-V36-redesign';
 const ASSETS = [
   './',
   './index.html',
@@ -29,7 +30,6 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Trik "Safe Cache": Download satu per satu, lewati otomatis jika ada yang gagal
       return Promise.all(
         ASSETS.map((url) => {
           return fetch(url)
@@ -44,18 +44,21 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// 2. Activate & Bersihkan Cache Lama
+// 2. Activate & Bersihkan Cache Lama (PENTING — hapus V35a dst.)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => Promise.all(
       keys.map((k) => {
-        if (k !== CACHE_NAME) return caches.delete(k);
+        if (k !== CACHE_NAME) {
+          console.log('[SW] menghapus cache lama:', k);
+          return caches.delete(k);
+        }
       })
     )).then(() => self.clients.claim())
   );
 });
 
-// 3. Fetch Strategy (Network First untuk HTML, Cache First untuk Assets)
+// 3. Fetch Strategy
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
@@ -63,7 +66,8 @@ self.addEventListener('fetch', (event) => {
   if (url.hostname.includes('script.google.com')) return;
 
   // B. HTML (Dashboard/Index) -> Network First
-  if (event.request.headers.get('accept').includes('text/html')) {
+  if (event.request.headers.get('accept') &&
+      event.request.headers.get('accept').includes('text/html')) {
     event.respondWith(
       fetch(event.request)
         .then((res) => {
@@ -82,7 +86,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // C. Aset Statis -> Cache First
+  // C. CSS / JS dengan ?v= -> Network First (agar update versi langsung kebawa)
+  if (url.search.includes('v=') &&
+      (url.pathname.endsWith('.css') || url.pathname.endsWith('.js'))) {
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(event.request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // D. Aset Statis Lain -> Cache First
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
