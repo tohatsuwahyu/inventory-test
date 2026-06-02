@@ -1,22 +1,73 @@
 {
-  "name": "Inventory System",
-  "short_name": "Inventory",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#4f46e5",
-  "orientation": "portrait",
+  "name": "在庫管理 - Inventory System",
+  "short_name": "在庫管理",
+  "description": "QR-based inventory management for raw materials. Scan, stocktake, history & reports.",
+  "lang": "ja",
+  "dir": "ltr",
+
+  "start_url": "./dashboard.html",
   "scope": "./",
+  "id": "/inventory-app",
+
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait",
+
+  "background_color": "#4F46E5",
+  "theme_color": "#4F46E5",
+
   "icons": [
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+
+  "categories": ["business", "productivity", "utilities"],
+
+  "shortcuts": [
+    {
+      "name": "QRスキャン",
+      "short_name": "Scan",
+      "description": "Mulai scan QR untuk input cepat",
+      "url": "./dashboard.html#scan",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "棚卸 (Stocktake)",
+      "short_name": "棚卸",
+      "description": "Mulai sesi stocktake",
+      "url": "./dashboard.html#stocktake",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "履歴 (History)",
+      "short_name": "履歴",
+      "description": "Lihat history transaksi",
+      "url": "./dashboard.html#history",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+
+  "prefer_related_applications": false
 }
