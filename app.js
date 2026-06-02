@@ -599,11 +599,11 @@ function setTextSafe(selector, value) {
   silent: true
 }).catch(() => ({}));
       
-      const items   = dashData.items || [];
-      const users   = dashData.users || [];
-      const series  = dashData.series || [];
-      const history = dashData.history || [];
- const history = historyRaw.filter(isRealTransaction);
+     const items      = dashData.items || [];
+      const users      = dashData.users || [];
+      const series     = dashData.series || [];
+      const historyRaw = dashData.history || []; // 1. Define historyRaw first
+      const history    = historyRaw.filter(isRealTransaction); // 2. Filter into history
       // Simpan syncTime terbaru jika ada
       if (dashData.syncTime) _LAST_SYNC_TIME = dashData.syncTime;
       // [👆 AKHIR PERBAIKAN]
