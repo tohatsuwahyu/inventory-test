@@ -10,28 +10,31 @@ window.__FREQ_MAP = {};
 function calculateABC() {
   const freq = {};
   const now = new Date();
-  
-  // 1. Hitung frekuensi pergerakan keluar (OUT) dalam 30 hari terakhir
+  const dayMs = 1000*60*60*24;
+
   _HISTORY_CACHE.forEach(h => {
-    if (h.type === 'OUT') {
-      const d = new Date(String(h.date).replace(' ', 'T'));
-      if (!isNaN(d) && (now - d) / (1000*60*60*24) <= 30) {
-        freq[h.code] = (freq[h.code] || 0) + 1; // Kita hitung frekuensi transaksi, bukan qty
-      }
-    }
+    if (h.type !== 'OUT') return;
+    const d = new Date(String(h.date).replace(' ', 'T'));
+    if (isNaN(d)) return;
+    if ((now - d) / dayMs > 30) return;
+    const qty = Number(h.qty || 0);
+    freq[h.code] = (freq[h.code] || 0) + qty;
   });
 
-  // 2. Sortir barang dari yang paling sering keluar
-  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-  const totalItems = sorted.length;
-  
+  const sorted = Object.entries(freq).sort((a,b) => b[1] - a[1]);
+  const total = sorted.length;
   window.__FREQ_MAP = {};
-  sorted.forEach(([code, count], index) => {
-    const percentile = (index + 1) / totalItems;
-    
-    if (percentile <= 0.2) window.__FREQ_MAP[code] = { cls: 'A', color: 'bg-danger' }; // Top 20%
-    else if (percentile <= 0.5) window.__FREQ_MAP[code] = { cls: 'B', color: 'bg-warning text-dark' }; // Next 30%
-    else window.__FREQ_MAP[code] = { cls: 'C', color: 'bg-info text-white' }; // Bottom 50%
+
+  if (total === 0) return;
+
+  sorted.forEach(([code, qty], index) => {
+    const rank = index + 1;
+    const pct  = rank / total;
+    let cls, color;
+    if (pct <= 0.20 || rank === 1) { cls = 'A'; color = 'bg-danger'; }
+    else if (pct <= 0.50)          { cls = 'B'; color = 'bg-warning text-dark'; }
+    else                            { cls = 'C'; color = 'bg-info text-white'; }
+    window.__FREQ_MAP[code] = { cls, color };
   });
 }
 
@@ -4843,7 +4846,39 @@ function itemsAuto_extendMenu(){
     wrap.addEventListener("hidden.bs.modal", () => wrap.remove(), { once: true });
   }
 
-  // --- Expose core helpers for global preview block ---
+ /* IDLE TIMEOUT - Logout otomatis setelah X menit tidak aktif */
+(function setupIdleTimeout() {
+  const idleMin = Number(window.CONFIG?.IDLE_MIN || 20);
+  if (idleMin <= 0) return;
+  const idleMs = idleMin * 60 * 1000;
+  let timer = null;
+
+  function resetTimer() {
+    clearTimeout(timer);
+    timer = setTimeout(showIdleWarning, idleMs - 30000);
+  }
+
+  async function showIdleWarning() {
+    const stay = await showCustomDialog({
+      title: '⏰ セッション間もなく終了',
+      message: `${idleMin}分間操作がありません。30秒後に自動ログアウトされます。`,
+      confirmText: '続行 (Lanjut)',
+      cancelText: 'ログアウト',
+      type: 'confirm'
+    });
+    if (stay) resetTimer();
+    else logout();
+    setTimeout(() => {
+      if (document.querySelector('.modal.show')) logout();
+    }, 30000);
+  }
+
+  ['mousemove','keydown','click','scroll','touchstart'].forEach((evt) => {
+    document.addEventListener(evt, resetTimer, { passive: true });
+  });
+  resetTimer();
+  console.log(`[Idle Timeout] ${idleMin} menit`);
+})();
    // --- Expose core helpers for global preview block ---
   window.__INV_APP__ = window.__INV_APP__ || {};
   Object.assign(window.__INV_APP__, {
@@ -6157,5 +6192,105 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }, 200);
+// =========================================================
+// GLOBAL SEARCH ⌘K / Ctrl+K
+// =========================================================
+(function setupGlobalSearch() {
+  const inp = document.getElementById('global-search');
+  if (!inp) return;
 
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      inp.focus();
+      inp.select();
+    }
+  });
+
+  let debounce;
+  inp.addEventListener('input', (e) => {
+    clearTimeout(debounce);
+    const val = e.target.value.trim();
+    debounce = setTimeout(() => {
+      if (val.length < 1) return;
+      const link = document.querySelector('a[data-view="view-items"]');
+      if (link) link.click();
+      setTimeout(() => {
+        const localSearch = document.getElementById('items-search');
+        if (localSearch) {
+          localSearch.value = val;
+          localSearch.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }, 200);
+    }, 280);
+  });
+
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const firstRow = document.querySelector('#tbl-items tr');
+      if (firstRow) {
+        firstRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstRow.classList.add('input-scan-highlight');
+      }
+    }
+  });
+})();
+
+// =========================================================
+// GLOBAL KEYBOARD SHORTCUTS
+// =========================================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'F1') {
+    e.preventDefault();
+    document.getElementById('btn-help')?.click();
+    return;
+  }
+  if (e.key === 'F2') {
+    e.preventDefault();
+    const active = document.querySelector('main section.active')?.id;
+    if (active === 'view-io') document.getElementById('btn-io-scan')?.click();
+    else if (active === 'view-shelf') document.getElementById('btn-start-scan')?.click();
+    else {
+      document.querySelector('a[data-view="view-io"]')?.click();
+      setTimeout(() => document.getElementById('btn-io-scan')?.click(), 400);
+    }
+    return;
+  }
+  if (e.key === 'F3') {
+    e.preventDefault();
+    document.getElementById('global-search')?.focus();
+    return;
+  }
+  if (e.key === 'F4') {
+    e.preventDefault();
+    document.getElementById('btn-theme')?.click();
+    return;
+  }
+  if (e.altKey && /^[1-7]$/.test(e.key)) {
+    e.preventDefault();
+    const links = document.querySelectorAll('#sb a[data-view]');
+    const idx = Number(e.key) - 1;
+    if (links[idx]) links[idx].click();
+    return;
+  }
+  if (e.ctrlKey && e.key === 'Enter') {
+    const active = document.querySelector('main section.active')?.id;
+    if (active === 'view-io') {
+      e.preventDefault();
+      document.getElementById('btn-io-submit')?.click();
+    } else if (active === 'view-shelf') {
+      e.preventDefault();
+      document.getElementById('st-commit')?.click();
+    }
+    return;
+  }
+  if (e.ctrlKey && e.key.toLowerCase() === 's') {
+    const active = document.querySelector('main section.active')?.id;
+    if (active === 'view-shelf') {
+      e.preventDefault();
+      document.getElementById('st-save')?.click();
+    }
+  }
+});
 }); // <-- Penutup DOMContentLoaded
