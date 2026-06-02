@@ -2331,3 +2331,63 @@ main section.active {
     margin-top: 2px;
   }
 }
+/* =========================================================
+ * PATCH 2026-06 — Missing CSS classes referenced by app.js
+ * ========================================================= */
+
+/* Toast mini (untuk function toast() di app.js) */
+.toast-area {
+  position: fixed;
+  top: calc(var(--topbar-h) + 12px);
+  right: 16px;
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast-mini {
+  pointer-events: auto;
+  min-width: 240px;
+  max-width: 360px;
+  border-radius: var(--r);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255,255,255,.1);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.toast-mini.show { opacity: 1; transform: translateX(0); }
+.toast-mini .toast-body { padding: 12px 14px; line-height: 1.45; font-weight: 500; }
+.toast-mini .btn-close { filter: brightness(0) invert(1); font-size: 0.65rem; opacity: 0.7; }
+.toast-mini .btn-close:hover { opacity: 1; }
+@media (max-width: 575.98px) {
+  .toast-area { right: 12px; left: 12px; }
+  .toast-mini { min-width: 0; max-width: none; }
+}
+
+/* Input scan highlight animation */
+@keyframes inputScanPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(16,185,129,.55); border-color: var(--success); }
+  60%  { box-shadow: 0 0 0 12px rgba(16,185,129,0); border-color: var(--success); }
+  100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); border-color: var(--border); }
+}
+.input-scan-highlight {
+  animation: inputScanPulse 1.4s cubic-bezier(.4,0,.2,1) 1;
+  background: #ECFDF5 !important;
+  border-color: var(--success) !important;
+}
+[data-theme="dark"] .input-scan-highlight {
+  background: rgba(16,185,129,.12) !important;
+}
+
+/* Mobile tap target enlargement */
+@media (max-width: 767.98px) {
+  .btn-sm { min-height: 44px !important; padding: 8px 14px !important; font-size: 0.875rem !important; }
+  .btn-lg { min-height: 56px !important; }
+  .form-control, .form-select { min-height: 48px; font-size: 1rem; }
+  .icon-btn { width: 44px !important; height: 44px !important; }
+  .sidebar nav a { padding: 14px 16px !important; min-height: 48px; }
+}
