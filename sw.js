@@ -3,15 +3,16 @@
  * Bumped CACHE_NAME to force clearing of stale assets.
  * =======================================================*/
 
-const CACHE_NAME = 'tsh-inventory-V40-scan';
+const CACHE_NAME = 'tsh-inventory-V41-rename-fix';
 const ASSETS = [
   './',
   './index.html',
   './dashboard.html',
-  './styles.css',
+  './styles.css?v=fix-2026-3',
+  './items-mobile.css?v=fix-2026-3',
   './login.js',
   './config.js',
-  './app.js',
+  './app.js?v=20260527-scanfix3',
   './qrlib.js',
   './manifest.webmanifest',
   './icons/icon-192.png',
