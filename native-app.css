@@ -1,0 +1,222 @@
+/* =========================================================
+ * native-app.css — Native App Feel Layer
+ * Tambahan untuk membuat PWA terasa seperti aplikasi Android/iOS native.
+ * File ini AMAN ditambahkan TANPA mengubah styles.css yang sudah ada.
+ *
+ * Cara pakai:
+ *   1. Simpan file ini di folder yang sama dengan dashboard.html
+ *   2. Tambah satu baris <link> di <head> index.html dan dashboard.html
+ *      (lihat PANDUAN_PEMASANGAN.md)
+ *
+ * Author: Wahyu — Inventory System
+ * =======================================================*/
+
+
+/* ─────────────────────────────────────────────────────────
+ * 1. SAFE AREA — Hindari notch & home-indicator iPhone modern
+ *    iPhone X dst. punya "poni" di atas dan garis tipis di bawah.
+ *    Kalau konten kita full-edge, akan ketabrak. CSS env() bawa
+ *    nilai aman dari browser.
+ * ───────────────────────────────────────────────────────── */
+
+/* Body diberi padding aman dari semua sisi.
+   Hanya berlaku saat aplikasi dijalankan sebagai PWA (standalone).
+   Browser biasa tidak terpengaruh. */
+@media (display-mode: standalone) {
+  body {
+    padding-top:    env(safe-area-inset-top,    0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-left:   env(safe-area-inset-left,   0);
+    padding-right:  env(safe-area-inset-right,  0);
+    /* Cegah scroll horizontal kalau notch melebar */
+    overscroll-behavior-x: contain;
+  }
+
+  /* Header / appbar — geser turun supaya tidak tertutup notch */
+  .appbar {
+    padding-top: env(safe-area-inset-top, 0);
+    /* Tinggi appbar tetap sama, hanya isinya yang turun */
+  }
+
+  /* Mobile bottom nav sudah punya env() di styles.css — biarkan */
+
+  /* Hero card di dashboard mobile — beri jarak dari notch */
+  .mobile-hero-card {
+    margin-top: max(8px, env(safe-area-inset-top, 0));
+  }
+
+  /* Login page — supaya logo tidak nempel di poni */
+  .login-shell {
+    padding-top:    max(32px, env(safe-area-inset-top, 0));
+    padding-bottom: max(32px, env(safe-area-inset-bottom, 0));
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 2. STATUS BAR & FULLSCREEN — saat dijalankan sebagai PWA
+ *    Sembunyikan elemen yang tidak perlu di mode aplikasi
+ * ───────────────────────────────────────────────────────── */
+
+@media (display-mode: standalone) {
+  /* Sembunyikan banner "Install App" karena sudah terinstal */
+  #install-prompt { display: none !important; }
+
+  /* Cegah text selection tidak sengaja saat user scroll lama
+     (rasa native). Tapi tetap izinkan di input/textarea. */
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  input, textarea, [contenteditable="true"], .selectable {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 3. SPLASH SCREEN SIMULASI — tampilan saat app baru dibuka
+ *    Untuk Android, manifest.webmanifest sudah otomatis bikin
+ *    splash dari icon + background_color. Untuk iOS, kita pakai
+ *    apple-touch-startup-image (di HTML head).
+ *
+ *    Di sini kita juga sediakan fallback "fade-in" supaya
+ *    konten muncul mulus, tidak loncat-loncat.
+ * ───────────────────────────────────────────────────────── */
+
+@media (display-mode: standalone) {
+  body {
+    animation: nativeFadeIn 350ms ease-out both;
+  }
+}
+
+@keyframes nativeFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 4. TAP HIGHLIGHT — hilangkan kotak abu-abu saat di-tap
+ *    (default browser mobile). Native app tidak punya ini.
+ * ───────────────────────────────────────────────────────── */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tapi tombol harus tetap punya feedback visual saat ditekan */
+button:active,
+.btn:active,
+a:active,
+.m-app-card:active,
+.nav-item:active,
+.qa-chip:active {
+  transform: scale(0.97);
+  transition: transform 80ms ease-out;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 5. SCROLL MOMENTUM iOS-style — pakai inertia smooth
+ * ───────────────────────────────────────────────────────── */
+
+.main-content,
+.table-responsive,
+.modal-body,
+section[id^="view-"] {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 6. PREVENT DOUBLE-TAP ZOOM — feature aplikasi native
+ *    Browser mobile zoom kalau user double-tap. Di app native
+ *    ini tidak terjadi. Bisa diatasi dengan touch-action.
+ * ───────────────────────────────────────────────────────── */
+
+button, .btn, a, .m-app-card, .nav-item, .qa-chip,
+input[type="button"], input[type="submit"] {
+  touch-action: manipulation;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 7. STATUS BAR TINTING — area di atas notch ikut warna app
+ *    Kombinasi dengan meta theme-color di HTML.
+ *    Khusus iOS standalone: status bar bisa "translucent" supaya
+ *    konten kita yang ngisi warnanya (lebih native).
+ * ───────────────────────────────────────────────────────── */
+
+/* Bar tipis di atas saat scroll (efek "elevated header" iOS) */
+@media (display-mode: standalone) and (max-width: 768px) {
+  .appbar {
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(255, 255, 255, 0.85);
+  }
+  [data-theme="dark"] .appbar {
+    background: rgba(15, 23, 42, 0.85);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 8. PULL-TO-REFRESH HINT (visual placeholder)
+ *    Untuk fitur pull-to-refresh sebenarnya butuh JS.
+ *    Tapi CSS ini menyiapkan area "drop zone" supaya nanti
+ *    tinggal hubungkan tombol/gesture.
+ * ───────────────────────────────────────────────────────── */
+
+.pull-refresh-zone {
+  height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  transition: height 200ms ease;
+}
+.pull-refresh-zone.active {
+  height: 56px;
+}
+.pull-refresh-zone .spinner-border {
+  width: 1.2rem; height: 1.2rem;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 9. KEYBOARD INSET — di iOS, keyboard tidak resize viewport.
+ *    Pakai viewport-fit untuk handle input di bawah layar.
+ * ───────────────────────────────────────────────────────── */
+
+@supports (height: 100dvh) {
+  .login-shell,
+  .modal-fullscreen-sm-down {
+    min-height: 100dvh;   /* dynamic viewport — ikut keyboard */
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * 10. ANDROID SYSTEM NAV BAR — beri jarak supaya tombol
+ *     kembali Android tidak nempel di bottom nav kita.
+ * ───────────────────────────────────────────────────────── */
+
+@media (display-mode: standalone) {
+  .mobile-nav {
+    /* env() sudah dipakai, tambahkan minimum supaya rapi */
+    padding-bottom: max(env(safe-area-inset-bottom, 0), 4px);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+ * BONUS — Bagi yang testing di Chrome DevTools:
+ * Pilih device "iPhone 14 Pro" lalu klik "More options →
+ * Show device frame" untuk lihat efek notch & safe area.
+ * ───────────────────────────────────────────────────────── */
