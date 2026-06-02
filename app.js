@@ -1327,10 +1327,9 @@ function setTextSafe(selector, value) {
                 しました (数量: ${fmt(h.qty)})
               </div>
             </div>
-          </div>`;
-        }).join('');
-    }).join('') : '<div class="p-4 text-center text-muted">最近の取引はありません</div>';
-      } else if (timelineContainer) {
+        </div>`;
+            }).join('') : '<div class="p-4 text-center text-muted">最近の取引はありません</div>';
+          } else if (timelineContainer) {
         timelineContainer.innerHTML = '<div class="p-4 text-center text-muted">履歴はありません</div>';
       }
     } catch (e) {
