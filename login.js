@@ -480,21 +480,32 @@ async function handleLoginSuccess(user) {
     const btnQR = qs('#btn-qr');
     const btnQR2 = qs('#btn-qr-alt');
 
-    if (btnLogin) {
-      btnLogin.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const id = qs('#login-user').value.trim();
-        const pin = qs('#login-pin').value.trim();
-        if (!id) return alert('IDを入力してください');
-        
-        setLoading(true, 'ログイン中…');
-        try {
-          const r = await api('login', { method: 'POST', body: { id, pass: pin } });
-          if (r.ok) handleLoginSuccess(r.user);
-          else { setLoading(false); alert(r.error); }
-        } catch(e) { setLoading(false); alert("Error"); }
-      });
+   const form = document.getElementById('login-form');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = qs('#login-user').value.trim();
+    const pin = qs('#login-pin').value.trim();
+    if (!id) {
+      toast('IDを入力してください', 'warning');
+      qs('#login-user')?.focus();
+      return;
     }
+    
+    setLoading(true, 'ログイン中…');
+    try {
+      const r = await api('login', { method: 'POST', body: { id, pass: pin } });
+      if (r.ok) return handleLoginSuccess(r.user);
+      setLoading(false);
+      toast(r.error || 'ログイン失敗', 'danger');
+      qs('#login-pin')?.focus();
+      qs('#login-pin')?.select();
+    } catch (err) {
+      setLoading(false);
+      toast('通信エラー: ' + (err?.message || err), 'danger');
+    }
+  });
+}
 
     if (btnQR) btnQR.addEventListener('click', (e) => { e.preventDefault(); startQR(); });
     if (btnQR2) btnQR2.addEventListener('click', (e) => { e.preventDefault(); startQR(); });
