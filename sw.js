@@ -3,7 +3,7 @@
  * Bumped CACHE_NAME to force clearing of stale assets.
  * =======================================================*/
 
-const CACHE_NAME = 'tsh-inventory-V41-rename-fix';
+const CACHE_NAME = 'tsh-inventory-V42-rename-fix';
 const ASSETS = [
   './',
   './index.html',
