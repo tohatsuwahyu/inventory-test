@@ -567,7 +567,23 @@ function setTextSafe(selector, value) {
       fill:   "rgba(244,63,94,0.20)"
     }
   };
-
+// ============================================================
+  // ✅ HELPER GLOBAL: Cek apakah row history = transaksi BENERAN
+  // ============================================================
+  // Buang LOGIN, LOGOUT, SYSTEM, dan entry tanpa code/qty.
+  // Dipakai oleh renderDashboard() dan renderHistory().
+  // Kalau nanti perlu tambah filter lain, edit di sini saja.
+  function isRealTransaction(h) {
+    if (!h) return false;
+    const t = String(h.type || '').toUpperCase();
+    // Hanya IN dan OUT yang dianggap transaksi
+    if (t !== 'IN' && t !== 'OUT') return false;
+    // Skip kalau tidak ada kode barang
+    if (!h.code || String(h.code).trim() === '') return false;
+    // Skip kalau qty 0 atau negatif (defensive — backend sudah validasi tapi jaga-jaga)
+    if (Number(h.qty || 0) <= 0) return false;
+    return true;
+  }
   let chartLine = null, chartPie = null;
   async function renderDashboard() {
     const who = getCurrentUser();
@@ -587,7 +603,7 @@ function setTextSafe(selector, value) {
       const users   = dashData.users || [];
       const series  = dashData.series || [];
       const history = dashData.history || [];
-
+ const history = historyRaw.filter(isRealTransaction);
       // Simpan syncTime terbaru jika ada
       if (dashData.syncTime) _LAST_SYNC_TIME = dashData.syncTime;
       // [👆 AKHIR PERBAIKAN]
@@ -1256,9 +1272,20 @@ function setTextSafe(selector, value) {
       }, { once: true });
 
       // --- RENDER TIMELINE (Aktivitas Terbaru) ---
+  // --- RENDER TIMELINE (Aktivitas Terbaru) ---
       const timelineContainer = document.getElementById("dash-timeline");
       if (timelineContainer && history.length) {
-        const sortedHistory = [...history].sort((a, b) => {
+        // ✅ FIX: Buang LOGIN/LOGOUT/SYSTEM dari Timeline transaksi
+        //    Hanya tampilkan transaksi IN/OUT yang punya code & qty > 0
+        const transactionsOnly = history.filter(h => {
+          const t = String(h.type || '').toUpperCase();
+          if (t !== 'IN' && t !== 'OUT') return false;          // skip LOGIN/LOGOUT/SYSTEM/lain
+          if (!h.code) return false;                             // skip entry tanpa kode barang
+          if (Number(h.qty || 0) <= 0) return false;             // skip qty 0
+          return true;
+        });
+        
+        const sortedHistory = transactionsOnly.sort((a, b) => {
           const dateA = new Date(a.timestamp || a.date || 0);
           const dateB = new Date(b.timestamp || b.date || 0);
           return dateB - dateA; 
@@ -1266,8 +1293,10 @@ function setTextSafe(selector, value) {
 
         const recent = sortedHistory.slice(0, 5); 
         
-        timelineContainer.innerHTML = recent.map(h => {
-          const isIn = (h.type || "IN").toUpperCase() === 'IN';
+        timelineContainer.innerHTML = recent.length ? recent.map(h => {
+          // ✅ FIX: Cek IN secara eksplisit, jangan fallback ke OUT
+          const typeUp = String(h.type || '').toUpperCase();
+          const isIn = typeUp === 'IN';
           const icon = isIn ? 'bi-box-arrow-in-down text-primary' : 'bi-box-arrow-right text-danger';
           const bg = isIn ? 'bg-primary-subtle' : 'bg-danger-subtle';
           
@@ -1286,7 +1315,10 @@ function setTextSafe(selector, value) {
             </div>
             <div class="flex-grow-1 min-width-0">
               <div class="d-flex justify-content-between mb-1">
-                <span class="fw-semibold text-truncate text-dark">${escapeHtml(h.itemName || h.name)}</span>
+              <span class="fw-semibold text-truncate text-dark">
+  ${escapeHtml(h.itemName || h.name || '(品名なし)')} 
+  <span class="text-muted small fw-normal">[${escapeHtml(h.code || '-')}]</span>
+</span>
                 <small class="text-muted ms-2 fw-medium" style="font-size:0.75rem; white-space:nowrap;">${timeStr}</small>
               </div>
               <div class="small text-muted">
@@ -1297,6 +1329,7 @@ function setTextSafe(selector, value) {
             </div>
           </div>`;
         }).join('');
+    }).join('') : '<div class="p-4 text-center text-muted">最近の取引はありません</div>';
       } else if (timelineContainer) {
         timelineContainer.innerHTML = '<div class="p-4 text-center text-muted">履歴はありません</div>';
       }
@@ -2530,7 +2563,7 @@ async function renderHistory(range) {
     // Pastikan Header Tabel (Desktop) Konsisten
     ensureHistoryHeader(); 
 
-    const tbody = document.querySelector("#tbl-history tbody") || document.getElementById("tbl-history");
+   const tbody = document.querySelector("#tbl-history tbody") || document.getElementById("tbl-history");
     if (!tbody) return;
 
     const admin = isAdmin();
@@ -2545,8 +2578,12 @@ async function renderHistory(range) {
         expGroup.classList.remove('d-flex');
       }
     }
+    
+    // ✅ FIX: Buang LOGIN/LOGOUT/SYSTEM dari tabel History
+    const cleanList = list.filter(isRealTransaction);
+    
     // Ambil 400 data terbaru, lalu filter berdasarkan tanggal
-    let recent = list.slice(-400).reverse(); 
+    let recent = cleanList.slice(-400).reverse(); 
     recent = filterHistoryByRange(recent, mode);
 
     // KOSONG?
