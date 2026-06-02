@@ -6321,7 +6321,7 @@ document.addEventListener('keydown', (e) => {
     }
     return;
   }
-  if (e.ctrlKey && e.key.toLowerCase() === 's') {
+if (e.ctrlKey && e.key.toLowerCase() === 's') {
     const active = document.querySelector('main section.active')?.id;
     if (active === 'view-shelf') {
       e.preventDefault();
